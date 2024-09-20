@@ -13,7 +13,7 @@ const Login = () => {
     e.preventDefault();
 
     try {
-      const response = await axios.post('http://localhost:3001/users/login', {
+      const response = await axios.post('http://localhost:3001/api/users/login', {
         email,
         password,
         token  // El código 2FA que el usuario introduce
@@ -30,6 +30,7 @@ const Login = () => {
       }
     } catch (error) {
       console.error('Error al iniciar sesión:', error);
+      setError(error);
     }
   };
 
