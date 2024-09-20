@@ -1,12 +1,10 @@
-import logo from './logo.svg';
 import './App.css';
+import Login from './componentes/Login'
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-       
-      </header>
+    <div className="App d-flex justify-content-center align-items-center">
+      <Login />    
     </div>
   );
 }
