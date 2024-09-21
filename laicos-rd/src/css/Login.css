@@ -1,6 +1,12 @@
 p {
   font-weight: bold;
 }
+.login-contenedor {
+  max-width: 900px;
+  margin: 0 auto; /* Centra el contenido */
+  display: flex;
+  padding-top: 10px;
+}
 
 p:first-child {
   margin-bottom: -10px;
