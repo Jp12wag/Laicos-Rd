@@ -1,0 +1,43 @@
+p {
+  font-weight: bold;
+}
+
+p:first-child {
+  margin-bottom: -10px;
+}
+
+.imagen-login img {
+  height: 100%;
+  width: 550px;
+  object-fit: cover;
+}
+
+.formulario-login {
+  width: 300px;
+}
+
+.formulario-login p, label {
+  font-size: 0.9rem;
+}
+
+.formulario-login label {
+  margin-top: 15px;
+}
+
+.formulario-login p {
+  text-align: right;
+}
+
+.formulario-login input {
+  all: unset;
+  border-bottom: 1px solid;
+  margin-left: 10px;
+}
+.forget-password {
+  margin-top: 8px;
+}
+
+.btn {
+  background-color: #7A5BDC;
+  border: none;
+}
