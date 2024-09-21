@@ -1,29 +1,38 @@
-import logo from './logo.svg';
 import './App.css';
-
+import React, { useState, useEffect } from 'react';
+import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
+import Register from './components/Register';
+import Login from './components/Login';
+import AdminDashboard from './components/AdminDashboard';
+import UserDashboard from './components/UserDashboard';
+import Cookies from 'js-cookie';
 
 const App = () => {
-  const getRole = () => localStorage.getItem('userRole');
-  
-  console.log(getRole);
-
+  const userRole = Cookies.get('userRole');
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  useEffect(() => {
+    // Solo cambia el estado si hay un cambio real
+    if (userRole) {
+      setIsLoggedIn(true);
+    } else {
+      setIsLoggedIn(false);
+    }
+  }, [userRole]); // Solo se ejecuta cuando `userRole` cambia
+  console.log(userRole);
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Router>
+      <Routes>
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
+        <Route path="/dashboard" element={
+          isLoggedIn ? (
+            userRole === 'Administrador' ? <AdminDashboard /> : <UserDashboard />
+          ) : (
+            <Navigate to="/login" />
+          )
+        } />
+      </Routes>
+    </Router>
   );
 };
 
