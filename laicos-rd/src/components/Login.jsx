@@ -41,7 +41,7 @@ const Login = () => {
     const authToken = Cookies.get('authToken');
    
   
-    if (authToken) {
+    if (authToken===true) {
       navigate('/dashboard'); // Redirige al dashboard si ya está logueado
     }
   }, [navigate]);
@@ -69,7 +69,7 @@ const Login = () => {
         setEmail('');
         setPassword('');
         setToken('');
-
+        
         navigate('/dashboard');
       }
 
@@ -118,7 +118,7 @@ const Login = () => {
           )}
 
           <p className="forget-password" id="forget-password">
-            Forget password?
+            <a href="/reset">Forget password?</a>
           </p>
 
           <button type="submit" className="mt-2 mb-3 btn btn-primary mx-4 fs-5">
