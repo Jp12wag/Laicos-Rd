@@ -5,6 +5,8 @@ import Register from './components/Register';
 import Login from './components/Login';
 import AdminDashboard from './components/AdminDashboard';
 import UserDashboard from './components/UserDashboard';
+import RequestResetPassword from './components/RequestResetPassword';
+import ResetPassword from './components/ResetPassword';
 import Cookies from 'js-cookie';
 
 const App = () => {
@@ -24,6 +26,8 @@ const App = () => {
       <Routes>
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
+        <Route path="/reset" element={<RequestResetPassword/>} />
+        <Route path="/reset-password/:token" element={<ResetPassword />} /> {/* Ruta para restablecer la contraseña */}
         <Route path="/dashboard" element={
           isLoggedIn ? (
             userRole === 'Administrador' ? <AdminDashboard /> : <UserDashboard />
