@@ -11,16 +11,17 @@ import Cookies from 'js-cookie';
 
 const App = () => {
   const userRole = Cookies.get('userRole');
+  const authToken = Cookies.get('authToken');
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   useEffect(() => {
-    // Solo cambia el estado si hay un cambio real
-    if (userRole) {
+    // Verifica si existe un authToken para marcar al usuario como logueado
+    if (authToken) {
       setIsLoggedIn(true);
     } else {
       setIsLoggedIn(false);
     }
-  }, [userRole]); // Solo se ejecuta cuando `userRole` cambia
-  console.log(userRole);
+  }, [authToken]); // Solo se ejecuta cuando `authToken` cambia
+
   return (
     <Router>
       <Routes>

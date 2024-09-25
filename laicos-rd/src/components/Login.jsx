@@ -32,17 +32,12 @@ const Login = () => {
 
   useEffect(() => {
     const twoFaVerified = Cookies.get('twoFactorVerified');
-   
-  
-    if (twoFaVerified) {
-      setShow2FA(false);
-    }
-  
     const authToken = Cookies.get('authToken');
-   
-  
-    if (authToken===true) {
-      navigate('/dashboard'); // Redirige al dashboard si ya está logueado
+    if (authToken) {
+      setShow2FA(!twoFaVerified); // Si no se ha verificado 2FA, muestra el formulario de 2FA
+      if (twoFaVerified) {
+        navigate('/dashboard'); // Redirige al dashboard si el 2FA ya fue verificado
+      }
     }
   }, [navigate]);
   
@@ -62,9 +57,10 @@ const Login = () => {
         setError('Por favor, ingrese el código 2FA enviado a su correo.');
         return;
       } else {
-        Cookies.set('authToken', response.data.token, { expires: 1 }); // Expira en 1 día
-        Cookies.set('userRole', response.data.admin.roles, { expires: 1 });
-        Cookies.set('twoFactorVerified', 'true', { expires: 1 });
+        Cookies.set('authToken', response.data.token, { expires: 7 }); // Expira en 1 día
+        Cookies.set('userRole', response.data.admin.roles, { expires: 7 });
+        Cookies.set('twoFactorVerified', 'true', { expires: 7 });
+       
         // Limpiar los campos
         setEmail('');
         setPassword('');
@@ -87,8 +83,8 @@ const Login = () => {
         token
       });
 
-      Cookies.set('authToken', response.data.token, { expires: 1 }); // Expira en 1 día
-      Cookies.set('userRole', response.data.administrador.roles, { expires: 1 });
+      Cookies.set('authToken', response.data.token, { expires: 7 }); // Expira en 1 día
+      Cookies.set('userRole', response.data.administrador.roles, { expires: 7 });
       navigate('/dashboard');
 
     } catch (error) {
