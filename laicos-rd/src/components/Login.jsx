@@ -33,11 +33,13 @@ const Login = () => {
   useEffect(() => {
     const twoFaVerified = Cookies.get('twoFactorVerified');
     const authToken = Cookies.get('authToken');
+    setShow2FA(!twoFaVerified); // Si no se ha verificado 2FA, muestra el formulario de 2FA
+    if (twoFaVerified) {
+     setShow2FA(false)
+    }
+    
     if (authToken) {
-      setShow2FA(!twoFaVerified); // Si no se ha verificado 2FA, muestra el formulario de 2FA
-      if (twoFaVerified) {
-        navigate('/dashboard'); // Redirige al dashboard si el 2FA ya fue verificado
-      }
+      navigate('/dashboard'); // Redirige al dashboard si el 2FA ya fue verificado
     }
   }, [navigate]);
   
@@ -53,6 +55,7 @@ const Login = () => {
       if (response.data.twoFactorRequired) {
         
         setAdminId(response.data.administrador._id); // Almacena el ID del usuario
+        console.log(administradorId)
         setShow2FA(true);
         setError('Por favor, ingrese el código 2FA enviado a su correo.');
         return;
