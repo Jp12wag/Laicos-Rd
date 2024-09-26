@@ -1,3 +1,10 @@
+.registro label {
+    margin: 5px 0;
+    display: block;
+}
+
+
+
 .titulo-registro{
     width: 100%;
     align-items: center;
@@ -5,11 +12,21 @@
     display: flex;
 }
 
-.login-contenedor {
-    max-width: 600px; /* Reduce el ancho máximo */
-    margin: 0 auto;
-    padding: 20px; /* Agrega un poco de padding */
+.custom-checkbox {
+    display: flex;
+    gap: 10px;
+    max-width: 189px;
 }
+
+.label-miembro {
+    width: 189px;
+}
+/* 
+.login-contenedor {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px; 
+} */
 
 @media (max-width: 768px) {
     .login-contenedor {

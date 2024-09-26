@@ -1,15 +1,27 @@
 p {
   font-weight: bold;
 }
+
+p:first-child {
+  margin-bottom: -10px;
+}
+
+a {
+  text-decoration: none;
+}
+
 .login-contenedor {
   max-width: 900px;
   margin: 0 auto; /* Centra el contenido */
   display: flex;
-  padding-top: 10px;
 }
 
-p:first-child {
-  margin-bottom: -10px;
+.contenedor-principal {
+  height: 100vh;
+  width: 100vw;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .imagen-login img {
