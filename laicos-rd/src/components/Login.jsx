@@ -5,39 +5,37 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import Cookies from 'js-cookie';
 
-
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [token, setToken] = useState('');
   const [error, setError] = useState('');
-
-  const [show2FA, setShow2FA] = useState(false); // Cambiado a false por defecto
-  const [administradorId, setAdminId] = useState(null); // Almacena el ID del usuario
+  const [show2FA, setShow2FA] = useState(false);
+  const [administradorId, setAdminId] = useState(null);
   const navigate = useNavigate();
 
   const bienvenida = () => {
     const hora = new Date().getHours();
-
     if (hora >= 6 && hora < 12) {
-      return "Good Morning";
+      return "Buenos Días";
     } else if (hora >= 12 && hora < 18) {
-      return "Good Afternoon";
-    } else if (hora >= 18 && hora < 22) {
-      return "Good Evening";
+      return "Buenas Tardes";
     } else {
-      return "Good Night";
+      return "Buenas Noches";
     }
   };
+
 
   useEffect(() => {
     const twoFaVerified = Cookies.get('twoFactorVerified');
     const authToken = Cookies.get('authToken');
+    setShow2FA(!twoFaVerified); // Si no se ha verificado 2FA, muestra el formulario de 2FA
+    if (twoFaVerified) {
+     setShow2FA(false)
+    }
+    
     if (authToken) {
-      setShow2FA(!twoFaVerified); // Si no se ha verificado 2FA, muestra el formulario de 2FA
-      if (twoFaVerified) {
-        navigate('/dashboard'); // Redirige al dashboard si el 2FA ya fue verificado
-      }
+      navigate('/dashboard'); // Redirige al dashboard si el 2FA ya fue verificado
     }
   }, [navigate]);
   
@@ -53,11 +51,9 @@ const Login = () => {
       if (response.data.twoFactorRequired) {
         
         setAdminId(response.data.administrador._id); // Almacena el ID del usuario
-        setShow2FA(true);
         setError('Por favor, ingrese el código 2FA enviado a su correo.');
-        return;
       } else {
-        Cookies.set('authToken', response.data.token, { expires: 7 }); // Expira en 1 día
+        Cookies.set('authToken', response.data.token, { expires: 7 });
         Cookies.set('userRole', response.data.admin.roles, { expires: 7 });
         Cookies.set('twoFactorVerified', 'true', { expires: 7 });
        
@@ -68,28 +64,46 @@ const Login = () => {
         
         navigate('/dashboard');
       }
-
     } catch (error) {
       console.error('Error al iniciar sesión:', error);
       setError(error.response?.data?.message || 'Ocurrió un error al iniciar sesión.');
     }
   };
-  // Función para verificar 2FA
+
   const handle2FAVerification = async (e) => {
     e.preventDefault();
+
     try {
+      // Realiza la verificación del código 2FA
       const response = await axios.post('http://localhost:3001/api/administradores/verify-two-factor', {
         administradorId,
         token
       });
 
-      Cookies.set('authToken', response.data.token, { expires: 7 }); // Expira en 1 día
-      Cookies.set('userRole', response.data.administrador.roles, { expires: 7 });
-      navigate('/dashboard');
+      // Almacena el token y los roles del administrador en las cookies
+      const { token: authToken, administrador } = response.data;
+      Cookies.set('authToken', authToken, { expires: 7 });
+      Cookies.set('userRole', administrador.roles, { expires: 7 });
+      Cookies.set('twoFactorVerified', 'true', { expires: 7 });
 
+      // Obtiene la información del administrador
+      const adminResponse = await axios.get(`http://localhost:3001/api/administradores/${administradorId}`, {
+        headers: {
+          Authorization: `Bearer ${authToken}` // Agregar el token en el encabezado
+        }
+      });
+
+      const adminData = adminResponse.data;
+      // Guardar en cookies
+      Cookies.set('adminData', JSON.stringify(adminData), { expires: 7 });
+
+      // Redirige al usuario al dashboard
+      navigate('/dashboard');
     } catch (error) {
+      // Manejo de errores con un mensaje más claro
+      const errorMessage = error.response?.data?.message || 'Ocurrió un error al verificar el código 2FA.';
       console.error('Error al verificar 2FA:', error);
-      setError(error.response?.data?.message || 'Ocurrió un error al verificar el código 2FA.');
+      setError(errorMessage);
     }
   };
 
@@ -99,9 +113,9 @@ const Login = () => {
         <img src={pic} alt="" className="img-fluid" />
       </div>
 
-      <div className="bg-white p-4">
-        <p className="fs-5">Hello!</p>
-        <p className="fs-5">{bienvenida()}</p>
+        <div className="bg-white p-4">
+          <p className="fs-5">Hola!</p>
+          <p className="fs-5">{bienvenida()}</p>
 
         <form className="formulario-login d-flex flex-column px-5 py-4" onSubmit={show2FA ? handle2FAVerification : handleLogin}>
           <h2 className="text-center fs-5">Login your account</h2>

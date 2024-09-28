@@ -1,12 +1,13 @@
 
 // UserDashboard.js
 import React from 'react';
+import Header from './Header';
 
 const UserDashboard = () => {
   return (
     <div>
-      <h1>Dashboard Miembro</h1>
-      {/* Contenido del Dashboard Usuario */}
+       <Header />
+     
     </div>
   );
 };
