@@ -1,28 +1,117 @@
-
 header {
-    background-color: #333;
-    padding: 10px;
-  }
+  background-color: #eef1f3;
+  padding: 10px;
+}
+
+
+nav {
+  list-style: none;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  margin: 0;
+  padding: 0;
   
-  nav ul {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-    display: flex;
-    justify-content: space-around;
-  }
-  
-  nav ul li {
-    margin: 0 15px;
-  }
-  
-  nav ul li a {
-    color: white;
-    text-decoration: none;
-    font-size: 18px;
-  }
-  
-  nav ul li a:hover {
-    text-decoration: underline;
-  }
-  
+}
+.nav-icon {
+  margin: 0 15px; /* Espaciado entre íconos */
+  cursor: pointer;
+}
+
+ul {
+  list-style-type: none; /* Sin viñetas */
+  margin: 0; /* Sin márgenes */
+  padding: 0; /* Sin padding */
+  display: flex; /* Flexbox para alinear los elementos */
+  align-items: center;
+  margin-right: 20%;
+}
+
+li {
+  position: relative; /* Necesario para el submenú */
+  margin-left: 30px; /* Espaciado entre elementos */
+}
+
+.profile-container {
+  cursor: pointer; /* Cambiar el cursor al pasar por encima */
+}
+
+.dropdown-menu {
+  position: absolute; /* Posicionamiento absoluto para el submenú */
+  top: 100%; /* Colocar debajo del elemento padre */
+  left: 0; /* Alinear a la izquierda */
+  background-color: white; /* Fondo del submenú */
+  border: 1px solid #ccc; /* Borde del submenú */
+  z-index: 10; /* Asegurar que se muestre sobre otros elementos */
+  display: block; /* Asegurarse de que esté visible */
+}
+
+.dropdown-menu li {
+  margin: 0; /* Sin margen en los elementos del submenú */
+}
+
+.dropdown-menu li a {
+  display: block; /* Hacer que el enlace ocupe todo el ancho */
+  padding: 10px; /* Espaciado interno en el enlace */
+  text-decoration: none; /* Sin subrayado */
+  color: black; /* Color del texto */
+}
+
+.dropdown-menu li a:hover {
+  background-color: #f0f0f0; /* Cambiar fondo al pasar el mouse */
+}
+.profile-pic {
+  width: 30px; /* Ancho deseado */
+  height: 30px; /* Altura deseada */
+  border-radius: 50%; /* Hace la imagen circular */
+  object-fit: cover; /* Recorta la imagen para llenar el contenedor */
+  cursor: pointer; /* Cambia el cursor al pasar el ratón */
+}
+
+
+.dropdown-button {
+  background: none; /* Sin fondo */
+  border: none; /* Sin borde */
+  padding: 10px 15px; /* Espaciado interno */
+  cursor: pointer; /* Cursor de puntero */
+  width: 100%; /* Ocupar todo el ancho */
+  text-align: left; /* Alinear texto a la izquierda */
+  transition: 0.2s; /* Transición suave para el fondo */
+}
+
+.dropdown-button:hover {
+  background: #f0f0f0; /* Color de fondo en hover */
+}
+
+.caret-icon {
+  cursor: pointer;
+  margin-left: 5px;
+}
+.greeting-container {
+  display: flex; /* Usar flexbox para alinear elementos */
+  align-items: center; /* Centrar verticalmente */
+  padding: 10px; /* Espacio alrededor del saludo */
+}
+
+.profile-image {
+  width: 65px; /* Ancho de la imagen */
+  height: 65px; /* Alto de la imagen */
+  border-radius: 50%; /* Hacerla redonda */
+  overflow: hidden; /* Ocultar cualquier contenido que se desborde */
+  background-color: #7A5BDC;
+  display: flex;
+  color: #eef1f3;
+  justify-content: center; /* Centrar contenido horizontalmente */
+  align-items: center; /* Centrar contenido verticalmente */
+  margin-right: 10px; /* Espacio entre imagen y texto */
+}
+
+.profile-image img {
+  width: 100%; /* Ancho completo */
+  height: auto; /* Mantener la relación de aspecto */
+}
+
+.greeting {
+  display: flex;
+  flex-direction: column; /* Organizar en columna */
+}
