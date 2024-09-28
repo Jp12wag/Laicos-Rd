@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import "../css/registro.css";
+// import pic from "../img/pic.avif";
 import { useNavigate } from 'react-router-dom';
 
 const Register = () => {
@@ -51,114 +52,120 @@ const Register = () => {
   };
 
   return (
-    <section className="login-contenedor d-flex  shadow-lg rounded-2 overflow-hidden">
-      <div className="bg-white registro-contenedor">
-        <h2 className='titulo-registro'>Registro</h2>
-        <form className="formulario-registro" onSubmit={handleRegister}>
-          <div>
-            <label htmlFor="nombre">Nombre</label>
-            <input
-              id="nombre"
-              type="text"
-              placeholder="Nombre"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              required
-            />
-          </div>
+    <section className='contenedor-principal'>
+      <div className="login-contenedor registro d-flex shadow-lg rounded-2 overflow-hidden">
+        <div className="bg-white registro-contenedor">
+          <h2 className='titulo-registro my-3'>Registro</h2>
+          <form className="formulario-registro px-4" onSubmit={handleRegister}>
+            <div className='d-flex gap-3 justify-content-center'>
+              <div>
+                <div>
+                  <label htmlFor="nombre">Nombre</label>
+                  <input
+                    id="nombre"
+                    type="text"
+                    placeholder="Nombre"
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                    required
+                  />
+                </div>
 
-          <div>
-            <label htmlFor="apellido">Apellidos</label>
-            <input
-              id="apellido"
-              type="text"
-              placeholder="Apellidos"
-              value={apellido}
-              onChange={(e) => setApellido(e.target.value)}
-              required
-            />
-          </div>
+                <div>
+                  <label htmlFor="apellido">Apellidos</label>
+                  <input
+                    id="apellido"
+                    type="text"
+                    placeholder="Apellidos"
+                    value={apellido}
+                    onChange={(e) => setApellido(e.target.value)}
+                    required
+                  />
+                </div>
 
-          <div>
-            <label htmlFor="genero">Género</label>
-            <select id="genero" value={sexo} onChange={(e) => setSexo(e.target.value)} required>
-              <option value="Seleccionar" disabled>Seleccionar</option>
-              <option value="femenino">Femenino</option>
-              <option value="masculino">Masculino</option>
-            </select>
-          </div>
+                <div>
+                  <label htmlFor="genero">Género</label>
+                  <select id="genero" value={sexo} onChange={(e) => setSexo(e.target.value)} required>
+                    <option value="Seleccionar" disabled>Seleccionar</option>
+                    <option value="femenino">Femenino</option>
+                    <option value="masculino">Masculino</option>
+                  </select>
+                </div>
 
-          <div>
-            <label htmlFor="email">Email</label>
-            <input
-              id="email"
-              type="email"
-              placeholder="Email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
-            />
-          </div>
+                <div>
+                  <label htmlFor="email">Email</label>
+                  <input
+                    id="email"
+                    type="email"
+                    placeholder="Email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    required
+                  />
+                </div>
+              </div>
+              <div>
+                <div>
+                  <label htmlFor="password">Contraseña</label>
+                  <input
+                    id="password"
+                    type="password"
+                    placeholder="Contraseña"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    required
+                  />
+                </div>
 
-          <div>
-            <label htmlFor="password">Contraseña</label>
-            <input
-              id="password"
-              type="password"
-              placeholder="Contraseña"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-            />
-          </div>
+                <div>
+                  <label htmlFor="celular">Teléfono</label>
+                  <input
+                    id="celular"
+                    type="tel"
+                    placeholder="Teléfono"
+                    value={celular}
+                    onChange={(e) => setCelular(e.target.value)}
+                    required
+                  />
+                </div>
 
-          <div>
-            <label htmlFor="celular">Teléfono</label>
-            <input
-              id="celular"
-              type="tel"
-              placeholder="Teléfono"
-              value={celular}
-              onChange={(e) => setCelular(e.target.value)}
-              required
-            />
-          </div>
+                <div>
+                  <label htmlFor="fechaNacimiento">Fecha de Nacimiento</label>
+                  <input
+                    id="fechaNacimiento"
+                    type="date"
+                    value={fechaN}
+                    onChange={(e) => setfechaN(e.target.value)}
+                    required
+                  />
+                </div>
 
-          <div>
-            <label htmlFor="fechaNacimiento">Fecha de Nacimiento</label>
-            <input
-              id="fechaNacimiento"
-              type="date"
-              value={fechaN}
-              onChange={(e) => setfechaN(e.target.value)}
-              required
-            />
-          </div>
+                <div className={`custom-checkbox ${esMiembro ? 'checked' : ''}`}>
+                  <input
+                    id='check'
+                    type="checkbox"
+                    checked={esMiembro}
+                    onChange={(e) => setesMiembro(e.target.checked)}
+                  />
+                  <label htmlFor='check'>¿Eres miembro de la iglesia?</label>
+                </div>
 
-          <div className={`custom-checkbox ${esMiembro ? 'checked' : ''}`}>
-            <input
-              id='check'
-              type="checkbox"
-              checked={esMiembro}
-              onChange={(e) => setesMiembro(e.target.checked)}
-            />
-            <label htmlFor='check'>¿Eres miembro de la iglesia?</label>
-          </div>
-          
-          <p>{esMiembro ? 'Sí, soy miembro de la iglesia.' : 'No, no soy miembro de la iglesia.'}</p>
+                <p className='label-miembro'>{esMiembro ? 'Sí, soy miembro de la iglesia.' : 'No, no soy miembro de la iglesia.'}</p>
+              </div>
+            </div>
+            <button type="submit" className='btn btn-primary w-100 my-3' disabled={loading}>
+              {loading ? 'Registrando...' : 'Registrarse'}
+            </button>
+          </form>
 
-          <button type="submit" className='btn' disabled={loading}>
-            {loading ? 'Registrando...' : 'Registrarse'}
-          </button>
-        </form>
-        
-        {error && <p className="error-message">{error}</p>}
-        {qrcode && (
-          <div>
-            <h3>Escanea este código QR con tu aplicación de autenticación</h3>
-            <img src={qrcode} alt="Código QR de 2FA" />
-          </div>
-        )}
+          {error && <p className="error-message">{error}</p>}
+          {qrcode && (
+            <div>
+              <h3>Escanea este código QR con tu aplicación de autenticación</h3>
+              <img src={qrcode} alt="Código QR de 2FA" />
+            </div>
+          )}
+        </div>
       </div>
     </section>
   );
