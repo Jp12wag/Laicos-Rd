@@ -29,19 +29,16 @@ const Login = () => {
   useEffect(() => {
     const twoFaVerified = Cookies.get('twoFactorVerified');
     const authToken = Cookies.get('authToken');
-
-    // Verifica si el usuario ha sido deslogueado
-    if (!authToken) {
-      setShow2FA(false); // Muestra el formulario de inicio de sesión
-      return; // Salir del efecto si el usuario no tiene token
+    setShow2FA(!twoFaVerified); // Si no se ha verificado 2FA, muestra el formulario de 2FA
+    if (twoFaVerified) {
+     setShow2FA(false)
     }
-    // Verificar si el usuario ya está verificado en 2FA y tiene un token de autenticación
-    if (twoFaVerified === 'true' && authToken) {
-      navigate('/dashboard'); // Redirige si ambos son verdaderos
-    } else {
-      setShow2FA(twoFaVerified !== 'true'); // Muestra el formulario de 2FA si no ha sido verificado
+    
+    if (authToken) {
+      navigate('/dashboard'); // Redirige al dashboard si el 2FA ya fue verificado
     }
   }, [navigate]);
+  
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -52,16 +49,19 @@ const Login = () => {
       });
 
       if (response.data.twoFactorRequired) {
-        setShow2FA(true); // Mostrar formulario 2FA
+        
         setAdminId(response.data.administrador._id); // Almacena el ID del usuario
         setError('Por favor, ingrese el código 2FA enviado a su correo.');
       } else {
         Cookies.set('authToken', response.data.token, { expires: 7 });
         Cookies.set('userRole', response.data.admin.roles, { expires: 7 });
-        Cookies.set('twoFactorVerified', 'false', { expires: 7 });
-
+        Cookies.set('twoFactorVerified', 'true', { expires: 7 });
+       
+        // Limpiar los campos
         setEmail('');
         setPassword('');
+        setToken('');
+        
         navigate('/dashboard');
       }
     } catch (error) {
@@ -108,33 +108,36 @@ const Login = () => {
   };
 
   return (
-    <section className="contenedor-principal">
-      <div className="login-contenedor d-flex justify-content-between shadow-lg rounded-3 overflow-hidden">
-        <div className="imagen-login">
-          <img src={pic} alt="" className="img-fluid" />
-        </div>
+    <section className="login-contenedor d-flex justify-content-between shadow-lg rounded-3 overflow-hidden">
+      <div className="imagen-login">
+        <img src={pic} alt="" className="img-fluid" />
+      </div>
 
         <div className="bg-white p-4">
           <p className="fs-5">Hola!</p>
           <p className="fs-5">{bienvenida()}</p>
 
-          <form className="formulario-login d-flex flex-column px-5 py-4" onSubmit={show2FA ? handle2FAVerification : handleLogin}>
-            <h2 className="text-center fs-5">Login your account</h2>
-            <input className="inputName" type="email" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} required />
-            <input className="inputName" type="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} required />
-            {show2FA && (
-              <input type="text" placeholder="Código 2FA" value={token} onChange={(e) => setToken(e.target.value)} required />
-            )}
-            <p className="forget-password" id="forget-password">
-              <a href="/reset">Forget password?</a>
-            </p>
-            <button type="submit" className="mt-2 mb-3 btn btn-primary mx-4 fs-5">
-              {show2FA ? "Verify 2FA" : "Login"}
-            </button>
-            <a href="/register"><p className="text-center">Create Account</p></a>
-            {error && <p>{error}</p>}
-          </form>
-        </div>
+        <form className="formulario-login d-flex flex-column px-5 py-4" onSubmit={show2FA ? handle2FAVerification : handleLogin}>
+          <h2 className="text-center fs-5">Login your account</h2>
+
+          <input className="inputName" type="email" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} required />
+          <input className="inputName" type="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} required />
+
+          {show2FA && (
+            <input type="text" placeholder="Código 2FA" value={token} onChange={(e) => setToken(e.target.value)} required />
+          )}
+
+          <p className="forget-password" id="forget-password">
+            <a href="/reset">Forget password?</a>
+          </p>
+
+          <button type="submit" className="mt-2 mb-3 btn btn-primary mx-4 fs-5">
+            {show2FA ? "Verify 2FA" : "Login"}
+          </button>
+
+          <a href="/register"><p className="text-center">Create Account</p></a>
+          {error && <p>{error}</p>}
+        </form>
       </div>
     </section>
   );
