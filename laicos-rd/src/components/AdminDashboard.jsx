@@ -1,6 +1,7 @@
 // AdminDashboard.js
 import React from 'react';
 import Cookies from 'js-cookie';
+import Header from './Header';
 
 const AdminDashboard = () => {
 
@@ -8,11 +9,13 @@ const AdminDashboard = () => {
 
   console.log(twoFaVerified);
   return (
+   
     <div>
-      <h1>Dashboard Admin</h1>
-      {/* Contenido del Dashboard Admin */}
-
-     
+      <Header />
+      <main>
+        <h1>Welcome to my website</h1>
+        <p>This is the content of the page.</p>
+      </main>
     </div>
   );
 };

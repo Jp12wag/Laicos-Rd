@@ -33,16 +33,11 @@ const Login = () => {
   useEffect(() => {
     const twoFaVerified = Cookies.get('twoFactorVerified');
     const authToken = Cookies.get('authToken');
-    setShow2FA(!twoFaVerified); // Si no se ha verificado 2FA, muestra el formulario de 2FA
-    if (twoFaVerified) {
-     setShow2FA(false)
-    }
-    
-    if (authToken) {
-      navigate('/dashboard'); // Redirige al dashboard si el 2FA ya fue verificado
+    if (twoFaVerified && authToken) {
+      navigate('/dashboard');
     }
   }, [navigate]);
-  
+
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -52,26 +47,18 @@ const Login = () => {
         password
       });
 
+      // Si se requiere 2FA
       if (response.data.twoFactorRequired) {
-        
-        setAdminId(response.data.administrador._id); // Almacena el ID del usuario
-        console.log(administradorId)
+        setAdminId(response.data.administrador._id); // Asegúrate de que administradorId esté almacenado
         setShow2FA(true);
         setError('Por favor, ingrese el código 2FA enviado a su correo.');
-        return;
       } else {
-        Cookies.set('authToken', response.data.token, { expires: 7 }); // Expira en 1 día
+        // Inicia sesión normalmente
+        Cookies.set('authToken', response.data.token, { expires: 7 });
         Cookies.set('userRole', response.data.admin.roles, { expires: 7 });
         Cookies.set('twoFactorVerified', 'true', { expires: 7 });
-       
-        // Limpiar los campos
-        setEmail('');
-        setPassword('');
-        setToken('');
-        
         navigate('/dashboard');
       }
-
     } catch (error) {
       console.error('Error al iniciar sesión:', error);
       setError(error.response?.data?.message || 'Ocurrió un error al iniciar sesión.');
@@ -82,14 +69,14 @@ const Login = () => {
     e.preventDefault();
     try {
       const response = await axios.post('http://localhost:3001/api/administradores/verify-two-factor', {
-        administradorId,
+        administradorId, // Asegúrate de que este valor no sea null
         token
       });
 
-      Cookies.set('authToken', response.data.token, { expires: 7 }); // Expira en 1 día
+      // Guardar token de autenticación y rol de usuario
+      Cookies.set('authToken', response.data.token, { expires: 7 });
       Cookies.set('userRole', response.data.administrador.roles, { expires: 7 });
       navigate('/dashboard');
-
     } catch (error) {
       console.error('Error al verificar 2FA:', error);
       setError(error.response?.data?.message || 'Ocurrió un error al verificar el código 2FA.');
@@ -112,10 +99,10 @@ const Login = () => {
           <input className="inputName" type="email" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} required />
           <input className="inputName" type="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} required />
 
+          {/* Mostrar campo de 2FA solo si se requiere */}
           {show2FA && (
             <input type="text" placeholder="Código 2FA" value={token} onChange={(e) => setToken(e.target.value)} required />
           )}
-
           <p className="forget-password" id="forget-password">
             <a href="/reset">Forget password?</a>
           </p>

@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import "../css/registro.css";
-import pic from "../img/pic.avif";
 import { useNavigate } from 'react-router-dom';
 
 const Register = () => {
