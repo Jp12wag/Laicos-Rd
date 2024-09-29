@@ -26,19 +26,32 @@ const Login = () => {
   };
 
 
+  const clearCookies = () => {
+    Cookies.remove('authToken');
+    Cookies.remove('userRole');
+    Cookies.remove('twoFactorVerified');
+    Cookies.remove('adminName'); // Limpiar el nombre del administrador si es necesario
+  };
+
   useEffect(() => {
     const twoFaVerified = Cookies.get('twoFactorVerified');
     const authToken = Cookies.get('authToken');
-    setShow2FA(!twoFaVerified); // Si no se ha verificado 2FA, muestra el formulario de 2FA
-    if (twoFaVerified) {
-     setShow2FA(false)
+
+    // Verifica si el usuario ha sido deslogueado
+    if (!authToken) {
+      setShow2FA(false); // Muestra el formulario de inicio de sesión
+      return; // Salir del efecto si el usuario no tiene token
     }
-    
-    if (authToken) {
-      navigate('/dashboard'); // Redirige al dashboard si el 2FA ya fue verificado
+    // Verificar si el usuario ya está verificado en 2FA y tiene un token de autenticación
+    if (twoFaVerified === 'true' && authToken) {
+      navigate('/dashboard'); // Redirige si ambos son verdaderos
+    } else {
+      setShow2FA(twoFaVerified !== 'true'); // Muestra el formulario de 2FA si no ha sido verificado
     }
   }, [navigate]);
-  
+
+
+
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -49,19 +62,21 @@ const Login = () => {
       });
 
       if (response.data.twoFactorRequired) {
-        
+
         setAdminId(response.data.administrador._id); // Almacena el ID del usuario
         setError('Por favor, ingrese el código 2FA enviado a su correo.');
+        setShow2FA(true); // Mostrar formulario 2FA
       } else {
         Cookies.set('authToken', response.data.token, { expires: 7 });
-        Cookies.set('userRole', response.data.admin.roles, { expires: 7 });
-        Cookies.set('twoFactorVerified', 'true', { expires: 7 });
-       
+        Cookies.set('userRole', response.data.administrador.rolUsuario, { expires: 7 });
+        Cookies.set('twoFactorVerified', 'false', { expires: 7 });
+
+
         // Limpiar los campos
         setEmail('');
         setPassword('');
         setToken('');
-        
+
         navigate('/dashboard');
       }
     } catch (error) {
@@ -74,38 +89,29 @@ const Login = () => {
     e.preventDefault();
 
     try {
-      // Realiza la verificación del código 2FA
       const response = await axios.post('http://localhost:3001/api/administradores/verify-two-factor', {
         administradorId,
         token
       });
 
-      // Almacena el token y los roles del administrador en las cookies
       const { token: authToken, administrador } = response.data;
       Cookies.set('authToken', authToken, { expires: 7 });
-      Cookies.set('userRole', administrador.roles, { expires: 7 });
+      Cookies.set('userRole', administrador.rolUsuario, { expires: 7 });
       Cookies.set('twoFactorVerified', 'true', { expires: 7 });
+      console.log("Administrador antes de establecer la cookie:", administrador); // Agrega esto
+      Cookies.set('adminData', JSON.stringify(administrador), { expires: 7 });
 
-      // Obtiene la información del administrador
-      const adminResponse = await axios.get(`http://localhost:3001/api/administradores/${administradorId}`, {
-        headers: {
-          Authorization: `Bearer ${authToken}` // Agregar el token en el encabezado
-        }
-      });
+      // Verificación inmediata
+     
 
-      const adminData = adminResponse.data;
-      // Guardar en cookies
-      Cookies.set('adminData', JSON.stringify(adminData), { expires: 7 });
-
-      // Redirige al usuario al dashboard
-      navigate('/dashboard');
+      navigate('/dashboard'); // Redirigir al dashboard después de la verificación
     } catch (error) {
-      // Manejo de errores con un mensaje más claro
       const errorMessage = error.response?.data?.message || 'Ocurrió un error al verificar el código 2FA.';
       console.error('Error al verificar 2FA:', error);
       setError(errorMessage);
     }
   };
+
 
   return (
     <section className="login-contenedor d-flex justify-content-between shadow-lg rounded-3 overflow-hidden">
@@ -113,9 +119,9 @@ const Login = () => {
         <img src={pic} alt="" className="img-fluid" />
       </div>
 
-        <div className="bg-white p-4">
-          <p className="fs-5">Hola!</p>
-          <p className="fs-5">{bienvenida()}</p>
+      <div className="bg-white p-4">
+        <p className="fs-5">Hola!</p>
+        <p className="fs-5">{bienvenida()}</p>
 
         <form className="formulario-login d-flex flex-column px-5 py-4" onSubmit={show2FA ? handle2FAVerification : handleLogin}>
           <h2 className="text-center fs-5">Login your account</h2>

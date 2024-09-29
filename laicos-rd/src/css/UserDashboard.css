@@ -1,0 +1,11 @@
+/* CSS para el contenedor de UserDashboard */
+.dashboard-content {
+    display: flex;
+    justify-content: center; /* Centra el contenido horizontalmente */
+    align-items: center;     /* Centra el contenido verticalmente */
+    min-height: 100vh;        /* Deja un espacio arriba y abajo, ajusta según sea necesario */
+    padding: 20px;
+    background-color: #7A5BDC; /* Ajusta el fondo si es necesario */
+  }
+  
+  

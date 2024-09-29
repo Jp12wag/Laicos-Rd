@@ -34,40 +34,43 @@ const Header = () => {
         setShowMenu(false);
       }
     };
-
-    // Recuperar el objeto adminData desde las cookies
+   
     const adminData = Cookies.get('adminData');
+  
+    console.log("Datos del admin en cookies:", adminData);
     if (adminData) {
-      // Asegúrate de que adminData es una cadena JSON válida
       try {
-        setUser(JSON.parse(adminData)); // Deserializa solo si es un string
+        const adminDataFromCookies = JSON.parse(Cookies.get('adminData'));
+        setUser(adminDataFromCookies); // Actualiza el estado del usuario
       } catch (error) {
         console.error("Error al parsear adminData:", error);
       }
+    } else {
+      // Manejo cuando no hay datos de usuario disponibles
+      console.log("No se encontró el adminData en las cookies.");
     }
+
     document.addEventListener('mousedown', handleClickOutside);
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
     };
   }, []);
-
   return (
     <header>
       <nav>
-
         <ul>
           <li><FaBell className="nav-icon" title="Notificaciones" /></li>
           <li><FaSearch className="nav-icon" title="Buscar" /></li>
-          <li className="profile-container">
+          <li>
             <FaUser className="profile-pic" onClick={toggleMenu} />
             <FaCaretDown className="arrow-icon" onClick={toggleMenu} />
             {showMenu && (
               <ul className="dropdown-menu">
-                {user.nombre && (
+                {user.nombre && user.apellido ? (
                   <li className="greeting-container">
                     <div className="profile-image">
-                      {user.profileImage ? (
-                        <img src={user.foto} alt="Perfil" />
+                      {user.foto ? (
+                        <img src={user.foto} alt={user.nombre} />
                       ) : (
                         <span>{user.nombre.charAt(0)}{user.apellido.charAt(0)}</span>
                       )}
@@ -77,9 +80,12 @@ const Header = () => {
                       <p>{user.email}</p>
                     </div>
                   </li>
+                ) : (
+                  <li>No se encontraron datos de usuario.</li>
+                  
                 )}
                 <li>
-                  <button onClick={() => window.location.href = "/profile"} className="dropdown-button">
+                  <button onClick={() => navigate("/perfil")} className="dropdown-button">
                     <FaCog /> Mi Perfil
                   </button>
                 </li>
