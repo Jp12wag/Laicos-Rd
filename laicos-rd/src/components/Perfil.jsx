@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import Cookies from 'js-cookie';
 import '../css/Perfil.css'; // Asegúrate de que los estilos estén importados
+import { useNavigate } from 'react-router-dom';
 
 const EditProfile = () => {
     const [admin, setAdmin] = useState({
@@ -9,12 +10,15 @@ const EditProfile = () => {
         apellido: '',
         email: '',
         celular: '',
+        sexo: '',
         nacimiento: '',
         foto: '', // Aquí viene la URL de la imagen
     });
     const [user, setUser] = useState({});
     const [loading, setLoading] = useState(true); // Indicador de carga
     const authToken = Cookies.get('authToken');
+    const navigate = useNavigate();
+
 
     useEffect(() => {
         const fetchAdminData = async () => {
@@ -54,10 +58,11 @@ const EditProfile = () => {
             await axios.patch(`http://localhost:3001/api/administradores/${user._id}`, admin, {
                 headers: {
                     Authorization: `Bearer ${authToken}`
-                   
+
                 },
             });
             alert('Perfil actualizado correctamente');
+            navigate('/dashboard');
         } catch (error) {
             console.error('Error al actualizar el perfil:', error);
             alert('Error al actualizar el perfil');
@@ -102,12 +107,35 @@ const EditProfile = () => {
                     onChange={handleChange}
                     placeholder="Apellido"
                 />
+                <div>
+                    <label>
+                        <input className='entrada'
+                            type="radio"
+                            name="sexo"
+                            value="FEMENINO"
+                            checked={admin.sexo === 'FEMENINO'}
+                            onChange={handleChange}
+                        />
+                        Femenino
+                    </label>
+                    <label>
+                        <input className='entrada'
+                            type="radio"
+                            name="sexo"
+                            value="MASCULINO"
+                            checked={admin.sexo === 'MASCULINO'}
+                            onChange={handleChange}
+                        />
+                        Masculino
+                    </label>
+                </div>
                 <input className='entrada'
                     type="email"
                     name="email"
                     value={admin.email}
                     onChange={handleChange}
                     placeholder="Email"
+                    disabled
                 />
                 <input className='entrada'
                     type="text"

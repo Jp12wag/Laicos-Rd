@@ -12,7 +12,6 @@ import Cookies from 'js-cookie';
 import PrivateRoute from './components/PrivateRoute';
 
 const App = () => {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [userRole, setUserRole] = useState(null);
   const [adminData, setAdminData] = useState(null);
 
@@ -20,14 +19,14 @@ const App = () => {
     const authToken = Cookies.get('authToken');
     const role = Cookies.get('userRole');
     const admin = Cookies.get('adminData');
-    console.log("Admin: "+admin);
+    
 
     // Establecer el estado basado en la existencia de las cookies
     if (authToken) {
-      setIsLoggedIn(true);
+     
       setUserRole(role); // Almacena el rol del usuario
     } else {
-      setIsLoggedIn(false);
+    
     }
 
     // Establecer adminData si existe

@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../css/Header.css';
-import { FaBell, FaSearch, FaCaretDown, FaUser, FaCog } from 'react-icons/fa';
+import { FaBell, FaSearch, FaCaretDown, FaUser, FaCog, FaSignOutAlt } from 'react-icons/fa';
 import Cookies from 'js-cookie';
+import axios from 'axios';
 
 
 const Header = () => {
@@ -21,10 +22,22 @@ const Header = () => {
     setShowMenu((prevState) => !prevState); // Función flecha con prevState
     console.log("Menu state:", !showMenu);
   };
-  //clearCookies(); // Limpiar cookies si no están verificadas
-  const handleLogout = () => {
-    clearCookies(); // Limpia las cookies
-    navigate('/login'); // Redirige al usuario al formulario de inicio de sesión
+  const handleLogout = async () => {
+    try {
+      // Hacer una solicitud al servidor para cerrar sesión
+      await axios.post('http://localhost:3001/api/administradores/logout', {}, {
+        headers: {
+          'Authorization': `Bearer ${Cookies.get('authToken')}` // Agregar el token en los headers
+        }
+      });
+      
+      // Limpiar las cookies
+      clearCookies(); // Limpia las cookies
+      navigate('/login'); // Redirige al usuario al formulario de inicio de sesión
+    } catch (error) {
+      console.error("Error al cerrar sesión:", error);
+      // Puedes agregar un manejo de errores adicional aquí
+    }
   };
 
   // Cerrar el menú si se hace clic fuera
@@ -61,7 +74,7 @@ const Header = () => {
         <ul>
           <li><FaBell className="nav-icon" title="Notificaciones" /></li>
           <li><FaSearch className="nav-icon" title="Buscar" /></li>
-          <li>
+          <li className="profile-container">
             <FaUser className="profile-pic" onClick={toggleMenu} />
             <FaCaretDown className="arrow-icon" onClick={toggleMenu} />
             {showMenu && (
@@ -91,7 +104,8 @@ const Header = () => {
                 </li>
                 <li>
                   <button onClick={handleLogout} className="dropdown-button">
-                    Cerrar sesión
+                  <FaSignOutAlt/>
+                     Cerrar sesión
                   </button>
                 </li>
               </ul>

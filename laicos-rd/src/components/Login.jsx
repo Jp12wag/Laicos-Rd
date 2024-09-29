@@ -12,6 +12,7 @@ const Login = () => {
   const [error, setError] = useState('');
   const [show2FA, setShow2FA] = useState(false);
   const [administradorId, setAdminId] = useState(null);
+  const [isMember, setIsMember] = useState(false);
   const navigate = useNavigate();
 
   const bienvenida = () => {
@@ -26,12 +27,7 @@ const Login = () => {
   };
 
 
-  const clearCookies = () => {
-    Cookies.remove('authToken');
-    Cookies.remove('userRole');
-    Cookies.remove('twoFactorVerified');
-    Cookies.remove('adminName'); // Limpiar el nombre del administrador si es necesario
-  };
+  
 
   useEffect(() => {
     const twoFaVerified = Cookies.get('twoFactorVerified');
@@ -61,6 +57,8 @@ const Login = () => {
         password
       });
 
+
+      
       if (response.data.twoFactorRequired) {
 
         setAdminId(response.data.administrador._id); // Almacena el ID del usuario
