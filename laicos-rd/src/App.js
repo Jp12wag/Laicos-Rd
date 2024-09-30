@@ -10,30 +10,30 @@ import ResetPassword from './components/ResetPassword';
 import Perfil from './components/Perfil';
 import Cookies from 'js-cookie';
 import PrivateRoute from './components/PrivateRoute';
+import MemberData from './components/MemberData';
 
 const App = () => {
   const [userRole, setUserRole] = useState(null);
   const [adminData, setAdminData] = useState(null);
+  const [isMember, setIsMember] = useState(false);
 
   useEffect(() => {
     const authToken = Cookies.get('authToken');
     const role = Cookies.get('userRole');
     const admin = Cookies.get('adminData');
-    
-
+    const memberStatus = Cookies.get('isMember') === 'true';
+  
     // Establecer el estado basado en la existencia de las cookies
     if (authToken) {
-     
       setUserRole(role); // Almacena el rol del usuario
-    } else {
-    
+      setIsMember(memberStatus); // Establecer isMember
     }
-
+   
     // Establecer adminData si existe
     if (admin) {
       setAdminData(JSON.parse(admin)); // Convertir de JSON a objeto
     }
-  }, []); // Solo se ejecuta al montar el componente
+  }, [isMember]); // Solo se ejecuta al montar el componente
 
   return (
     <Router>
@@ -42,6 +42,13 @@ const App = () => {
         <Route path="/Register" element={<Register />} />
         <Route path="/Reset" element={<RequestResetPassword />} />
         <Route path="/Reset-password/:token" element={<ResetPassword />} />
+
+        {/* Ruta para los datos adicionales del miembro */}
+        <Route path="/member-data" element={
+          <PrivateRoute>
+            {isMember ? <MemberData /> : <Navigate to="/Login" />} {/* Redirigir si no es miembro */}
+          </PrivateRoute>
+        } />
 
         {/* Rutas protegidas */}
         <Route path="/Dashboard" element={
@@ -55,7 +62,7 @@ const App = () => {
             {adminData ? <Perfil /> : <Navigate to="/Login" />} {/* Redirigir si adminData no existe */}
           </PrivateRoute>
         } />
-        
+
         {/* Redirección predeterminada */}
         <Route path="*" element={<Navigate to="/Login" />} />
       </Routes>

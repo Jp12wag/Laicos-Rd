@@ -52,7 +52,7 @@ const EditProfile = () => {
     };
 
     const handleSubmit = async (e) => {
-        console.log(admin);
+    
         e.preventDefault();
         try {
             await axios.patch(`http://localhost:3001/api/administradores/${user._id}`, admin, {
