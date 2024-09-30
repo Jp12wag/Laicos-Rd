@@ -12,6 +12,7 @@ const Login = () => {
   const [error, setError] = useState('');
   const [show2FA, setShow2FA] = useState(false);
   const [administradorId, setAdminId] = useState(null);
+  const [isMember, setIsMember] = useState(false);
   const navigate = useNavigate();
 
   const bienvenida = () => {
@@ -26,19 +27,27 @@ const Login = () => {
   };
 
 
+
+
   useEffect(() => {
     const twoFaVerified = Cookies.get('twoFactorVerified');
     const authToken = Cookies.get('authToken');
-    setShow2FA(!twoFaVerified); // Si no se ha verificado 2FA, muestra el formulario de 2FA
-    if (twoFaVerified) {
-     setShow2FA(false)
+
+    // Verifica si el usuario ha sido deslogueado
+    if (!authToken) {
+      setShow2FA(false); // Muestra el formulario de inicio de sesión
+      return; // Salir del efecto si el usuario no tiene token
     }
-    
-    if (authToken) {
-      navigate('/dashboard'); // Redirige al dashboard si el 2FA ya fue verificado
+    // Verificar si el usuario ya está verificado en 2FA y tiene un token de autenticación
+    if (twoFaVerified === 'true' && authToken) {
+      navigate('/dashboard'); // Redirige si ambos son verdaderos
+    } else {
+      setShow2FA(twoFaVerified !== 'true'); // Muestra el formulario de 2FA si no ha sido verificado
     }
   }, [navigate]);
-  
+
+
+
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -48,20 +57,27 @@ const Login = () => {
         password
       });
 
+      // Guardar el correo y la contraseña en cookies
+      Cookies.set('email', email, { expires: 7 }); // Almacena el correo
+      Cookies.set('password', password, { expires: 1 }); // Almacena la contraseña (no recomendado)
+
+
       if (response.data.twoFactorRequired) {
-        
+        setIsMember(response.data.administrador.esMiembro === true); // Verifica si el usuario es miembro
         setAdminId(response.data.administrador._id); // Almacena el ID del usuario
         setError('Por favor, ingrese el código 2FA enviado a su correo.');
+        setShow2FA(true); // Mostrar formulario 2FA
       } else {
         Cookies.set('authToken', response.data.token, { expires: 7 });
-        Cookies.set('userRole', response.data.admin.roles, { expires: 7 });
-        Cookies.set('twoFactorVerified', 'true', { expires: 7 });
-       
+        Cookies.set('userRole', response.data.administrador.rolUsuario, { expires: 7 });
+        Cookies.set('twoFactorVerified', 'false', { expires: 7 });
+        Cookies.set('isMember', isMember, { expires: 7 }); // Guarda el estado de isMember
+
         // Limpiar los campos
         setEmail('');
         setPassword('');
         setToken('');
-        
+
         navigate('/dashboard');
       }
     } catch (error) {
@@ -74,48 +90,55 @@ const Login = () => {
     e.preventDefault();
 
     try {
-      // Realiza la verificación del código 2FA
       const response = await axios.post('http://localhost:3001/api/administradores/verify-two-factor', {
         administradorId,
         token
       });
 
-      // Almacena el token y los roles del administrador en las cookies
       const { token: authToken, administrador } = response.data;
+      setIsMember(response.data.administrador.esMiembro === true); // Verifica si el usuario es miembro
       Cookies.set('authToken', authToken, { expires: 7 });
-      Cookies.set('userRole', administrador.roles, { expires: 7 });
+      Cookies.set('userRole', administrador.rolUsuario, { expires: 7 });
       Cookies.set('twoFactorVerified', 'true', { expires: 7 });
-
-      // Obtiene la información del administrador
-      const adminResponse = await axios.get(`http://localhost:3001/api/administradores/${administradorId}`, {
-        headers: {
-          Authorization: `Bearer ${authToken}` // Agregar el token en el encabezado
-        }
-      });
-
-      const adminData = adminResponse.data;
-      // Guardar en cookies
-      Cookies.set('adminData', JSON.stringify(adminData), { expires: 7 });
-
-      // Redirige al usuario al dashboard
-      navigate('/dashboard');
+      Cookies.set('adminData', JSON.stringify(administrador), { expires: 7 });
+      Cookies.set('isMember', isMember, { expires: 7 }); // Guarda el estado de isMember
+      // Verificar si es miembro y navegar a la ruta correspondiente
+    await conexionMiembros(); 
+     
     } catch (error) {
-      // Manejo de errores con un mensaje más claro
       const errorMessage = error.response?.data?.message || 'Ocurrió un error al verificar el código 2FA.';
       console.error('Error al verificar 2FA:', error);
       setError(errorMessage);
     }
   };
 
+const conexionMiembros=async ()=>{
+ 
+ // Llamar al endpoint para obtener información del miembro
+ const email = Cookies.get('email'); // Obtén el correo de las cookies
+ 
+ const miembroResponse = await axios.get('http://localhost:3001/api/miembros/email/', {
+   email
+ });
+ console.log(miembroResponse);
+ if (isMember) {
+ if (miembroResponse.status === 200) {
+   // Si se encuentra al miembro, redirigir según su estado
+     navigate('/dashboard'); // Redirigir al dashboard si es miembro
+   } else {
+     navigate('/member-data'); // Redirigir a la página para ingresar datos adicionales 
+   }
+ }
+}
   return (
     <section className="login-contenedor d-flex justify-content-between shadow-lg rounded-3 overflow-hidden">
       <div className="imagen-login">
         <img src={pic} alt="" className="img-fluid" />
       </div>
 
-        <div className="bg-white p-4">
-          <p className="fs-5">Hola!</p>
-          <p className="fs-5">{bienvenida()}</p>
+      <div className="bg-white p-4">
+        <p className="fs-5">Hola!</p>
+        <p className="fs-5">{bienvenida()}</p>
 
         <form className="formulario-login d-flex flex-column px-5 py-4" onSubmit={show2FA ? handle2FAVerification : handleLogin}>
           <h2 className="text-center fs-5">Login your account</h2>
