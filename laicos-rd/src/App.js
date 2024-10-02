@@ -14,25 +14,20 @@ import MemberData from './components/MemberData';
 
 const App = () => {
   const [userRole, setUserRole] = useState(null);
-  const [adminData, setAdminData] = useState(null);
   const [isMember, setIsMember] = useState(false);
 
   useEffect(() => {
     const authToken = Cookies.get('authToken');
     const role = Cookies.get('userRole');
-    const admin = Cookies.get('adminData');
+
     const memberStatus = Cookies.get('isMember') === 'true';
-  
+
     // Establecer el estado basado en la existencia de las cookies
     if (authToken) {
       setUserRole(role); // Almacena el rol del usuario
       setIsMember(memberStatus); // Establecer isMember
     }
-   
-    // Establecer adminData si existe
-    if (admin) {
-      setAdminData(JSON.parse(admin)); // Convertir de JSON a objeto
-    }
+
   }, [isMember]); // Solo se ejecuta al montar el componente
 
   return (
@@ -53,13 +48,13 @@ const App = () => {
         {/* Rutas protegidas */}
         <Route path="/Dashboard" element={
           <PrivateRoute>
-            {userRole === 'Administrador' && adminData ? <AdminDashboard /> : <UserDashboard />}
+            {userRole === 'Administrador' ? <AdminDashboard /> : <UserDashboard />}
           </PrivateRoute>
         } />
 
         <Route path="/Perfil" element={
           <PrivateRoute>
-            {adminData ? <Perfil /> : <Navigate to="/Login" />} {/* Redirigir si adminData no existe */}
+            {userRole ? <Perfil /> : <Navigate to="/Login" />} {/* Redirigir si adminData no existe */}
           </PrivateRoute>
         } />
 

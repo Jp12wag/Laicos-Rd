@@ -5,69 +5,74 @@ import { FaBell, FaSearch, FaCaretDown, FaUser, FaCog, FaSignOutAlt } from 'reac
 import Cookies from 'js-cookie';
 import axios from 'axios';
 
-
 const Header = () => {
   const [showMenu, setShowMenu] = useState(false);
   const [user, setUser] = useState({});
   const navigate = useNavigate();
+  const userId = Cookies.get('IdUser');
+
   const clearCookies = () => {
     Cookies.remove('authToken');
     Cookies.remove('userRole');
     Cookies.remove('twoFactorVerified');
-    Cookies.remove('adminData'); // Limpiar el nombre del administrador si es necesario
+    Cookies.remove('IdUser');
   };
-
 
   const toggleMenu = () => {
-    setShowMenu((prevState) => !prevState); // Función flecha con prevState
-    console.log("Menu state:", !showMenu);
+    setShowMenu((prevState) => !prevState);
   };
+
   const handleLogout = async () => {
     try {
-      // Hacer una solicitud al servidor para cerrar sesión
       await axios.post('http://localhost:3001/api/administradores/logout', {}, {
         headers: {
-          'Authorization': `Bearer ${Cookies.get('authToken')}` // Agregar el token en los headers
+          'Authorization': `Bearer ${Cookies.get('authToken')}`
         }
       });
-      
-      // Limpiar las cookies
-      clearCookies(); // Limpia las cookies
-      navigate('/login'); // Redirige al usuario al formulario de inicio de sesión
+
+      clearCookies();
+      navigate('/login');
     } catch (error) {
       console.error("Error al cerrar sesión:", error);
-      // Puedes agregar un manejo de errores adicional aquí
     }
   };
 
-  // Cerrar el menú si se hace clic fuera
+  const obtenerUsuario = async () => {
+    if (!userId) return; // Asegúrate de que userId esté definido
+
+    try {
+      const authToken = Cookies.get('authToken');
+      const response = await axios.get(`http://localhost:3001/api/administradores/${userId}`, {
+        headers: {
+          Authorization: `Bearer ${authToken}`,
+        },
+      });
+
+      if (response.data) {
+        setUser(response.data);
+      } else {
+        console.log("No se encontraron datos de usuario.");
+      }
+    } catch (error) {
+      console.error("Error al obtener los datos del usuario:", error);
+    }
+  };
+
   useEffect(() => {
+    obtenerUsuario(); // Llamar a la función al montar el componente
+
     const handleClickOutside = (event) => {
       if (!event.target.closest('.profile-container')) {
         setShowMenu(false);
       }
     };
-   
-    const adminData = Cookies.get('adminData');
-  
-    console.log("Datos del admin en cookies:", adminData);
-    if (adminData) {
-      try {
-        const adminDataFromCookies = JSON.parse(Cookies.get('adminData'));
-        setUser(adminDataFromCookies); // Actualiza el estado del usuario
-      } catch (error) {
-        console.error("Error al parsear adminData:", error);
-      }
-    } else {
-      // Manejo cuando no hay datos de usuario disponibles
-      console.log("No se encontró el adminData en las cookies.");
-    }
 
     document.addEventListener('mousedown', handleClickOutside);
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
     };
-  }, []);
+  }, [userId]); // Solo depende de userId
+
   return (
     <header>
       <nav>
@@ -95,7 +100,6 @@ const Header = () => {
                   </li>
                 ) : (
                   <li>No se encontraron datos de usuario.</li>
-                  
                 )}
                 <li>
                   <button onClick={() => navigate("/perfil")} className="dropdown-button">
@@ -104,16 +108,13 @@ const Header = () => {
                 </li>
                 <li>
                   <button onClick={handleLogout} className="dropdown-button">
-                  <FaSignOutAlt/>
-                     Cerrar sesión
+                    <FaSignOutAlt /> Cerrar sesión
                   </button>
                 </li>
               </ul>
             )}
           </li>
         </ul>
-        {/* Mensaje de saludo y círculo de imagen de perfil */}
-
       </nav>
     </header>
   );
