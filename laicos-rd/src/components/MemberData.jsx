@@ -17,14 +17,11 @@ const MemberData = () => {
   const handleDataSubmit = async (e) => {
     e.preventDefault();
     try {
-      const email = Cookies.get('email');   // Obtener el correo de las cookies
-      const password = Cookies.get('password'); // Obtener la contraseña de las cookies
-      
+      const userId = Cookies.get('IdUser');
       // Aquí envías los datos adicionales al servidor
       const response = await axios.post('http://localhost:3001/api/miembros/', {
         ...additionalData, // Usar el spread operator para incluir los datos
-        email,             // Incluir el correo
-        password           // Incluir la contraseña
+        userId
       });
       
 

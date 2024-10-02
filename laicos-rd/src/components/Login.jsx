@@ -72,6 +72,7 @@ const Login = () => {
         Cookies.set('userRole', response.data.administrador.rolUsuario, { expires: 7 });
         Cookies.set('twoFactorVerified', 'false', { expires: 7 });
         Cookies.set('isMember', isMember, { expires: 7 }); // Guarda el estado de isMember
+        Cookies.set('IdUser', response.data.administrador._id, { expires: 7 });
 
         // Limpiar los campos
         setEmail('');
@@ -100,11 +101,11 @@ const Login = () => {
       Cookies.set('authToken', authToken, { expires: 7 });
       Cookies.set('userRole', administrador.rolUsuario, { expires: 7 });
       Cookies.set('twoFactorVerified', 'true', { expires: 7 });
-      Cookies.set('adminData', JSON.stringify(administrador), { expires: 7 });
+      Cookies.set('IdUser', response.data.administrador._id, { expires: 7 });
       Cookies.set('isMember', isMember, { expires: 7 }); // Guarda el estado de isMember
       // Verificar si es miembro y navegar a la ruta correspondiente
-    await conexionMiembros(); 
-     
+      //await conexionMiembros(); 
+      navigate('/dashboard'); // Redirigir al dashboard si es miembro
     } catch (error) {
       const errorMessage = error.response?.data?.message || 'Ocurrió un error al verificar el código 2FA.';
       console.error('Error al verificar 2FA:', error);
@@ -112,24 +113,7 @@ const Login = () => {
     }
   };
 
-const conexionMiembros=async ()=>{
- 
- // Llamar al endpoint para obtener información del miembro
- const email = Cookies.get('email'); // Obtén el correo de las cookies
- 
- const miembroResponse = await axios.get('http://localhost:3001/api/miembros/email/', {
-   email
- });
- console.log(miembroResponse);
- if (isMember) {
- if (miembroResponse.status === 200) {
-   // Si se encuentra al miembro, redirigir según su estado
-     navigate('/dashboard'); // Redirigir al dashboard si es miembro
-   } else {
-     navigate('/member-data'); // Redirigir a la página para ingresar datos adicionales 
-   }
- }
-}
+  
   return (
     <section className="login-contenedor d-flex justify-content-between shadow-lg rounded-3 overflow-hidden">
       <div className="imagen-login">

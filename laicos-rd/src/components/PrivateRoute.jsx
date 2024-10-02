@@ -5,7 +5,7 @@ import Cookies from 'js-cookie';
 const PrivateRoute = ({ children }) => {
   const authToken = Cookies.get('authToken'); // Verifica si hay un token de autenticación en las cookies
   const twoFactorVerified = Cookies.get('twoFactorVerified');
-  const adminData = Cookies.get('adminData');
+
 
   // Si no hay token o 2FA no está verificado, redirige al login
   if (!authToken || twoFactorVerified !== 'true')  {
