@@ -2,7 +2,6 @@
 import React from 'react';
 import Cookies from 'js-cookie';
 import Header from './Header';
-import Chat from './chat.tsx'
 
 const AdminDashboard = () => {
 
