@@ -23,6 +23,7 @@ const Header = () => {
   };
 
   const handleLogout = async () => {
+ 
     try {
       await axios.post('http://localhost:3001/api/administradores/logout', {}, {
         headers: {

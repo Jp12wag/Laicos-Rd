@@ -12,7 +12,6 @@ const AdminDashboard = () => {
     <div>
       <Header />
       <main>
-
         <h1>Hola soy un admin</h1>
       </main>
     </div>
