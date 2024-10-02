@@ -2,19 +2,19 @@
 import React from 'react';
 import Cookies from 'js-cookie';
 import Header from './Header';
+import Chat from './chat.tsx'
 
 const AdminDashboard = () => {
 
   const twoFaVerified = Cookies.get('twoFactorVerified');
 
-  console.log(twoFaVerified);
   return (
-   
+
     <div>
       <Header />
       <main>
-        <h1>Welcome to my website</h1>
-        <p>This is the content of the page.</p>
+
+        <h1>Hola soy un admin</h1>
       </main>
     </div>
   );

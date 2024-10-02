@@ -19,15 +19,15 @@ const App = () => {
   useEffect(() => {
     const authToken = Cookies.get('authToken');
     const role = Cookies.get('userRole');
-   
+
     const memberStatus = Cookies.get('isMember') === 'true';
-  
+
     // Establecer el estado basado en la existencia de las cookies
     if (authToken) {
       setUserRole(role); // Almacena el rol del usuario
       setIsMember(memberStatus); // Establecer isMember
     }
-   
+
   }, [isMember]); // Solo se ejecuta al montar el componente
 
   return (
