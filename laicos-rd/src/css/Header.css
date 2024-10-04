@@ -87,6 +87,8 @@ li {
   width: 100%;
   text-align: left;
   transition: 0.2s;
+ 
+  color: black;
 }
 
 .dropdown-button:hover {
@@ -96,6 +98,7 @@ li {
 .caret-icon {
   cursor: pointer;
   margin-left: 5px;
+
 }
 
 /* Saludo y contenedor de la imagen */
@@ -126,4 +129,7 @@ li {
 .greeting {
   display: flex;
   flex-direction: column;
+}
+@media screen {
+  
 }

@@ -1,19 +1,25 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Navigate } from 'react-router-dom';
 import Cookies from 'js-cookie';
 
 const PrivateRoute = ({ children }) => {
-  const authToken = Cookies.get('authToken'); // Verifica si hay un token de autenticación en las cookies
-  const twoFactorVerified = Cookies.get('twoFactorVerified');
+  const [loading, setLoading] = useState(true);
+  const authToken = Cookies.get('authToken');
 
+  useEffect(() => {
+    // Simulando la verificación de autenticación
+    const timer = setTimeout(() => {
+      setLoading(false);
+    }, 1000); // Simula una carga de 1 segundo
 
-  // Si no hay token o 2FA no está verificado, redirige al login
-  if (!authToken || twoFactorVerified !== 'true')  {
-    return <Navigate to="/login" />;
+    return () => clearTimeout(timer);
+  }, []);
+
+  if (loading) {
+    return <div>Loading...</div>; // Mostrar un mensaje de carga mientras verificas
   }
 
-  // Si está autenticado, renderiza los componentes hijos (rutas protegidas)
-  return children;
+  return authToken ? children : <Navigate to="/Login" />;
 };
 
 export default PrivateRoute;

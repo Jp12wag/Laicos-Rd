@@ -12,7 +12,7 @@ const Login = () => {
   const [error, setError] = useState('');
   const [show2FA, setShow2FA] = useState(false);
   const [administradorId, setAdminId] = useState(null);
-  const [isMember, setIsMember] = useState(false);
+ 
   const navigate = useNavigate();
 
   const bienvenida = () => {
@@ -57,22 +57,17 @@ const Login = () => {
         password
       });
 
-      // Guardar el correo y la contraseña en cookies
-      Cookies.set('email', email, { expires: 7 }); // Almacena el correo
-      Cookies.set('password', password, { expires: 1 }); // Almacena la contraseña (no recomendado)
-
-
+     
       if (response.data.twoFactorRequired) {
-        setIsMember(response.data.administrador.esMiembro === true); // Verifica si el usuario es miembro
+     
         setAdminId(response.data.administrador._id); // Almacena el ID del usuario
         setError('Por favor, ingrese el código 2FA enviado a su correo.');
         setShow2FA(true); // Mostrar formulario 2FA
       } else {
-        Cookies.set('authToken', response.data.token, { expires: 7 });
+        Cookies.set('authToken', response.data.token, { expires: 7 ,secure: true, sameSite: 'Strict' });
         Cookies.set('userRole', response.data.administrador.rolUsuario, { expires: 7 });
-        Cookies.set('twoFactorVerified', 'false', { expires: 7 });
-        Cookies.set('isMember', isMember, { expires: 7 }); // Guarda el estado de isMember
-        Cookies.set('IdUser', response.data.administrador._id, { expires: 7 });
+        Cookies.set('twoFactorVerified', 'false', { expires: 7 ,secure: true, sameSite: 'Strict'});
+        Cookies.set('IdUser', response.data.administrador._id, { expires: 7, secure: true, sameSite: 'Strict' });
 
         // Limpiar los campos
         setEmail('');
@@ -97,12 +92,11 @@ const Login = () => {
       });
 
       const { token: authToken, administrador } = response.data;
-      setIsMember(response.data.administrador.esMiembro === true); // Verifica si el usuario es miembro
-      Cookies.set('authToken', authToken, { expires: 7 });
-      Cookies.set('userRole', administrador.rolUsuario, { expires: 7 });
-      Cookies.set('twoFactorVerified', 'true', { expires: 7 });
-      Cookies.set('IdUser', response.data.administrador._id, { expires: 7 });
-      Cookies.set('isMember', isMember, { expires: 7 }); // Guarda el estado de isMember
+      Cookies.set('authToken', authToken, { expires: 7 ,secure: true, sameSite: 'Strict'  });
+      Cookies.set('userRole', administrador.rolUsuario, { expires: 7,secure: true, sameSite: 'Strict'  });
+      Cookies.set('twoFactorVerified', 'true', { expires: 7 ,secure: true, sameSite: 'Strict'  });
+      Cookies.set('IdUser', response.data.administrador._id, { expires: 7 ,secure: true, sameSite: 'Strict' });
+     
       // Verificar si es miembro y navegar a la ruta correspondiente
       //await conexionMiembros(); 
       navigate('/dashboard'); // Redirigir al dashboard si es miembro

@@ -13,7 +13,6 @@ const ResetPassword = () => {
   useEffect(() => {
     const tokenFromUrl = window.location.pathname.split('/').pop();
     setToken(tokenFromUrl);
-   
   }, [navigate]);
 
   const handleSubmit = async (e) => {
@@ -37,27 +36,29 @@ const ResetPassword = () => {
   };
 
   return (
-    <div>
-      <h2>Restablecer Contraseña</h2>
-      <form onSubmit={handleSubmit}>
-        <input
-          type="password"
-          placeholder="Nueva Contraseña"
-          value={newPassword}
-          onChange={(e) => setNewPassword(e.target.value)}
-          required
-        />
-        <input
-          type="password"
-          placeholder="Confirmar Contraseña"
-          value={confirmPassword}
-          onChange={(e) => setConfirmPassword(e.target.value)}
-          required
-        />
-        <button type="submit">Restablecer Contraseña</button>
-        {error && <p style={{ color: 'red' }}>{error}</p>}
-        {success && <p style={{ color: 'green' }}>{success}</p>}
-      </form>
+    <div className='container'>
+      <div className='card'>
+        <h2 className='title'>Restablecer Contraseña</h2>
+        <form onSubmit={handleSubmit}>
+          <input
+            type="password"
+            placeholder="Nueva Contraseña"
+            value={newPassword}
+            onChange={(e) => setNewPassword(e.target.value)}
+            required
+          />
+          <input
+            type="password"
+            placeholder="Confirmar Contraseña"
+            value={confirmPassword}
+            onChange={(e) => setConfirmPassword(e.target.value)}
+            required
+          />
+          <button type="submit">Restablecer Contraseña</button>
+          {error && <p className='error'>{error}</p>}
+          {success && <p className='success'>{success}</p>}
+        </form>
+      </div>
     </div>
   );
 };

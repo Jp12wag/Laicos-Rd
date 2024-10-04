@@ -60,8 +60,12 @@ const Header = () => {
   };
 
   useEffect(() => {
-    obtenerUsuario(); // Llamar a la función al montar el componente
-
+    obtenerUsuario();
+    const authToken = Cookies.get('authToken');
+    if (!authToken) {
+    
+      navigate('/login');
+    }
     const handleClickOutside = (event) => {
       if (!event.target.closest('.profile-container')) {
         setShowMenu(false);

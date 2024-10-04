@@ -1,24 +1,14 @@
+body{
+  margin: 0;
+  padding: 0;
+}
 .user-dashboard {
+  padding: 0%;
   padding: 20px;
   display: flex;
+  width: 100%;
+  min-height: 700px;
   flex-direction: column;
+
 }
 
-.share-thought {
-  margin-bottom: 20px;
-}
-
-.thoughts-feed {
-  margin-top: 20px;
-}
-
-.thought-item {
-  padding: 10px;
-  border: 1px solid #ddd;
-  margin-bottom: 10px;
-  border-radius: 5px;
-}
-
-.chat, .notifications {
-  margin-top: 20px;
-}
