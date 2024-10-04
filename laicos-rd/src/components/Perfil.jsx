@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import Cookies from 'js-cookie';
-import '../css/Perfil.css'; 
+import '../css/Perfil.css';
 import { useNavigate } from 'react-router-dom';
 
 const EditProfile = () => {
@@ -12,7 +12,7 @@ const EditProfile = () => {
         celular: '',
         sexo: '',
         nacimiento: '',
-        foto: '', 
+        foto: '',
     });
     const [miembro, setMiembro] = useState({
         direccion: '',
@@ -20,7 +20,7 @@ const EditProfile = () => {
         cargo: '',
         nacionalidad: ''
     });
-    const [loading, setLoading] = useState(true); 
+    const [loading, setLoading] = useState(true);
     const authToken = Cookies.get('authToken');
     const navigate = useNavigate();
 
@@ -52,11 +52,11 @@ const EditProfile = () => {
             } else {
                 console.error('No se encontró el ID de usuario en las cookies.');
             }
-            setLoading(false); 
+            setLoading(false);
         };
 
         fetchProfileData();
-    }, [authToken]);
+    }, [Cookies.get('IdUser')]);
 
     // Manejadores de cambio para admin y miembro
     const handleAdminChange = (e) => {
@@ -77,7 +77,7 @@ const EditProfile = () => {
                     Authorization: `Bearer ${authToken}`
                 },
             });
-console.log(miembro._id);
+            console.log(miembro._id);
             // Actualizar los datos del miembro
             await axios.patch(`http://localhost:3001/api/miembros/${miembro._id || admin._id}`, miembro, {
                 headers: {
@@ -107,7 +107,7 @@ console.log(miembro._id);
     };
 
     if (loading) {
-        return <div>Cargando...</div>; 
+        return <div>Cargando...</div>;
     }
 
     return (
@@ -115,7 +115,7 @@ console.log(miembro._id);
             <form className='contendor' onSubmit={handleSubmit}>
                 {renderProfileImage()}
                 <h1>Perfil de Usuario</h1>
-                
+
                 {/* Campos del Administrador */}
                 <input className='entrada'
                     type="text"
@@ -181,7 +181,7 @@ console.log(miembro._id);
                     onChange={handleAdminChange}
                     placeholder="URL de la foto"
                 />
-                
+
                 {/* Campos del Miembro */}
                 <h2>Información de Miembro</h2>
                 <input className='entrada'

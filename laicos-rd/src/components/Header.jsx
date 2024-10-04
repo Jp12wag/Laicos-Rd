@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Navigate, useNavigate } from 'react-router-dom';
 import '../css/Header.css';
 import { FaBell, FaSearch, FaCaretDown, FaUser, FaCog, FaSignOutAlt } from 'react-icons/fa';
 import Cookies from 'js-cookie';
@@ -10,6 +10,8 @@ const Header = () => {
   const [user, setUser] = useState({});
   const navigate = useNavigate();
   const userId = Cookies.get('IdUser');
+  const authToken = Cookies.get('authToken');
+  const userRole = Cookies.get('userRole');
 
   const clearCookies = () => {
     Cookies.remove('authToken');
@@ -23,7 +25,7 @@ const Header = () => {
   };
 
   const handleLogout = async () => {
- 
+
     try {
       await axios.post('http://localhost:3001/api/administradores/logout', {}, {
         headers: {
@@ -37,12 +39,18 @@ const Header = () => {
       console.error("Error al cerrar sesión:", error);
     }
   };
-
+ 
   const obtenerUsuario = async () => {
+    if (!authToken) {
+      console.log("Token no encontrado. Redirigiendo al login...");
+      navigate('/login');
+      return; 
+    }
+
     if (!userId) return; // Asegúrate de que userId esté definido
 
     try {
-      const authToken = Cookies.get('authToken');
+
       const response = await axios.get(`http://localhost:3001/api/administradores/${userId}`, {
         headers: {
           Authorization: `Bearer ${authToken}`,
@@ -60,23 +68,34 @@ const Header = () => {
   };
 
   useEffect(() => {
-    obtenerUsuario();
-    const authToken = Cookies.get('authToken');
-    if (!authToken) {
-    
-      navigate('/login');
+    console.log(userId);
+    console.log(authToken);
+    console.log(userRole);
+
+    if (!authToken || !userRole) {
+      navigate('/login'); // Redirige al login si no hay token o rol
+    } else {
+      obtenerUsuario();
     }
     const handleClickOutside = (event) => {
       if (!event.target.closest('.profile-container')) {
         setShowMenu(false);
       }
     };
+    const checkAuthToken = setInterval(() => {
+      const token = Cookies.get('authToken');
+      if (!token) {
+        navigate('/login');
+      }
+    }, 60000); // Verifica cada 60 segundosz
 
+    return () => clearInterval(checkAuthToken);
+   
     document.addEventListener('mousedown', handleClickOutside);
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
     };
-  }, [userId]); // Solo depende de userId
+  }, [navigate]); // Solo depende de userId
 
   return (
     <header>

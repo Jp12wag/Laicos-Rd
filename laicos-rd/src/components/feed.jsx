@@ -10,6 +10,7 @@ const Feed = () => {
   const [newComment, setNewComment] = useState('');
   const [editingPostId, setEditingPostId] = useState(null);
   const [editingContent, setEditingContent] = useState('');
+  const [likedPosts, setLikedPosts] = useState([]);
 
   // Función para obtener las publicaciones del feed
   const obtenerPosts = async () => {
@@ -48,7 +49,12 @@ const Feed = () => {
           Authorization: `Bearer ${authToken}`,
         },
       });
-      obtenerPosts(); // Actualizar el feed después de dar like
+       // Cambiar el estado de like del post
+       if (likedPosts.includes(postId)) {
+        setLikedPosts(likedPosts.filter((id) => id !== postId));
+      } else {
+        setLikedPosts([...likedPosts, postId]);
+      }
     } catch (error) {
       console.error('Error al dar like a la publicación:', error);
     }
@@ -86,9 +92,10 @@ const Feed = () => {
       // Actualiza el estado para incluir el nuevo comentario
       const updatedPosts = posts.map(post => {
         if (post._id === postId) {
+           
           return {
             ...post,
-            comments: [...post.comments, { comment: newComment, AdminId: { nombre: 'Tu Nombre', apellido: 'Tu Apellido' } }], // Asegúrate de reemplazar esto con los datos del usuario correcto
+            comments: [...post.comments, { comment: newComment, AdminId: { nombre: post.AdminId.nombre, apellido: post.AdminId.apellido } }], // Asegúrate de reemplazar esto con los datos del usuario correcto
           };
         }
         return post;
@@ -130,14 +137,14 @@ const Feed = () => {
   return (
     <div className="feed">
       <h2>Feed de Publicaciones</h2>
-      
+
       <div className="new-post">
-        <textarea 
+        <textarea
           value={newPostContent}
           onChange={(e) => setNewPostContent(e.target.value)}
           placeholder="¿Qué estás pensando?"
         />
-        <input 
+        <input
           type="text"
           value={newPostMedia}
           onChange={(e) => setNewPostMedia(e.target.value)}
@@ -149,7 +156,9 @@ const Feed = () => {
       <div className="posts">
         {posts.map((post) => (
           <div key={post._id} className="post">
-            <h3>{post.AdminId.nombre} {post.AdminId.apellido}</h3>
+            <h3>
+              {post.AdminId.nombre} {post.AdminId.apellido}
+            </h3>
             {editingPostId === post._id ? (
               <>
                 <textarea
@@ -164,8 +173,15 @@ const Feed = () => {
                 {post.media && <img src={post.media} alt="Post media" />}
                 <div className="post-footer">
                   <span>{new Date(post.createdAt).toLocaleString()}</span>
-                  <button onClick={() => darLike(post._id)}>Like</button>
-                  {/* Solo muestra el botón de borrar si el usuario es el creador */}
+                  <button
+                    style={{
+                      backgroundColor: likedPosts.includes(post._id) ? 'blue' : 'gray',
+                      color: 'white',
+                    }}
+                    onClick={() => darLike(post._id)}
+                  >
+                    Like
+                  </button>
                   {post.AdminId._id === Cookies.get('IdUser') && (
                     <button onClick={() => handleDelete(post._id)}>Borrar</button>
                   )}
@@ -176,10 +192,19 @@ const Feed = () => {
             <div>
               <h4>Comentarios:</h4>
               {post.comments.map((comment, index) => (
+                
                 <p key={index}>
                   {comment.comment} - {comment.AdminId.nombre} {comment.AdminId.apellido}
                 </p>
               ))}
+              <div>
+                <textarea
+                  value={newComment}
+                  onChange={(e) => setNewComment(e.target.value)}
+                  placeholder="Escribe un comentario"
+                />
+                <button onClick={() => handleCommentSubmit(post._id)}>Comentar</button>
+              </div>
             </div>
           </div>
         ))}
