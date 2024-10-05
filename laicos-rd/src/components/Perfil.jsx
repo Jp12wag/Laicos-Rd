@@ -22,11 +22,12 @@ const EditProfile = () => {
     });
     const [loading, setLoading] = useState(true);
     const authToken = Cookies.get('authToken');
+    const userId = Cookies.get('IdUser');
     const navigate = useNavigate();
 
     useEffect(() => {
         const fetchProfileData = async () => {
-            const userId = Cookies.get('IdUser');
+          
             if (userId) {
                 try {
                     // Obtener datos del administrador
@@ -56,7 +57,7 @@ const EditProfile = () => {
         };
 
         fetchProfileData();
-    }, [Cookies.get('IdUser')]);
+    }, [userId]);
 
     // Manejadores de cambio para admin y miembro
     const handleAdminChange = (e) => {
@@ -67,7 +68,6 @@ const EditProfile = () => {
         setMiembro({ ...miembro, [e.target.name]: e.target.value });
     };
 
-    // Guardar tanto los datos de administrador como de miembro
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
@@ -77,14 +77,23 @@ const EditProfile = () => {
                     Authorization: `Bearer ${authToken}`
                 },
             });
-            console.log(miembro._id);
-            // Actualizar los datos del miembro
-            await axios.patch(`http://localhost:3001/api/miembros/${miembro._id || admin._id}`, miembro, {
-                headers: {
-                    Authorization: `Bearer ${authToken}`
-                },
-            });
-
+    
+            if (miembro._id) {
+                // Si el miembro ya existe, actualiza los datos
+                await axios.patch(`http://localhost:3001/api/miembros/${miembro._id}`, miembro, {
+                    headers: {
+                        Authorization: `Bearer ${authToken}`
+                    },
+                });
+            } else {
+                // Si el miembro no existe, crea uno nuevo
+                await axios.post(`http://localhost:3001/api/miembros`, { ...miembro, _id: admin._id }, {
+                    headers: {
+                        Authorization: `Bearer ${authToken}`
+                    },
+                });
+            }
+    
             alert('Perfil actualizado correctamente');
             navigate('/dashboard');
         } catch (error) {

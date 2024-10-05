@@ -27,11 +27,10 @@ const Login = () => {
   };
 
 
-
-
   useEffect(() => {
     const twoFaVerified = Cookies.get('twoFactorVerified');
     const authToken = Cookies.get('authToken');
+  
 
     // Verifica si el usuario ha sido deslogueado
     if (!authToken) {

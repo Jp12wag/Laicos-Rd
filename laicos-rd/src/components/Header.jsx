@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Navigate, useNavigate } from 'react-router-dom';
+import {  useNavigate } from 'react-router-dom';
 import '../css/Header.css';
 import { FaBell, FaSearch, FaCaretDown, FaUser, FaCog, FaSignOutAlt } from 'react-icons/fa';
 import Cookies from 'js-cookie';
@@ -25,7 +25,7 @@ const Header = () => {
   };
 
   const handleLogout = async () => {
-
+   // clearCookies();
     try {
       await axios.post('http://localhost:3001/api/administradores/logout', {}, {
         headers: {
@@ -50,11 +50,12 @@ const Header = () => {
     if (!userId) return; // Asegúrate de que userId esté definido
 
     try {
-
+      console.log(authToken);
       const response = await axios.get(`http://localhost:3001/api/administradores/${userId}`, {
         headers: {
           Authorization: `Bearer ${authToken}`,
         },
+        withCredentials: true,
       });
 
       if (response.data) {
@@ -68,10 +69,6 @@ const Header = () => {
   };
 
   useEffect(() => {
-    console.log(userId);
-    console.log(authToken);
-    console.log(userRole);
-
     if (!authToken || !userRole) {
       navigate('/login'); // Redirige al login si no hay token o rol
     } else {
@@ -95,7 +92,7 @@ const Header = () => {
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
     };
-  }, [navigate]); // Solo depende de userId
+  }, [userId]); 
 
   return (
     <header>
