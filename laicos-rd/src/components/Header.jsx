@@ -25,7 +25,7 @@ const Header = () => {
   };
 
   const handleLogout = async () => {
-   // clearCookies();
+    //clearCookies();
     try {
       await axios.post('http://localhost:3001/api/administradores/logout', {}, {
         headers: {

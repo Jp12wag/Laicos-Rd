@@ -14,14 +14,11 @@ import PrivateRoute from './components/PrivateRoute';
 
 const App = () => {
   const [userRole, setUserRole] = useState(null);
-
+  const authToken = Cookies.get('authToken');
+  const role = Cookies.get('userRole');
 
   useEffect(() => {
-    const authToken = Cookies.get('authToken');
-    const role = Cookies.get('userRole');
-
-
-
+   
     // Establecer el estado basado en la existencia de las cookies
     if (authToken) {
       setUserRole(role); // Almacena el rol del usuario
@@ -41,7 +38,7 @@ const App = () => {
         <Route path="/Reset-password/:token" element={<ResetPassword />} />
 
         {/* Rutas protegidas */}
-        <Route path="/Dashboard" element={
+        <Route path={"/Dashboard/"} element={
           <PrivateRoute>
             {userRole === 'Administrador' ? <AdminDashboard /> : <UserDashboard />}
           </PrivateRoute>
@@ -49,7 +46,7 @@ const App = () => {
 
         <Route path="/Perfil" element={
           <PrivateRoute>
-            {userRole ? <Perfil /> : <Navigate to="/Login" />} {/* Redirigir si adminData no existe */}
+            {userRole ? <Perfil /> : <Navigate to="/Login" />} {}
           </PrivateRoute>
         } />
 

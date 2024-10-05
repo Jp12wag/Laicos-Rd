@@ -6,7 +6,8 @@ import axios from 'axios';
 import Swal from 'sweetalert2';
 import Modal from 'react-modal';
 import Header from './Header';
-import Feed from './feed'; 
+import Feed from './feed';
+import AdministradoresList from './AdministradoresList'; // Importa el nuevo componente
 import '../css/Sidebar.css';
 
 Modal.setAppElement('#root');
@@ -21,12 +22,13 @@ const AdminDashboard = () => {
     password: '',
     sexo: 'Seleccionar',
     celular: '',
-    nacimiento: '', // Mantén el formato de fecha correcto
+    nacimiento: '',
     esMiembro: false,
     rolUsuario: 'miembro',
   });
   const [isEditing, setIsEditing] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [activeComponent, setActiveComponent] = useState('dashboard');
   const navigate = useNavigate();
   const authToken = Cookies.get('authToken');
   const twoFaVerified = Cookies.get('twoFactorVerified');
@@ -111,10 +113,9 @@ const AdminDashboard = () => {
     e.preventDefault();
     setLoading(true);
     try {
-      // Convierte la fecha de nacimiento a ISO antes de enviar
       const adminData = {
         ...currentAdmin,
-        nacimiento: currentAdmin.nacimiento ? new Date(currentAdmin.nacimiento).toISOString() : null, // Asegúrate de que esté en formato ISO
+        nacimiento: currentAdmin.nacimiento ? new Date(currentAdmin.nacimiento).toISOString() : null,
       };
       
       if (isEditing) {
@@ -146,44 +147,32 @@ const AdminDashboard = () => {
     }
   };
 
+  const handleComponentChange = (component) => {
+    setActiveComponent(component);
+  };
+
   return twoFaVerified ? (
     <>
       <Header />
       <div className="admin-dashboard">
         <div className="sidebar">
           <h2>Administración</h2>
-          <a href="#" onClick={() => handleOpenModal()}>Registrar Administrador</a>
-          <a href="#" onClick={<Feed/>}>Feed</a>
-          <a href="#">Ver Reportes</a>
-          <a href="#">Estadísticas</a>
-         
+          <a href="#" onClick={() => handleComponentChange('Administradores')}>Administrador</a>
+          <a href="#" onClick={() => handleComponentChange('feed')}>Feed</a>
+          <a href="#" onClick={() => handleComponentChange('reports')}>Ver Reportes</a>
+          <a href="#" onClick={() => handleComponentChange('statistics')}>Estadísticas</a>
         </div>
 
         <div className="content" style={{ marginLeft: '250px', padding: '20px' }}>
-          <h1>Lista de Administradores</h1>
-          <table>
-            <thead>
-              <tr>
-                <th>Nombre</th>
-                <th>Email</th>
-                <th>Rol</th>
-                <th>Acciones</th>
-              </tr>
-            </thead>
-            <tbody>
-              {administradores.map((admin) => (
-                <tr key={admin._id}>
-                  <td>{admin.nombre} {admin.apellido}</td>
-                  <td>{admin.email}</td>
-                  <td>{admin.rolUsuario}</td>
-                  <td>
-                    <button onClick={() => handleOpenModal(admin)}>Editar</button>
-                    <button onClick={() => handleDelete(admin._id)}>Eliminar</button>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+          {activeComponent === 'Administradores' && (
+            <AdministradoresList 
+              administradores={administradores}
+              handleOpenModal={handleOpenModal}
+              handleDelete={handleDelete}
+            />
+          )}
+          {activeComponent === 'feed' && <Feed />}
+          {/* Puedes agregar más condiciones para otros componentes */}
         </div>
 
         <Modal isOpen={modalIsOpen} onRequestClose={handleCloseModal} contentLabel="Formulario de administrador">
@@ -252,7 +241,7 @@ const AdminDashboard = () => {
               <label>Fecha de Nacimiento</label>
               <input
                 type="date"
-                value={currentAdmin.nacimiento.split('T')[0]} // Asegúrate de que solo se muestre la parte de la fecha
+                value={currentAdmin.nacimiento}
                 onChange={(e) => setCurrentAdmin({ ...currentAdmin, nacimiento: e.target.value })}
                 required
               />

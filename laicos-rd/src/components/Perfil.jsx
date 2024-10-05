@@ -80,7 +80,7 @@ const EditProfile = () => {
     
             if (miembro._id) {
                 // Si el miembro ya existe, actualiza los datos
-                await axios.patch(`http://localhost:3001/api/miembros/${miembro._id}`, miembro, {
+                await axios.patch(`http://localhost:3001/api/miembros/${admin._id}`, miembro, {
                     headers: {
                         Authorization: `Bearer ${authToken}`
                     },
