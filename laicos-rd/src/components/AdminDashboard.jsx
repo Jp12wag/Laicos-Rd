@@ -1,6 +1,7 @@
 // AdminDashboard.js
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import '../css/Sidebar.css';
 import Cookies from 'js-cookie';
 import axios from 'axios';
 import Swal from 'sweetalert2';
@@ -8,11 +9,16 @@ import Modal from 'react-modal';
 import Header from './Header';
 import Feed from './feed';
 import AdministradoresList from './AdministradoresList'; // Importa el nuevo componente
-import '../css/Sidebar.css';
+import ActividadesList from './ActividadesList'; // Importa el nuevo componente
+
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faUser, faClipboardList, faChartPie } from '@fortawesome/free-solid-svg-icons';
+
 
 Modal.setAppElement('#root');
 
 const AdminDashboard = () => {
+  const userRole = Cookies.get('userRole');
   const [administradores, setAdministradores] = useState([]);
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [currentAdmin, setCurrentAdmin] = useState({
@@ -117,7 +123,7 @@ const AdminDashboard = () => {
         ...currentAdmin,
         nacimiento: currentAdmin.nacimiento ? new Date(currentAdmin.nacimiento).toISOString() : null,
       };
-      
+
       if (isEditing) {
         await axios.patch(`http://localhost:3001/api/administradores/${currentAdmin._id}`, adminData,
           {
@@ -127,16 +133,11 @@ const AdminDashboard = () => {
           }
         );
         Swal.fire('Editado', 'El administrador ha sido editado.', 'success');
-        obtenerAdministradores();
+
       } else {
-        await axios.post('http://localhost:3001/api/administradores', adminData,
-          {
-            headers: {
-              Authorization: `Bearer ${authToken}`,
-            },
-          }
-        );
+        await axios.post('http://localhost:3001/api/administradores', adminData);
         Swal.fire('Creado', 'El administrador ha sido creado.', 'success');
+
       }
       handleCloseModal();
       obtenerAdministradores();
@@ -157,25 +158,51 @@ const AdminDashboard = () => {
       <div className="admin-dashboard">
         <div className="sidebar">
           <h2>Administración</h2>
-          <a href="#" onClick={() => handleComponentChange('Administradores')}>Administrador</a>
-          <a href="#" onClick={() => handleComponentChange('feed')}>Feed</a>
-          <a href="#" onClick={() => handleComponentChange('reports')}>Ver Reportes</a>
-          <a href="#" onClick={() => handleComponentChange('statistics')}>Estadísticas</a>
+          <a href="#" onClick={() => handleComponentChange('Administradores')}>
+            <FontAwesomeIcon icon={faUser} /> Administrador
+          </a>
+          <a href="#" onClick={() => handleComponentChange('feed')}>
+            <FontAwesomeIcon icon={faClipboardList} /> Feed
+          </a>
+          <a href="#" onClick={() => handleComponentChange('Actividades')}>
+            <FontAwesomeIcon icon={faChartPie} /> Actividades
+          </a>
+          <a href="#" onClick={() => handleComponentChange('statistics')}>
+            <FontAwesomeIcon icon={faChartPie} /> Estadísticas
+          </a>
         </div>
 
-        <div className="content" style={{ marginLeft: '250px', padding: '20px' }}>
+        <div className="content">
           {activeComponent === 'Administradores' && (
-            <AdministradoresList 
+            <AdministradoresList
               administradores={administradores}
               handleOpenModal={handleOpenModal}
               handleDelete={handleDelete}
             />
           )}
           {activeComponent === 'feed' && <Feed />}
+          {activeComponent === 'Actividades' && <ActividadesList />}
           {/* Puedes agregar más condiciones para otros componentes */}
         </div>
 
-        <Modal isOpen={modalIsOpen} onRequestClose={handleCloseModal} contentLabel="Formulario de administrador">
+
+        <Modal
+          isOpen={modalIsOpen}
+          onRequestClose={handleCloseModal}
+          contentLabel="Formulario de administrador"
+          style={{
+            content: {
+              maxWidth: '600px',
+              width: '100%',
+              maxHeight: '80%',
+              overflow: 'auto',
+              zIndex: 1000, // Asegúrate de que el modal tenga un z-index alto
+            },
+            overlay: {
+              zIndex: 999, // Asegúrate de que el overlay tenga un z-index más bajo
+            },
+          }}
+        >
           <h2>{isEditing ? 'Editar Administrador' : 'Agregar Administrador'}</h2>
           <form onSubmit={handleSubmit}>
             <div>

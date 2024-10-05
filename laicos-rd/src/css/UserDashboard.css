@@ -1,14 +1,41 @@
-body{
-  margin: 0;
-  padding: 0;
-}
-.user-dashboard {
-  padding: 0%;
-  padding: 20px;
-  display: flex;
-  width: 100%;
-  min-height: 700px;
-  flex-direction: column;
+/* src/css/UserDashboard.css */
 
+.user-dashboard {
+  margin-top: 60px; /* Espacio para que el contenido comience después del Header */
+  padding: 20px;
+}
+
+.admin-dashboard {
+  margin-top: 60px; /* Similar al UserDashboard, ajusta para Admin también */
+  padding: 20px;
+}
+
+.content {
+  margin-left: 250px; /* Si tienes un sidebar en el dashboard */
+  padding: 20px;
+}
+
+/* Ajusta la barra lateral */
+.sidebar {
+  position: fixed;
+  top: 60px; /* Para que la sidebar no quede debajo del Header */
+  left: 0;
+  width: 250px;
+  height: 100%;
+  background-color: #333;
+  color: white;
+  padding-top: 20px;
+  z-index: 900; /* Asegúrate de que no se superponga al Header */
+}
+
+.sidebar a {
+  display: block;
+  padding: 10px 20px;
+  color: white;
+  text-decoration: none;
+}
+
+.sidebar a:hover {
+  background-color: #575757;
 }
 
