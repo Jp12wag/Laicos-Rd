@@ -163,8 +163,8 @@ const ActividadesList = () => {
           descripcion: formValues[1],
           fecha: formValues[2],
           ubicacion: formValues[3],
-          estado: formValues[5], // Asegúrate de incluir el estado
-          maxParticipantes: formValues[4], // Asegúrate de incluir el estado
+          estado: formValues[4], // Asegúrate de incluir el estado
+          maxParticipantes: formValues[5], // Asegúrate de incluir el estado
         }, {
           headers: {
             Authorization: `Bearer ${authToken}`,

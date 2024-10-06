@@ -10,9 +10,11 @@ import Header from './Header';
 import Feed from './feed';
 import AdministradoresList from './AdministradoresList'; // Importa el nuevo componente
 import ActividadesList from './ActividadesList'; // Importa el nuevo componente
+import ArchdioceseList from './Archdioceses/ArchdioceseList';
+import Parroquias from './Parroquia/ParroquiaList'
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faUser, faClipboardList, faChartPie } from '@fortawesome/free-solid-svg-icons';
+import { faUser, faClipboardList, faChartPie, faChartArea } from '@fortawesome/free-solid-svg-icons';
 
 
 Modal.setAppElement('#root');
@@ -167,8 +169,11 @@ const AdminDashboard = () => {
           <a href="#" onClick={() => handleComponentChange('Actividades')}>
             <FontAwesomeIcon icon={faChartPie} /> Actividades
           </a>
-          <a href="#" onClick={() => handleComponentChange('statistics')}>
-            <FontAwesomeIcon icon={faChartPie} /> Estadísticas
+          <a href="#" onClick={() => handleComponentChange('Arquidiocesis')}>
+            <FontAwesomeIcon icon={faChartPie} />Arquidiocesis
+          </a>
+          <a href="#" onClick={() => handleComponentChange('Parroquias')}>
+            <FontAwesomeIcon icon={faChartArea} />Parroquias
           </a>
         </div>
 
@@ -182,6 +187,8 @@ const AdminDashboard = () => {
           )}
           {activeComponent === 'feed' && <Feed />}
           {activeComponent === 'Actividades' && <ActividadesList />}
+          {activeComponent === 'Arquidiocesis' && <ArchdioceseList />}
+          {activeComponent === 'Parroquias' && <Parroquias />}
           {/* Puedes agregar más condiciones para otros componentes */}
         </div>
 
