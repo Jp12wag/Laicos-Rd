@@ -1,8 +1,5 @@
 /* css/Sidebar.css */
-.admin-dashboard {
-  display: flex;
-  min-height: 100vh; /* Para asegurarse de que ocupe toda la altura de la pantalla */
-}
+
 .sidebar {
   width: 350px; /* Definimos un ancho fijo para el sidebar */
   background-color: #f0f0f0;
@@ -19,6 +16,7 @@
     padding: 10px;
     margin: 10px 0;
     display: block;
+
   }
   
   .sidebar a:hover {
@@ -26,6 +24,7 @@
   }
   
   .content {
+    display: flex;
     margin-left: 350px; /* Asegura que el contenido comience después del sidebar */
     padding: 20px;
     flex-grow: 1; /* Hace que el contenido ocupe el espacio restante */

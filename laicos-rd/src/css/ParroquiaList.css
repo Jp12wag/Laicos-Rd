@@ -1,0 +1,93 @@
+/* Estilos generales */
+.parroquia-list-container {
+    margin-top: 20px;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    
+   
+}
+
+.parroquia-list-title {
+    text-align: center;
+    color: #333;
+    font-size: 2rem;
+    margin-bottom: 30px;
+}
+
+/* Estilo de la lista de parroquias */
+.parroquia-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(500px, 1fr)); /* 300px es el ancho mínimo de la tarjeta */
+    gap: 20px; /* Espacio entre las tarjetas */
+    list-style-type: none;
+    padding: 0;
+    margin-left: 350px;
+    margin: 20px 0;
+    width: 70vw; /* Ajusta según sea necesario */
+    height: auto;
+    align-items: center;
+    justify-content: center;
+}
+.parroquia-list ul{
+    margin-left: 10px;
+}
+
+/* Estilo de la tarjeta de parroquia */
+.parroquia-item {
+    background-color: #fff;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 1px 6px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column; /* Para que los elementos dentro se apilen verticalmente */
+ 
+}
+
+.parroquia-title {
+    font-size: 1.5rem;
+    color: #007bff;
+    margin-bottom: 10px;
+}
+
+.parroquia-info {
+    font-size: 0.5rem;
+    color: #555;
+    margin-bottom: 5px;
+    height: auto;
+}
+
+/* Botones de acción */
+.btn-edit-parroquia,
+.btn-delete-parroquia {
+    margin-top: auto; /* Empuja los botones hacia abajo */
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.btn-edit-parroquia {
+    background-color: #ffc107;
+    color: white;
+    width: 50%; /* Aseguramos que ocupen todo el ancho de la tarjeta */
+}
+
+.btn-edit-parroquia:hover {
+    background-color: #e0a800;
+}
+
+.btn-delete-parroquia {
+    background-color: #dc3545;
+    color: white;
+    width: 100%; /* Aseguramos que ocupen todo el ancho de la tarjeta */
+}
+
+.btn-delete-parroquia:hover {
+    background-color: #c82333;
+}

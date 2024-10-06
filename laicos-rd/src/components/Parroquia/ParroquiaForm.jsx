@@ -1,22 +1,32 @@
 import React, { useState, useEffect } from 'react';
-
+import { getDioesis } from '../../services/diocesisService'; // Asegúrate de tener un servicio para obtener las diócesis
 const ParroquiaForm = ({ onSubmit, parroquia }) => {
     const [nombre, setNombre] = useState('');
-    const [sacerdote, setSacerdote] = useState('');
+    const [dioesisId, setDioesisId] = useState('');
+    const [dioesisList, setDioesisList] = useState([]);
+
+    useEffect(() => {
+        const fetchDioesis = async () => {
+            const data = await getDioesis(); // Obtener la lista de diócesis
+            setDioesisList(data);
+        };
+
+        fetchDioesis();
+    }, []);
 
     useEffect(() => {
         if (parroquia) {
             setNombre(parroquia.nombre);
-            setSacerdote(parroquia.sacerdote);
+            setDioesisId(parroquia.dioesis._id); // Asignar el ID de la diócesis seleccionada
         } else {
             setNombre('');
-            setSacerdote('');
+            setDioesisId('');
         }
     }, [parroquia]);
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        onSubmit({ nombre, sacerdote });
+        onSubmit({ nombre, dioesis: dioesisId }); // Incluir la diócesis en los datos enviados
     };
 
     return (
@@ -28,13 +38,18 @@ const ParroquiaForm = ({ onSubmit, parroquia }) => {
                 onChange={(e) => setNombre(e.target.value)}
                 required
             />
-            <input
-                type="text"
-                placeholder="Nombre del Clero"
-                value={sacerdote}
-                onChange={(e) => setSacerdote(e.target.value)}
+            <select
+                value={dioesisId}
+                onChange={(e) => setDioesisId(e.target.value)}
                 required
-            />
+            >
+                <option value="">Selecciona una Diócesis</option>
+                {dioesisList.map((dioesis) => (
+                    <option key={dioesis._id} value={dioesis._id}>
+                        {dioesis.nombre}
+                    </option>
+                ))}
+            </select>
             <button type="submit">{parroquia ? 'Actualizar' : 'Crear'}</button>
         </form>
     );

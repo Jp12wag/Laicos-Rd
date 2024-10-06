@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { getParroquias, createParroquia, deleteParroquia, updateParroquia } from '../../services/parroquiaService';
 import ParroquiaForm from './ParroquiaForm';
 import ParroquiaItem from './ParroquiaeItem';
+import '../../css/ParroquiaList.css';
 
 const ParroquiaList = () => {
     const [parroquias, setParroquias] = useState([]);
@@ -39,7 +40,7 @@ const ParroquiaList = () => {
     };
 
     return (
-        <div>
+        <div className="parroquia-list">
             <h2>Lista de Parroquias</h2>
             <ParroquiaForm onSubmit={handleFormSubmit} parroquia={selectedParroquia} />
             <ul>

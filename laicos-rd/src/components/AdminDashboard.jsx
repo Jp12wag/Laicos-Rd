@@ -3,17 +3,17 @@ import { useNavigate } from 'react-router-dom';
 import '../css/Sidebar.css';
 import Cookies from 'js-cookie';
 import axios from 'axios';
-import Swal from 'sweetalert2';
 import Modal from 'react-modal';
 import Header from './Header';
 import Feed from './feed';
 import AdministradoresList from './AdministradoresList'; // Importa el nuevo componente
 import ActividadesList from './ActividadesList'; // Importa el nuevo componente
-import ArchdioceseList from './Archdioceses/ArchdioceseList';
 import Parroquias from './Parroquia/ParroquiaList'
+import Diocesis from './Diocesis/DiocesisList'
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser, faClipboardList, faChartPie, faChartArea } from '@fortawesome/free-solid-svg-icons';
+import { FiBarChart } from 'react-icons/fi';
 
 Modal.setAppElement('#root');
 
@@ -84,11 +84,11 @@ const AdminDashboard = () => {
               <a href="#" onClick={() => handleComponentChange('Administradores')}>
                 <FontAwesomeIcon icon={faUser} /> Administrador
               </a>
-              <a href="#" onClick={() => handleComponentChange('Arquidiocesis')}>
-                <FontAwesomeIcon icon={faChartPie} /> Arquidiocesis
-              </a>
               <a href="#" onClick={() => handleComponentChange('Parroquias')}>
                 <FontAwesomeIcon icon={faChartArea} /> Parroquias
+              </a>
+              <a href="#" onClick={() => handleComponentChange('Diocesis')}>
+                <FontAwesomeIcon icon={FiBarChart} /> Diocesis
               </a>
             </>
           )}
@@ -102,8 +102,8 @@ const AdminDashboard = () => {
               administradores={administradores}
             />
           )}
-          {activeComponent === 'Arquidiocesis' && userRole === 'Administrador' && <ArchdioceseList />}
           {activeComponent === 'Parroquias' && userRole === 'Administrador' && <Parroquias />}
+          {activeComponent === 'Diocesis' && userRole === 'Administrador' && <Diocesis/>}
         </div>
       </div>
     </>
