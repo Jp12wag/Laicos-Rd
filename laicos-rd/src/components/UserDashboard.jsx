@@ -3,7 +3,7 @@ import Header from './Header';
 import '../css/UserDashboard.css';
 import Feed from './feed'; 
 import ActividadesList from './ActividadesList';
-import Cookies from 'js-cookie';
+
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faClipboardList, faChartPie } from '@fortawesome/free-solid-svg-icons';

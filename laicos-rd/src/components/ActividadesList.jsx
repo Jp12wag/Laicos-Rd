@@ -97,6 +97,7 @@ const ActividadesList = () => {
     });
 
     if (formValues) {
+      console.log(formValues)
       const [nombre, descripcion, fecha, ubicacion, maxParticipantes, estado] = formValues;
       try {
         await axios.post('http://localhost:3001/api/actividades', {
@@ -129,6 +130,9 @@ const ActividadesList = () => {
   // Editar actividad
   const handleEditActividad = async (id) => {
     const actividadToUpdate = actividades.find((actividad) => actividad._id === id);
+    // Ajuste de fecha para evitar el problema de la zona horaria
+    const localDate = new Date(actividadToUpdate.fecha);
+    localDate.setMinutes(localDate.getMinutes() - localDate.getTimezoneOffset());
     const { value: formValues } = await Swal.fire({
       title: 'Editar Actividad',
       html: `
@@ -136,7 +140,7 @@ const ActividadesList = () => {
       <input id="swal-input2" class="swal2-input" value="${actividadToUpdate.descripcion}" placeholder="Descripción">
       <input id="swal-input3" class="swal2-input" type="date" value="${new Date(actividadToUpdate.fecha).toISOString().split('T')[0]}" placeholder="Fecha">
       <input id="swal-input4" class="swal2-input" value="${actividadToUpdate.ubicacion}" placeholder="Ubicación">
-       <input id="swal-input5" class="swal2-input" value="${actividadToUpdate.maxParticipantes} placeholder="Número máximo de participantes" type="number">
+      <input id="swal-input5" class="swal2-input" value="${actividadToUpdate.maxParticipantes}" placeholder="Número máximo de participantes" type="number">
       <select id="swal-input6" class="swal2-input">
         <option value="Pendiente" ${actividadToUpdate.estado === 'Pendiente' ? 'selected' : ''}>Pendiente</option>
         <option value="En Curso" ${actividadToUpdate.estado === 'En Curso' ? 'selected' : ''}>En Curso</option>
@@ -157,14 +161,16 @@ const ActividadesList = () => {
     });
 
     if (formValues) {
+
       try {
         await axios.patch(`http://localhost:3001/api/actividades/${id}`, {
           nombre: formValues[0],
           descripcion: formValues[1],
           fecha: formValues[2],
           ubicacion: formValues[3],
-          estado: formValues[4], // Asegúrate de incluir el estado
-          maxParticipantes: formValues[5], // Asegúrate de incluir el estado
+          maxParticipantes: formValues[4],
+          estado: formValues[5], // Asegúrate de incluir el estado
+          // Asegúrate de incluir el estado
         }, {
           headers: {
             Authorization: `Bearer ${authToken}`,
@@ -259,7 +265,9 @@ const ActividadesList = () => {
           <li key={actividad._id} className="actividad-item">
             <h2 className="actividad-title">{actividad.nombre}</h2>
             <p className="actividad-descripcion">{actividad.descripcion}</p>
-            <p className="actividad-fecha">Fecha: {new Date(actividad.fecha).toLocaleDateString()}</p>
+            <p className="actividad-fecha">
+              Fecha: {new Date(actividad.fecha).toISOString().split('T')[0]}
+            </p>
             <p className="actividad-estado">Estado: {actividad.estado}</p>
             <p className="actividad-ubicacion">Lugar: {actividad.ubicacion}</p>
             <p className="actividad-participantes">Inscritos: {actividad.inscritos.length} / {actividad.maxParticipantes}</p>

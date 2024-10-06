@@ -2,6 +2,12 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import Cookies from 'js-cookie';
 import '../css/feed.css';
+import io from 'socket.io-client';
+
+const socket = io('http://localhost:3001', {
+  transports: ['websocket'],
+  withCredentials: true,
+});
 
 const Feed = () => {
   const [posts, setPosts] = useState([]);
@@ -12,7 +18,6 @@ const Feed = () => {
   const [editingContent, setEditingContent] = useState('');
   const [likedPosts, setLikedPosts] = useState([]);
 
-  // Función para obtener las publicaciones del feed
   const obtenerPosts = async () => {
     try {
       const authToken = Cookies.get('authToken');
@@ -35,7 +40,7 @@ const Feed = () => {
           Authorization: `Bearer ${authToken}`,
         },
       });
-      setPosts(posts.filter(post => post._id !== postId)); // Actualiza el estado para eliminar la publicación de la interfaz
+      setPosts(posts.filter(post => post._id !== postId));
     } catch (error) {
       console.error('Error al borrar la publicación:', error);
     }
@@ -49,8 +54,7 @@ const Feed = () => {
           Authorization: `Bearer ${authToken}`,
         },
       });
-       // Cambiar el estado de like del post
-       if (likedPosts.includes(postId)) {
+      if (likedPosts.includes(postId)) {
         setLikedPosts(likedPosts.filter((id) => id !== postId));
       } else {
         setLikedPosts([...likedPosts, postId]);
@@ -60,7 +64,6 @@ const Feed = () => {
     }
   };
 
-  // Función para crear una nueva publicación
   const crearPost = async () => {
     try {
       const authToken = Cookies.get('authToken');
@@ -74,7 +77,6 @@ const Feed = () => {
       });
       setNewPostContent('');
       setNewPostMedia('');
-      obtenerPosts(); // Actualizar el feed después de crear una publicación
     } catch (error) {
       console.error('Error al crear la publicación:', error);
     }
@@ -89,31 +91,27 @@ const Feed = () => {
         },
       });
 
-      // Actualiza el estado para incluir el nuevo comentario
       const updatedPosts = posts.map(post => {
         if (post._id === postId) {
-           
           return {
             ...post,
-            comments: [...post.comments, { comment: newComment, AdminId: { nombre: post.AdminId.nombre, apellido: post.AdminId.apellido } }], // Asegúrate de reemplazar esto con los datos del usuario correcto
+            comments: [...post.comments, { comment: newComment, AdminId: { nombre: post.AdminId.nombre, apellido: post.AdminId.apellido } }],
           };
         }
         return post;
       });
       setPosts(updatedPosts);
-      setNewComment(''); // Limpia el campo de comentario
+      setNewComment('');
     } catch (error) {
       console.error('Error al agregar comentario:', error);
     }
   };
 
-  // Función para habilitar la edición de un post
   const handleEdit = (post) => {
     setEditingPostId(post._id);
     setEditingContent(post.content);
   };
 
-  // Función para guardar los cambios de un post editado
   const saveEdit = async (postId) => {
     try {
       const authToken = Cookies.get('authToken');
@@ -132,6 +130,15 @@ const Feed = () => {
 
   useEffect(() => {
     obtenerPosts();
+
+    socket.on('nuevaPublicacion', (nuevaPublicacion) => {
+      console.log('Nueva publicación recibida:', nuevaPublicacion);
+      setPosts((prevPosts) => [nuevaPublicacion, ...prevPosts]); // Agrega la nueva publicación al principio del feed
+    });
+
+    return () => {
+      socket.off('nuevaPublicacion');
+    };
   }, []);
 
   return (
@@ -192,7 +199,6 @@ const Feed = () => {
             <div>
               <h4>Comentarios:</h4>
               {post.comments.map((comment, index) => (
-                
                 <p key={index}>
                   {comment.comment} - {comment.AdminId.nombre} {comment.AdminId.apellido}
                 </p>

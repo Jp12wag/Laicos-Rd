@@ -11,23 +11,25 @@ import Perfil from './components/Perfil';
 import Cookies from 'js-cookie';
 import PrivateRoute from './components/PrivateRoute';
 
-
 const App = () => {
   const [userRole, setUserRole] = useState(null);
+  const [loading, setLoading] = useState(true); // Añadido para manejar la carga inicial
   const authToken = Cookies.get('authToken');
   const role = Cookies.get('userRole');
 
   useEffect(() => {
-   
-    // Establecer el estado basado en la existencia de las cookies
+    // Simula la carga para obtener el rol del usuario
     if (authToken) {
-      setUserRole(role); // Almacena el rol del usuario
-
-    }else {
-      setUserRole(null); // Asegúrate de limpiar el estado si no hay token
+      setUserRole(role);
+    } else {
+      setUserRole(null);
     }
+    setLoading(false); // Carga terminada
+  }, [authToken, role]); // Dependencias de authToken y role
 
-  }, []); // Solo se ejecuta al montar el componente
+  if (loading) {
+    return <div>Loading...</div>; // Puedes reemplazar esto con un spinner o una pantalla de carga
+  }
 
   return (
     <Router>
@@ -38,17 +40,25 @@ const App = () => {
         <Route path="/Reset-password/:token" element={<ResetPassword />} />
 
         {/* Rutas protegidas */}
-        <Route path={"/Dashboard/"} element={
-          <PrivateRoute>
-            {userRole === 'Administrador' ? <AdminDashboard /> : <UserDashboard />}
-          </PrivateRoute>
-        } />
+        <Route 
+          path="/Dashboard" 
+          element={
+            <PrivateRoute>
+              {/* Si el usuario es administrador, redirige al AdminDashboard, si no, al UserDashboard */}
+              {userRole === 'Administrador' ? <AdminDashboard /> : <UserDashboard />}
+            </PrivateRoute>
+          } 
+        />
 
-        <Route path="/Perfil" element={
-          <PrivateRoute>
-            {userRole ? <Perfil /> : <Navigate to="/Login" />} {}
-          </PrivateRoute>
-        } />
+        <Route 
+          path="/Perfil" 
+          element={
+            <PrivateRoute>
+              {/* Si no está autenticado, redirige al login */}
+              {userRole ? <Perfil /> : <Navigate to="/Login" />}
+            </PrivateRoute>
+          } 
+        />
 
         {/* Redirección predeterminada */}
         <Route path="*" element={<Navigate to="/Login" />} />
