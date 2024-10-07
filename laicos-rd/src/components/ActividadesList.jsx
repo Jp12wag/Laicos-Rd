@@ -40,10 +40,6 @@ const ActividadesList = () => {
 
   }, [authToken]);
 
-  // Función para manejar el cambio de estado del formulario
-  const handleInputChange = (e) => {
-    setNewActividad({ ...newActividad, [e.target.name]: e.target.value });
-  };
 
 
   const handleInscribirse = async (idActividad) => {

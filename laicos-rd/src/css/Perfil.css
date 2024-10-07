@@ -1,69 +1,94 @@
-/* Contenedor principal para centrar todo */
+/* Estilos generales del contenedor de perfil */
 .profile-container {
-    padding-top: 25px;
-    display: flex;
-    flex-direction: column;
-    align-items: center; /* Centrará el contenido horizontalmente */
-    justify-content: center; /* Centrará el contenido verticalmente */
-    height: 100vh; /* Hacer que el contenedor ocupe toda la pantalla */
-    }
-  
-  /* Estilos para el formulario */
-  .contendor{
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-    max-width: 500px;
-    margin: 20px auto;
-    padding: 20px;
-    background-color: white;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  }
-  
-  /* Estilos para los inputs */
-  .entrada {
-    padding: 10px;
-    margin-bottom: 15px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-  }
-  
-  /* Estilos para el botón */
-  .bton {
-    padding: 10px;
-    background-color: #007BFF;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-  }
-  
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+  background-color: #f4f4f4; /* Color de fondo suave */
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 
+}
+
+/* Contenedor del formulario */
+.contendor {
+  width: 100%;
+  max-width: 1000px;
+  background: white; /* Fondo blanco para el formulario */
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Estilo de las entradas de formulario */
+.entrada {
+  width: 50%;
   
-  /* Estilos para la imagen de perfil */
-  .profile-imageI {
-    width: 100px;
-    height: 100px;
-    border-radius: 50%;
-    object-fit: cover;
-    margin-bottom: 20px; /* Añadir espacio entre la imagen y el formulario */
-    align-items: center;
-   
-  }
-  
-  /* Estilos para las iniciales */
-  .profile-initials {
-    width: 100px;
-    height: 100px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 36px;
-    font-weight: bold;
-    color: #fff;
-    margin-bottom: 20px; /* Añadir espacio entre las iniciales y el formulario */
-    background-color: #007BFF;
-  }
-  
+  padding: 15px;
+  margin: 10px 0;
+  border: 1px solid #ccc; /* Borde gris claro */
+  border-radius: 4px;
+  font-size: 18px;
+}
+
+/* Estilo para los botones */
+.bton {
+  background-color: #007bff; /* Color azul */
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.3s ease;
+}
+
+/* Estilo para el botón rojo */
+.bton-rojo {
+  background-color: red; /* Color rojo */
+}
+
+/* Cambios de estilo al pasar el ratón por encima */
+.bton:hover {
+  background-color: #0056b3; /* Azul oscuro */
+}
+
+.bton-rojo:hover {
+  background-color: darkred; /* Rojo oscuro */
+}
+
+/* Títulos de secciones */
+h1, h2 {
+  color: #333; /* Color de texto oscuro */
+}
+
+/* Estilos para las secciones de administrador y miembro */
+.section {
+  margin: 20px 0;
+  padding: 10px;
+  border: 1px solid #ccc; /* Borde gris claro */
+  border-radius: 8px;
+  background-color: #f9f9f9; /* Color de fondo claro */
+}
+
+/* Estilo para la imagen de perfil */
+.profile-image {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  margin-bottom: 10px;
+}
+
+/* Iniciales de perfil */
+.profile-initials {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  background-color: #007bff; /* Color azul */
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 24px;
+  margin-bottom: 10px;
+}

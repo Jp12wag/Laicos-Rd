@@ -25,7 +25,7 @@ const Header = () => {
   };
 
   const handleLogout = async () => {
-   clearCookies();
+  clearCookies();
    navigate('/login');
     try {
       await axios.post('http://localhost:3001/api/administradores/logout', {}, {
@@ -89,10 +89,6 @@ const Header = () => {
 
     return () => clearInterval(checkAuthToken);
    
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
-    };
   }, [userId]); 
 
   return (

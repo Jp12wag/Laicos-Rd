@@ -10,7 +10,6 @@ import AdministradoresList from './AdministradoresList'; // Importa el nuevo com
 import ActividadesList from './ActividadesList'; // Importa el nuevo componente
 import Parroquias from './Parroquia/ParroquiaList'
 import Diocesis from './Diocesis/DiocesisList'
-
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser, faClipboardList, faChartPie, faChartArea } from '@fortawesome/free-solid-svg-icons';
 import { FiBarChart } from 'react-icons/fi';
@@ -20,7 +19,6 @@ Modal.setAppElement('#root');
 const AdminDashboard = () => {
   const userRole = Cookies.get('userRole'); // Obtiene el rol del usuario desde las cookies
   const [administradores, setAdministradores] = useState([]);
-  const [modalIsOpen, setModalIsOpen] = useState(false);
   const [currentAdmin, setCurrentAdmin] = useState({
     nombre: '',
     apellido: '',
@@ -32,8 +30,7 @@ const AdminDashboard = () => {
     esMiembro: false,
     rolUsuario: 'miembro',
   });
-  const [isEditing, setIsEditing] = useState(false);
-  const [loading, setLoading] = useState(false);
+
   const [activeComponent, setActiveComponent] = useState('feed'); // Por defecto en 'feed'
   const navigate = useNavigate();
   const authToken = Cookies.get('authToken');

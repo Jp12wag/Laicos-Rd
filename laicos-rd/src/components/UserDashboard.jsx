@@ -3,8 +3,6 @@ import Header from './Header';
 import '../css/UserDashboard.css';
 import Feed from './feed'; 
 import ActividadesList from './ActividadesList';
-
-
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faClipboardList, faChartPie } from '@fortawesome/free-solid-svg-icons';
 
@@ -22,7 +20,7 @@ const UserDashboard = () => {
       <div className="user-dashboard">
         <div className="sidebar">
           <h2>Miembro</h2>
-          <a href="#" onClick={() => handleComponentChange('feed')}>
+          <a href="/feed" onClick={() => handleComponentChange('feed')}>
             <FontAwesomeIcon icon={faClipboardList} /> Feed
           </a>
           <a href="#" onClick={() => handleComponentChange('Actividades')}>
