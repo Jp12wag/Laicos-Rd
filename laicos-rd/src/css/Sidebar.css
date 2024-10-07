@@ -3,7 +3,7 @@
 .sidebar {
   width: 350px; /* Definimos un ancho fijo para el sidebar */
   background-color: #f0f0f0;
-  padding: 20px;
+  padding: 10px;
   position: fixed; /* Hace que el sidebar se quede fijo */
   top: 0;
   bottom: 0;

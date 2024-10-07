@@ -5,13 +5,12 @@
   top: 0;
   width: 100%;
   height: 60px;
-  background-color: #333;
+  background-color: #9b2828;
   color: white;
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 0 20px;
-  z-index: 1000; /* Asegura que el header quede sobre otros elementos */
 }
 
 .header h1 {

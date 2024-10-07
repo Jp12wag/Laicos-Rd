@@ -27,7 +27,7 @@ export const getSessions = async () => {
                 Authorization: `Bearer ${authToken}`,
             },
         });
-        console.log(response.data)
+        
         return response.data;
     } catch (error) {
         console.error('Error al obtener sesiones:', error);

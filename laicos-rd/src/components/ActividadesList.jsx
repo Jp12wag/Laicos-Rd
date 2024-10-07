@@ -185,14 +185,14 @@ const ActividadesList = () => {
     }
   };
 
-  const handleVerInscritos = (idActividad) => {
-    const actividad = actividades.find(actividad => actividad._id === idActividad);
-    Swal.fire({
-      title: 'Inscritos',
-      html: `<ul>${actividad.inscritos.map(inscrito => `<li>${inscrito.nombre}</li>`).join('')}</ul>`,
-      icon: 'info',
-    });
-  };
+    const handleVerInscritos = (idActividad) => {
+      const actividad = actividades.find(actividad => actividad._id === idActividad);
+      Swal.fire({
+        title: 'Inscritos',
+        html: `<ul>${actividad.inscritos.map(inscrito => `<li>${inscrito.nombre}</li>`).join('')}</ul>`,
+        icon: 'info',
+      });
+    };
 
   const handleCancelarInscripcion = async (idActividad) => {
     try {
