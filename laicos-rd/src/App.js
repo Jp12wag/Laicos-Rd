@@ -10,6 +10,7 @@ import ResetPassword from './components/ResetPassword';
 import Perfil from './components/Perfil';
 import Cookies from 'js-cookie';
 import PrivateRoute from './components/PrivateRoute';
+import SessionsPage from './components/sessiones/SessionsPage';
 
 const App = () => {
   const [userRole, setUserRole] = useState(null);
@@ -38,7 +39,7 @@ const App = () => {
         <Route path="/Register" element={<Register />} />
         <Route path="/Reset" element={<RequestResetPassword />} />
         <Route path="/Reset-password/:token" element={<ResetPassword />} />
-
+        <Route path="/sessions" element={<SessionsPage />} />
         {/* Rutas protegidas */}
         <Route 
           path="/Dashboard" 

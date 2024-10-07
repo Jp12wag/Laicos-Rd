@@ -5,6 +5,7 @@ import '../css/Perfil.css';
 import { useNavigate } from 'react-router-dom';
 import { getParroquiasByDiocesis } from '../services/parroquiaService'; // Importar servicio
 
+
 const EditProfile = () => {
     const [admin, setAdmin] = useState({
         nombre: '',
@@ -162,6 +163,7 @@ const EditProfile = () => {
 
     const handleViewSessions = () => {
         // Lógica para ver todas las sesiones iniciadas
+        navigate('/sessions');
         console.log("Ver todas las sesiones iniciadas");
     };
 
@@ -279,7 +281,7 @@ const EditProfile = () => {
                 <div className="section">
                     <h2>Sesiones Iniciadas</h2>
                     <button className="bton bton-rojo" onClick={handleViewSessions}>Ver todas las sesiones iniciadas</button>
-                    <button className="bton bton-rojo" onClick={handleCloseAllSessions}>Cerrar todas las sesiones</button>
+                  
                 </div>
             </div>
         </div>
