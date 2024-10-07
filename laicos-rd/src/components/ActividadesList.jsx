@@ -8,14 +8,6 @@ import '../css/ActividadesList.css'; // Importar el CSS
 
 const ActividadesList = () => {
   const [actividades, setActividades] = useState([]);
-  const [newActividad, setNewActividad] = useState({
-    nombre: '',
-    descripcion: '',
-    fecha: '',
-    ubicacion: '',
-    estado: '',
-    maxParticipantes: '',
-  });
   const userRole = Cookies.get('userRole');
   const userId = Cookies.get('IdUser');
   const authToken = Cookies.get('authToken');
@@ -184,15 +176,6 @@ const ActividadesList = () => {
       }
     }
   };
-
-    const handleVerInscritos = (idActividad) => {
-      const actividad = actividades.find(actividad => actividad._id === idActividad);
-      Swal.fire({
-        title: 'Inscritos',
-        html: `<ul>${actividad.inscritos.map(inscrito => `<li>${inscrito.nombre}</li>`).join('')}</ul>`,
-        icon: 'info',
-      });
-    };
 
   const handleCancelarInscripcion = async (idActividad) => {
     try {

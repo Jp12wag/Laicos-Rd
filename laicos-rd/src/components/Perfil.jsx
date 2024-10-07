@@ -167,10 +167,7 @@ const EditProfile = () => {
         console.log("Ver todas las sesiones iniciadas");
     };
 
-    const handleCloseAllSessions = () => {
-        // Lógica para cerrar todas las sesiones
-        console.log("Cerrar todas las sesiones");
-    };
+
 
     return (
         <div className="profile-container">
