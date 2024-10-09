@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import "../css/registro.css";
-// import pic from "../img/pic.avif";
 import { useNavigate } from 'react-router-dom';
 
 const Register = () => {
@@ -13,14 +12,13 @@ const Register = () => {
   const [esMiembro, setesMiembro] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [qrcode, setQRCode] = useState('');
   const [error, setError] = useState('');
-  const [loading, setLoading] = useState(false); // Nuevo estado de carga
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   const handleRegister = async (e) => {
     e.preventDefault();
-    setLoading(true); // Activar el estado de carga
+    setLoading(true);
 
     try {
       const response = await axios.post('http://localhost:3001/api/administradores/', {
@@ -34,18 +32,23 @@ const Register = () => {
         esMiembro
       });
 
-      setQRCode(response.data.qrcode);
-      setError('');
+      // Limpiar los campos
       setName('');
+      setApellido('');
       setEmail('');
       setPassword('');
-      setLoading(false); // Desactivar el estado de carga
+      setSexo('Seleccionar');
+      setCelular('');
+      setfechaN('');
+      setesMiembro(false);
+      setError('');
 
+      // Navegar a la página de login
       setTimeout(() => {
         navigate('/login');
       }, 2000);
     } catch (error) {
-      setLoading(false); // Desactivar el estado de carga
+      setLoading(false);
       setError('Error al registrar. Verifica los datos e intenta nuevamente.');
       console.error('Error al registrar:', error);
     }
@@ -149,7 +152,6 @@ const Register = () => {
                   />
                   <label htmlFor='check'>¿Eres miembro de la iglesia?</label>
                 </div>
-
                 <p className='label-miembro'>{esMiembro ? 'Sí, soy miembro de la iglesia.' : 'No, no soy miembro de la iglesia.'}</p>
               </div>
             </div>
@@ -159,12 +161,6 @@ const Register = () => {
           </form>
 
           {error && <p className="error-message">{error}</p>}
-          {qrcode && (
-            <div>
-              <h3>Escanea este código QR con tu aplicación de autenticación</h3>
-              <img src={qrcode} alt="Código QR de 2FA" />
-            </div>
-          )}
         </div>
       </div>
     </section>

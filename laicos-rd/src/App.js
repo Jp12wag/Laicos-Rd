@@ -4,7 +4,6 @@ import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-d
 import Register from './components/Register';
 import Login from './components/Login';
 import AdminDashboard from './components/AdminDashboard';
-import UserDashboard from './components/UserDashboard';
 import RequestResetPassword from './components/RequestResetPassword';
 import ResetPassword from './components/ResetPassword';
 import Perfil from './components/Perfil';
@@ -46,7 +45,7 @@ const App = () => {
           element={
             <PrivateRoute>
               {/* Si el usuario es administrador, redirige al AdminDashboard, si no, al UserDashboard */}
-              {userRole === 'Administrador' ? <AdminDashboard /> : <UserDashboard />}
+              {<AdminDashboard />}
             </PrivateRoute>
           } 
         />

@@ -12,7 +12,7 @@ const Login = () => {
   const [error, setError] = useState('');
   const [show2FA, setShow2FA] = useState(false);
   const [administradorId, setAdminId] = useState(null);
- 
+
   const navigate = useNavigate();
 
   const bienvenida = () => {
@@ -26,27 +26,24 @@ const Login = () => {
     }
   };
 
-
   useEffect(() => {
     const twoFaVerified = Cookies.get('twoFactorVerified');
+    const isTwoFaEnabled = Cookies.get('isTwoFaEnabled') === 'true';
     const authToken = Cookies.get('authToken');
   
-
-    // Verifica si el usuario ha sido deslogueado
     if (!authToken) {
-      setShow2FA(false); // Muestra el formulario de inicio de sesión
-      return; // Salir del efecto si el usuario no tiene token
+      setShow2FA(false);
+      return;
     }
-    // Verificar si el usuario ya está verificado en 2FA y tiene un token de autenticación
-    if (twoFaVerified === 'true' && authToken) {
-      navigate('/dashboard'); // Redirige si ambos son verdaderos
+  
+    if (isTwoFaEnabled && twoFaVerified === 'true' && authToken) {
+      navigate('/dashboard');
+    } else if (isTwoFaEnabled) {
+      setShow2FA(twoFaVerified !== 'true');
     } else {
-      setShow2FA(twoFaVerified !== 'true'); // Muestra el formulario de 2FA si no ha sido verificado
+      navigate('/dashboard');  // Omitir el 2FA si está deshabilitado
     }
   }, [navigate]);
-
-
-
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -56,16 +53,16 @@ const Login = () => {
         password
       });
 
-     
+      // Comprueba si se requiere 2FA
       if (response.data.twoFactorRequired) {
-     
-        setAdminId(response.data.administrador._id); // Almacena el ID del usuario
+        setAdminId(response.data.administradorId); // Almacena el ID del usuario
         setError('Por favor, ingrese el código 2FA enviado a su correo.');
         setShow2FA(true); // Mostrar formulario 2FA
       } else {
-        Cookies.set('authToken', response.data.token, { expires: 7 ,secure: true, sameSite: 'Strict' });
+        // Guardar datos en cookies
+        Cookies.set('authToken', response.data.token, { expires: 7, secure: true, sameSite: 'Strict' });
         Cookies.set('userRole', response.data.administrador.rolUsuario, { expires: 7 });
-        Cookies.set('twoFactorVerified', 'false', { expires: 7 ,secure: true, sameSite: 'Strict'});
+        Cookies.set('twoFactorVerified', 'false', { expires: 7, secure: true, sameSite: 'Strict' });
         Cookies.set('IdUser', response.data.administrador._id, { expires: 7, secure: true, sameSite: 'Strict' });
 
         // Limpiar los campos
@@ -91,13 +88,11 @@ const Login = () => {
       });
 
       const { token: authToken, administrador } = response.data;
-      Cookies.set('authToken', authToken, { expires: 7 ,secure: true, sameSite: 'Strict'  });
-      Cookies.set('userRole', administrador.rolUsuario, { expires: 7,secure: true, sameSite: 'Strict'  });
-      Cookies.set('twoFactorVerified', 'true', { expires: 7 ,secure: true, sameSite: 'Strict'  });
-      Cookies.set('IdUser', response.data.administrador._id, { expires: 7 ,secure: true, sameSite: 'Strict' });
-     
-      // Verificar si es miembro y navegar a la ruta correspondiente
-      //await conexionMiembros(); 
+      Cookies.set('authToken', authToken, { expires: 7, secure: true, sameSite: 'Strict' });
+      Cookies.set('userRole', administrador.rolUsuario, { expires: 7, secure: true, sameSite: 'Strict' });
+      Cookies.set('twoFactorVerified', 'true', { expires: 7, secure: true, sameSite: 'Strict' });
+      Cookies.set('IdUser', administrador._id, { expires: 7, secure: true, sameSite: 'Strict' });
+
       navigate('/dashboard'); // Redirigir al dashboard si es miembro
     } catch (error) {
       const errorMessage = error.response?.data?.message || 'Ocurrió un error al verificar el código 2FA.';
@@ -106,7 +101,6 @@ const Login = () => {
     }
   };
 
-  
   return (
     <section className="login-contenedor d-flex justify-content-between shadow-lg rounded-3 overflow-hidden">
       <div className="imagen-login">

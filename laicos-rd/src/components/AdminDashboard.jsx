@@ -6,20 +6,21 @@ import axios from 'axios';
 import Modal from 'react-modal';
 import Header from './Header';
 import Feed from './feed';
-import AdministradoresList from './AdministradoresList'; 
+import AdministradoresList from './AdministradoresList';
 import ActividadesList from './ActividadesList';
 import Parroquias from './Parroquia/ParroquiaList';
 import Diocesis from './Diocesis/DiocesisList';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser, faClipboardList, faChartPie, faChartArea } from '@fortawesome/free-solid-svg-icons';
 import { FiBarChart } from 'react-icons/fi';
+import SecuritySettings from './SecuritySettings';
 
 Modal.setAppElement('#root');
 
 const AdminDashboard = () => {
-  const userRole = Cookies.get('userRole'); 
+  const userRole = Cookies.get('userRole');
   const [administradores, setAdministradores] = useState([]);
-  const [modalIsOpen, setModalIsOpen] = useState(false); 
+  const [modalIsOpen, setModalIsOpen] = useState(false);
   const [currentAdmin, setCurrentAdmin] = useState({
     nombre: '',
     apellido: '',
@@ -32,7 +33,7 @@ const AdminDashboard = () => {
     rolUsuario: 'miembro',
   });
 
-  const [activeComponent, setActiveComponent] = useState('feed'); 
+  const [activeComponent, setActiveComponent] = useState('feed');
   const navigate = useNavigate();
   const authToken = Cookies.get('authToken');
   const twoFaVerified = Cookies.get('twoFactorVerified');
@@ -88,7 +89,7 @@ const AdminDashboard = () => {
           Authorization: `Bearer ${authToken}`,
         },
       });
-      obtenerAdministradores(); 
+      obtenerAdministradores();
     } catch (error) {
       console.error('Error al eliminar administrador:', error);
     }
@@ -140,6 +141,7 @@ const AdminDashboard = () => {
           <a href="#" onClick={() => handleComponentChange('Actividades')}>
             <FontAwesomeIcon icon={faChartPie} /> Actividades
           </a>
+          
           {userRole === 'Administrador' && (
             <>
               <a href="#" onClick={() => handleComponentChange('Administradores')}>
@@ -151,8 +153,12 @@ const AdminDashboard = () => {
               <a href="#" onClick={() => handleComponentChange('Diocesis')}>
                 <FontAwesomeIcon icon={FiBarChart} /> Diocesis
               </a>
+              
             </>
           )}
+          <a href="#" onClick={() => handleComponentChange('security')}>
+                Configuración de Seguridad
+              </a>
         </div>
 
         <div className="content">
@@ -167,6 +173,7 @@ const AdminDashboard = () => {
           )}
           {activeComponent === 'Parroquias' && userRole === 'Administrador' && <Parroquias />}
           {activeComponent === 'Diocesis' && userRole === 'Administrador' && <Diocesis />}
+          {activeComponent === 'security' && <SecuritySettings />}
         </div>
 
         {/* Modal para añadir o editar administradores */}

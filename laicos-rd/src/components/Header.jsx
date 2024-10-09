@@ -18,6 +18,7 @@ const Header = () => {
     Cookies.remove('userRole');
     Cookies.remove('twoFactorVerified');
     Cookies.remove('IdUser');
+    Cookies.remove('isTwoFaEnabled');
   };
 
   const toggleMenu = () => {
