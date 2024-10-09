@@ -29,6 +29,7 @@ const EditProfile = () => {
     const [loading, setLoading] = useState(true);
     const authToken = Cookies.get('authToken');
     const userId = Cookies.get('IdUser');
+    const userRole = Cookies.get('userRole');
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -53,6 +54,7 @@ const EditProfile = () => {
                         setMiembro(miembroResponse.data);
                         // Asignar la diócesis y parroquia correspondientes
                         setSelectedDiocesis(miembroResponse.data.Parroquia?.diocesis || '');
+                       
                     }
                     
                     // Obtener diócesis
@@ -62,7 +64,7 @@ const EditProfile = () => {
                         },
                     });
                     setDiocesis(diocesisResponse.data);
-
+                    console.log(miembroResponse.data.Parroquia?.diocesis);
                     // Obtener parroquias de la diócesis del miembro
                     if (miembroResponse.data.Parroquia) {
                         const parroquiasData = await getParroquiasByDiocesis(miembroResponse.data.Parroquia.diocesis);
@@ -174,7 +176,7 @@ const EditProfile = () => {
             <h1>Perfil</h1>
             {renderProfileImage()}
             <div className="contendor">
-                <h2>Administración</h2>
+             <h2> {userRole }  </h2>
                 <div className="section">
                     <form onSubmit={handleSubmit}>
                         <input

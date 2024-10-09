@@ -39,26 +39,19 @@ const App = () => {
         <Route path="/Reset" element={<RequestResetPassword />} />
         <Route path="/Reset-password/:token" element={<ResetPassword />} />
         <Route path="/sessions" element={<SessionsPage />} />
+        <Route path="/Perfil" element={<Perfil/>}/>
         {/* Rutas protegidas */}
-        <Route 
-          path="/Dashboard" 
+        <Route
+          path="/Dashboard"
           element={
             <PrivateRoute>
               {/* Si el usuario es administrador, redirige al AdminDashboard, si no, al UserDashboard */}
               {<AdminDashboard />}
             </PrivateRoute>
-          } 
+          }
         />
 
-        <Route 
-          path="/Perfil" 
-          element={
-            <PrivateRoute>
-              {/* Si no está autenticado, redirige al login */}
-              {authToken ? <Perfil /> : <Navigate to="/Login" />}
-            </PrivateRoute>
-          } 
-        />
+        <Route path="/Perfil"/>
 
         {/* Redirección predeterminada */}
         <Route path="*" element={<Navigate to="/Login" />} />

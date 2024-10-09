@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import {  useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import '../css/Header.css';
 import { FaBell, FaSearch, FaCaretDown, FaUser, FaCog, FaSignOutAlt } from 'react-icons/fa';
 import Cookies from 'js-cookie';
 import axios from 'axios';
+import Modal from '../components/Modal/modalNotificacion'; // Asegúrate de importar el componente Modal
 
 const Header = () => {
   const [showMenu, setShowMenu] = useState(false);
@@ -12,7 +13,8 @@ const Header = () => {
   const userId = Cookies.get('IdUser');
   const authToken = Cookies.get('authToken');
   const userRole = Cookies.get('userRole');
-
+  const [notificaciones, setShowNotificaciones] = useState([]);
+  const [showModal, setShowModal] = useState(false);
   const clearCookies = () => {
     Cookies.remove('authToken');
     Cookies.remove('userRole');
@@ -20,14 +22,46 @@ const Header = () => {
     Cookies.remove('IdUser');
     Cookies.remove('isTwoFaEnabled');
   };
+  const handleClickOutside = (event) => {
+    if (!event.target.closest('.profile-container')) {
+      setShowMenu(false);
+    }
+    if (!event.target.closest('.notification-container')) {
+      setShowModal(false); // Cierra el modal si se hace clic fuera de él
+    }
+  };
+  // Función para obtener notificaciones
+  const obtenerNotificaciones = async () => {
+    if (!authToken) return;
+
+    try {
+      const response = await axios.get(`http://localhost:3001/api/notificaciones/${userId}`, {
+        headers: {
+          Authorization: `Bearer ${authToken}`,
+        },
+      });
+
+      setShowNotificaciones(response.data);
+    } catch (error) {
+      console.error("Error al obtener notificaciones:", error);
+    }
+  };
+
+  useEffect(() => {
+    obtenerNotificaciones();
+  }, [authToken]);
 
   const toggleMenu = () => {
     setShowMenu((prevState) => !prevState);
   };
+  const toggleNotificaciones = () => {
+    setShowModal((prevState) => !prevState); // Abre o cierra el modal
+    console.log(notificaciones); // Para verificar las notificaciones
+  };
 
   const handleLogout = async () => {
-  clearCookies();
-   navigate('/login');
+    clearCookies();
+    navigate('/login');
     try {
       await axios.post('http://localhost:3001/api/administradores/logout', {}, {
         headers: {
@@ -41,12 +75,12 @@ const Header = () => {
       console.error("Error al cerrar sesión:", error);
     }
   };
- 
+
   const obtenerUsuario = async () => {
     if (!authToken) {
       console.log("Token no encontrado. Redirigiendo al login...");
       navigate('/login');
-      return; 
+      return;
     }
 
     if (!userId) return; // Asegúrate de que userId esté definido
@@ -89,14 +123,19 @@ const Header = () => {
     }, 60000); // Verifica cada 60 segundosz
 
     return () => clearInterval(checkAuthToken);
-   
-  }, [userId]); 
+
+  }, [userId]);
 
   return (
     <header>
       <nav>
         <ul>
-          <li><FaBell className="nav-icon" title="Notificaciones" /></li>
+          <li className="notification-container">
+            <FaBell className="nav-icon" title="Notificaciones" onClick={toggleNotificaciones} />
+            {notificaciones.length > 0 && (
+              <span className="notification-badge">{notificaciones.length}</span>
+            )}
+          </li>
           <li><FaSearch className="nav-icon" title="Buscar" /></li>
           <li className="profile-container">
             <FaUser className="profile-pic" onClick={toggleMenu} />
@@ -121,7 +160,7 @@ const Header = () => {
                   <li>No se encontraron datos de usuario.</li>
                 )}
                 <li>
-                  <button onClick={() => navigate("/perfil")} className="dropdown-button">
+                  <button onClick={() => navigate("/Perfil")} className="dropdown-button">
                     <FaCog /> Mi Perfil
                   </button>
                 </li>
@@ -135,6 +174,7 @@ const Header = () => {
           </li>
         </ul>
       </nav>
+      <Modal isOpen={showModal} onClose={toggleNotificaciones} notifications={notificaciones} />
     </header>
   );
 };

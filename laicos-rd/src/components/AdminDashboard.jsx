@@ -25,7 +25,6 @@ const AdminDashboard = () => {
     nombre: '',
     apellido: '',
     email: '',
-    password: '',
     sexo: 'Seleccionar',
     celular: '',
     nacimiento: '',
@@ -210,16 +209,6 @@ const AdminDashboard = () => {
                 value={currentAdmin.email}
                 onChange={handleInputChange}
                 required
-              />
-            </label>
-            <label>
-              Contraseña:
-              <input
-                type="password"
-                name="password"
-                value={currentAdmin.password}
-                onChange={handleInputChange}
-                required={!currentAdmin._id} // Solo requerido si es nuevo
               />
             </label>
             <label>
