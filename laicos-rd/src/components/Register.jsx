@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import Swal from 'sweetalert2'; // Importa SweetAlert
 import "../css/registro.css";
 import { useNavigate } from 'react-router-dom';
 
@@ -8,17 +9,37 @@ const Register = () => {
   const [apellido, setApellido] = useState('');
   const [sexo, setSexo] = useState('Seleccionar');
   const [celular, setCelular] = useState('');
-  const [fechaN, setfechaN] = useState('');
-  const [esMiembro, setesMiembro] = useState(false);
+  const [fechaN, setFechaN] = useState('');
+  const [esMiembro, setEsMiembro] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   const handleRegister = async (e) => {
     e.preventDefault();
     setLoading(true);
+
+    // Validaciones
+    if (!isValidPhone(celular)) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: 'El número de teléfono no tiene un formato válido.'
+      });
+      setLoading(false);
+      return;
+    }
+
+    if (!isAdult(fechaN)) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: 'Debes tener al menos 18 años.'
+      });
+      setLoading(false);
+      return;
+    }
 
     try {
       const response = await axios.post('http://localhost:3001/api/administradores/', {
@@ -39,9 +60,8 @@ const Register = () => {
       setPassword('');
       setSexo('Seleccionar');
       setCelular('');
-      setfechaN('');
-      setesMiembro(false);
-      setError('');
+      setFechaN('');
+      setEsMiembro(false);
 
       // Navegar a la página de login
       setTimeout(() => {
@@ -49,9 +69,31 @@ const Register = () => {
       }, 2000);
     } catch (error) {
       setLoading(false);
-      setError('Error al registrar. Verifica los datos e intenta nuevamente.');
+
+      // Manejar el error y mostrarlo en un SweetAlert
+      const errorMessage = error.response?.data?.errmsg || 'Error al registrar. Verifica los datos e intenta nuevamente.';
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: errorMessage
+      });
       console.error('Error al registrar:', error);
     }
+  };
+
+  const isValidPhone = (phone) => {
+    const phonePattern = /^[0-9]{10}$/; // Formato: 10 dígitos
+    return phonePattern.test(phone);
+  };
+
+  const isAdult = (date) => {
+    const today = new Date();
+    const birthDate = new Date(date);
+    const age = today.getFullYear() - birthDate.getFullYear();
+    const monthDifference = today.getMonth() - birthDate.getMonth();
+    
+    // Verifica si es mayor de 18 años
+    return age > 18 || (age === 18 && monthDifference > 0) || (age === 18 && monthDifference === 0 && today.getDate() >= birthDate.getDate());
   };
 
   return (
@@ -138,7 +180,7 @@ const Register = () => {
                     id="fechaNacimiento"
                     type="date"
                     value={fechaN}
-                    onChange={(e) => setfechaN(e.target.value)}
+                    onChange={(e) => setFechaN(e.target.value)}
                     required
                   />
                 </div>
@@ -148,7 +190,7 @@ const Register = () => {
                     id='check'
                     type="checkbox"
                     checked={esMiembro}
-                    onChange={(e) => setesMiembro(e.target.checked)}
+                    onChange={(e) => setEsMiembro(e.target.checked)}
                   />
                   <label htmlFor='check'>¿Eres miembro de la iglesia?</label>
                 </div>
@@ -159,8 +201,6 @@ const Register = () => {
               {loading ? 'Registrando...' : 'Registrarse'}
             </button>
           </form>
-
-          {error && <p className="error-message">{error}</p>}
         </div>
       </div>
     </section>

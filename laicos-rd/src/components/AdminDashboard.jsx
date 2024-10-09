@@ -36,6 +36,7 @@ const AdminDashboard = () => {
   const [activeComponent, setActiveComponent] = useState('feed');
   const navigate = useNavigate();
   const authToken = Cookies.get('authToken');
+ 
   const twoFaVerified = Cookies.get('twoFactorVerified');
 
   useEffect(() => {
@@ -134,7 +135,8 @@ const AdminDashboard = () => {
       <Header />
       <div className="admin-dashboard">
         <div className="sidebar">
-          <h2>Administración</h2>
+        {userRole==='Administrador' ? (<h2>{userRole}</h2>
+      ): (<h2>{userRole}</h2>)}
           <a href="#" onClick={() => handleComponentChange('feed')}>
             <FontAwesomeIcon icon={faClipboardList} /> Feed
           </a>

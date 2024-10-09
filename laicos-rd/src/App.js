@@ -55,7 +55,7 @@ const App = () => {
           element={
             <PrivateRoute>
               {/* Si no está autenticado, redirige al login */}
-              {userRole ? <Perfil /> : <Navigate to="/Login" />}
+              {authToken ? <Perfil /> : <Navigate to="/Login" />}
             </PrivateRoute>
           } 
         />
