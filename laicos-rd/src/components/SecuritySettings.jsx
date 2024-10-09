@@ -3,23 +3,24 @@ import Cookies from 'js-cookie';
 import axios from 'axios';
 
 const SecuritySettings = () => {
-  const [isTwoFaEnabled, setIsTwoFaEnabled] = useState(false);
+  const [isTwoFaEnabled, setIsTwoFaEnabled] = useState(false); // Estado por defecto es deshabilitado
   const authToken = Cookies.get('authToken');
+  const TwoFaEnabled = Cookies.get('isTwoFaEnabled')===true;
+
   useEffect(() => {
-    // Obtener la configuración desde las cookies o el servidor
-    const storedTwoFa = Cookies.get('isTwoFaEnabled');
-    setIsTwoFaEnabled(storedTwoFa === 'true');
-  }, []);
+    // Obtener la configuración desde el servidor o cookies cuando el componente se monta
+        setIsTwoFaEnabled(TwoFaEnabled);
+  }, [authToken]);
 
   const handleToggleTwoFa = async () => {
     const newValue = !isTwoFaEnabled;
     setIsTwoFaEnabled(newValue);
-  
+
     // Guardar el nuevo estado en las cookies
     Cookies.set('isTwoFaEnabled', newValue, { expires: 7, secure: true, sameSite: 'Strict' });
-  
+
     try {
-      // Enviar la configuración al servidor para guardarla
+      // Enviar la configuración actualizada al servidor
       await axios.post('http://localhost:3001/api/administradores/config', 
         {
           isTwoFaEnabled: newValue
@@ -41,7 +42,7 @@ const SecuritySettings = () => {
       <label>
         <input
           type="checkbox"
-          checked={isTwoFaEnabled ? true : false}
+          checked={isTwoFaEnabled}
           onChange={handleToggleTwoFa}
         />
         Habilitar autenticación en dos pasos (2FA)

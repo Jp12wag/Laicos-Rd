@@ -127,6 +127,7 @@ const Feed = () => {
       console.error('Error al editar la publicación:', error);
     }
   };
+  
 
   useEffect(() => {
     obtenerPosts();

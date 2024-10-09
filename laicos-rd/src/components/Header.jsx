@@ -60,7 +60,6 @@ const Header = () => {
   };
 
   const handleLogout = async () => {
-    clearCookies();
     navigate('/login');
     try {
       await axios.post('http://localhost:3001/api/administradores/logout', {}, {
@@ -86,7 +85,6 @@ const Header = () => {
     if (!userId) return; // Asegúrate de que userId esté definido
 
     try {
-      console.log(authToken);
       const response = await axios.get(`http://localhost:3001/api/administradores/${userId}`, {
         headers: {
           Authorization: `Bearer ${authToken}`,

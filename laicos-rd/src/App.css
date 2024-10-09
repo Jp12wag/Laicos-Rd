@@ -1,6 +1,120 @@
-body {
-  background-color: #7A5BDC;
+:root {
+  --e-global-color-primary: #009900;
+  --e-global-color-secondary: rgb(193, 222, 190);
+  --e-global-color-text: #FFCC00;
+  --e-global-color-accent: #61CE70;
+  --e-global-color-1d518fba: rgba(96, 190, 87, 0.921);
+  --e-global-color-bbe24f8: #009900;
+  --e-global-color-3401455: #C42021;
+  --e-global-color-07899f5: #003399;
+  --e-global-color-2c73a8d: #2C606F;
+  --e-global-color-0b8300f: #5CBDB8;
+  --e-global-color-fd79178: #DCB000;
+  --e-global-color-e836084: #BA9400;
+  --e-global-color-0f808e7: #613811;
+  --e-global-color-3c6f013: #C42021;
+
+  --e-global-typography-primary-font-family: "Open Sans", sans-serif;
+  --e-global-typography-primary-font-size: 42px;
+  --e-global-typography-primary-font-weight: 700;
+  --e-global-typography-primary-text-transform: uppercase;
+
+  --e-global-typography-accent-font-family: "Open Sans", sans-serif;
+  --e-global-typography-accent-font-size: 32px;
+  --e-global-typography-accent-font-weight: 700;
+  --e-global-typography-accent-text-transform: uppercase;
+
+  --e-global-typography-secondary-font-family: "Open Sans", sans-serif;
+  --e-global-typography-secondary-font-size: 27px;
+  --e-global-typography-secondary-font-weight: 700;
+  --e-global-typography-secondary-text-transform: uppercase;
+
+  --e-global-typography-text-font-family: "Montserrat", sans-serif;
+  --e-global-typography-text-font-size: 16px;
+  --e-global-typography-text-font-weight: 400;
+
+  --e-global-typography-2c5a40d-font-family: "Montserrat", sans-serif;
+  --e-global-typography-2c5a40d-font-size: 12px;
+
+  --e-global-typography-bc5d6d3-font-size: 22px;
+
+  --e-global-typography-5813241-font-family: "Montserrat", sans-serif;
+  --e-global-typography-5813241-font-size: 12px;
+  --e-global-typography-5813241-font-weight: 600;
+  --e-global-typography-5813241-text-transform: uppercase;
 }
+
+/* Aplicando las variables en los elementos */
+body {
+  font-family: "Montserrat", sans-serif;
+  color: var(--e-global-color-primary);
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--e-global-typography-primary-font-family);
+  font-weight: var(--e-global-typography-primary-font-weight);
+  text-transform: var(--e-global-typography-primary-text-transform);
+}
+
+h1 {
+  font-size: var(--e-global-typography-primary-font-size);
+}
+
+h2 {
+  font-size: var(--e-global-typography-accent-font-size);
+}
+
+h3 {
+  font-size: var(--e-global-typography-secondary-font-size);
+}
+
+p {
+  font-family: var(--e-global-typography-text-font-family);
+  font-size: var(--e-global-typography-text-font-size);
+  font-weight: var(--e-global-typography-text-font-weight);
+}
+
+.small-text {
+  font-size: var(--e-global-typography-2c5a40d-font-size);
+}
+
+.accent-text {
+  font-family: var(--e-global-typography-accent-font-family);
+  font-weight: var(--e-global-typography-accent-font-weight);
+  text-transform: var(--e-global-typography-accent-text-transform);
+}
+
+.button-text {
+  font-size: var(--e-global-typography-5813241-font-size);
+  font-weight: var(--e-global-typography-5813241-font-weight);
+  text-transform: var(--e-global-typography-5813241-text-transform);
+}
+
+/* Colores */
+.primary-color {
+  color: var(--e-global-color-primary);
+}
+
+.secondary-color {
+  color: var(--e-global-color-secondary);
+}
+
+.accent-color {
+  color: var(--e-global-color-accent);
+}
+
+.background-primary {
+  background-color: var(--e-global-color-primary);
+}
+
+.background-secondary {
+  background-color: var(--e-global-color-secondary);
+}
+
+.background-accent {
+  background-color: var(--e-global-color-accent);
+}
+
 
 .App {
   height: 100vh;

@@ -1,5 +1,5 @@
 import "../css/Login.css";
-import pic from "../img/pic.avif";
+import pic from "../img/logo.png";
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
@@ -107,14 +107,14 @@ const Login = () => {
         <img src={pic} alt="" className="img-fluid" />
       </div>
 
-      <div className="bg-white p-4">
+      <div className="bg-white p-3">
         <p className="fs-5">Hola!</p>
         <p className="fs-5">{bienvenida()}</p>
 
-        <form className="formulario-login d-flex flex-column px-5 py-4" onSubmit={show2FA ? handle2FAVerification : handleLogin}>
+        <form className="formulario-login d-flex flex-column px-4 py-4" onSubmit={show2FA ? handle2FAVerification : handleLogin}>
           <h2 className="text-center fs-5">Login your account</h2>
 
-          <input className="inputName" type="email" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} required />
+          <input className="inputName fs-10 bg-white" type="email" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} required />
           <input className="inputName" type="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} required />
 
           {show2FA && (

@@ -134,8 +134,8 @@ const AdminDashboard = () => {
       <Header />
       <div className="admin-dashboard">
         <div className="sidebar">
-        {userRole==='Administrador' ? (<h2>{userRole}</h2>
-      ): (<h2>{userRole}</h2>)}
+        {userRole==='Administrador' ? (<h2  className='tituloSider'>{userRole}</h2>
+      ): (<h2 className='tituloSider'>{userRole}</h2>)}
           <a href="#" onClick={() => handleComponentChange('feed')}>
             <FontAwesomeIcon icon={faClipboardList} /> Feed
           </a>

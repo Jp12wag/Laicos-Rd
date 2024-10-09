@@ -1,15 +1,23 @@
 /* css/Sidebar.css */
-
+.admin-dashboard{
+  height: auto;
+}
 .sidebar {
-  width: 350px; /* Definimos un ancho fijo para el sidebar */
-  background-color: #9e3232;
+ 
+  background-color: #009900;
   padding: 10px;
+  padding-top: 10px;
   position: fixed; /* Hace que el sidebar se quede fijo */
   top: 0;
   bottom: 0;
   left: 0;
+
 }
   
+.tituloSider{
+ color: white;
+}
+
   .sidebar a {
     color: white;
     text-decoration: none;
@@ -20,7 +28,7 @@
   }
   
   .sidebar a:hover {
-    background-color: #34495e;
+    background-color: var(--e-global-color-text);
   }
   
   .content {
@@ -35,6 +43,7 @@
     margin-bottom: 20px;
     font-size: 24px;
     color: #333;
+    
   }
   
   table {
@@ -57,7 +66,7 @@
   tr:hover {
     background-color: #f1f1f1; /* Color al pasar el mouse */
   }
-  
+ 
   button {
     padding: 8px 12px;
     margin-right: 5px;
