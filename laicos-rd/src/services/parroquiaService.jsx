@@ -33,6 +33,15 @@ export const getParroquiasByDiocesis = async (diocesisId) => {
     }
 };
 
+export const getParroquiasById = async (Id) => {
+    try {
+        const response = await axios.get(`http://localhost:3001/api/parroquia/${Id}`);
+        return response.data; // Asegúrate de que el backend devuelve las parroquias en un arreglo
+    } catch (error) {
+        console.error('Error al obtener las parroquias:', error);
+        throw error;
+    }
+};
 // Eliminar una parroquia
 export const deleteParroquia = async (parroquiaId) => {
     try {
