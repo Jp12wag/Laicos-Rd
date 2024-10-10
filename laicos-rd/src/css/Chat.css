@@ -1,0 +1,97 @@
+.chat-container {
+  display: flex;
+  flex-direction: column;
+  max-width: 500px;
+  margin: 0 auto;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  padding: 10px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Sombra sutil para darle profundidad */
+}
+
+.usuarios-conectados {
+  margin-bottom: 10px;
+}
+
+.mensajes {
+  height: 400px;
+  overflow-y: auto; /* El scrollbar aparece solo cuando es necesario */
+  border: 1px solid #ccc;
+  padding: 10px;
+  margin-bottom: 10px;
+  background-color: #f9f9f9; /* Color de fondo para los mensajes */
+}
+
+.mensaje {
+  margin-bottom: 10px;
+}
+
+.mensaje-enviado {
+  text-align: right; /* Alinear a la derecha los mensajes enviados */
+  background-color: #d4edda; /* Color de fondo para los mensajes enviados */
+  padding: 8px; /* Aumenté el padding para un mejor aspecto */
+  border-radius: 5px;
+  max-width: 80%; /* Limitar el ancho máximo del mensaje enviado */
+  margin-left: auto; /* Alinear a la derecha */
+}
+
+.mensaje-recibido {
+  text-align: left; /* Alinear a la izquierda los mensajes recibidos */
+  background-color: #f8d7da; /* Color de fondo para los mensajes recibidos */
+  padding: 8px; /* Aumenté el padding para un mejor aspecto */
+  border-radius: 5px;
+  max-width: 80%; /* Limitar el ancho máximo del mensaje recibido */
+  margin-right: auto; /* Alinear a la izquierda */
+}
+
+/* Agrupando estilos comunes para formularios y botones */
+.chat-form {
+  display: flex;
+  flex-direction: column;
+}
+
+.chat-form input {
+  flex: 1;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  margin-bottom: 10px; /* Espaciado entre el input y el botón */
+  transition: border-color 0.3s; /* Transición suave para el borde */
+}
+
+.chat-form input:focus {
+  border-color: #007bff; /* Cambiar color del borde al enfocar */
+}
+
+.chat-form button,
+.usuario-boton {
+  padding: 10px 20px;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-bottom: 5px; /* Espaciado entre botones */
+}
+
+.chat-form button {
+  background-color: #28a745;
+  color: white;
+  border: none;
+  transition: background-color 0.3s; /* Transición suave para el fondo */
+}
+
+.chat-form button:hover {
+  background-color: #218838;
+}
+
+.usuario-boton {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  text-align: left; /* Alinear texto a la izquierda */
+  display: block; /* Hacer que el botón ocupe todo el ancho */
+  width: 100%; /* Ancho completo */
+  transition: background-color 0.3s; /* Transición suave para el fondo */
+}
+
+.usuario-boton:hover {
+  background-color: #0056b3;
+}

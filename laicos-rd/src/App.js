@@ -7,6 +7,7 @@ import AdminDashboard from './components/AdminDashboard';
 import RequestResetPassword from './components/RequestResetPassword';
 import ResetPassword from './components/ResetPassword';
 import Perfil from './components/Perfil';
+import Chat from './components/Chat';
 import Cookies from 'js-cookie';
 import PrivateRoute from './components/PrivateRoute';
 import SessionsPage from './components/sessiones/SessionsPage';
@@ -56,6 +57,15 @@ const App = () => {
             <PrivateRoute>
               {/* Si no está autenticado, redirige al login */}
               {authToken ? <Perfil /> : <Navigate to="/Login" />}
+            </PrivateRoute>
+          } 
+        />
+        
+        <Route 
+          path="/Chat" 
+          element={
+            <PrivateRoute>
+              <Chat /> {/* Componente de chat */}
             </PrivateRoute>
           } 
         />
