@@ -1,0 +1,85 @@
+/* Contenedor general para la lista de arquidiócesis */
+.archdiocese-list-container {
+    padding: 20px;
+    background-color: #f9f9f9;
+    max-width: 800px;
+    margin: 0 auto;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    height: 600px;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Título de la lista */
+.archdiocese-list-container h2 {
+    text-align: center;
+    font-size: 24px;    
+    color: #333;
+    margin-bottom: 20px;
+    width: 100%;
+  
+}
+
+/* Lista de arquidiócesis */
+.archdiocese-list {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    height: auto;
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+/* Estilos para cada item de la lista */
+.archdiocese-list li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    margin-bottom: 10px;
+    background-color: #ffffff;
+    border: 1px solid #e0e0e0;
+    border-radius: 4px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    transition: background-color 0.3s ease;
+}
+
+/* Efecto hover en cada item de la lista */
+.archdiocese-list li:hover {
+    background-color: #f1f1f1;
+}
+
+/* Botones de acción en cada item */
+.archdiocese-list button {
+    padding: 8px 12px;
+    font-size: 14px;
+    color: #fff;
+    background-color: #007bff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+/* Botones de eliminación */
+.archdiocese-list button.delete {
+    background-color: #dc3545;
+}
+
+.archdiocese-list button:hover {
+    background-color: #0056b3;
+}
+
+.archdiocese-list button.delete:hover {
+    background-color: #c82333;
+}
+
+/* Alineación de texto en los items */
+.archdiocese-list li span {
+    font-size: 16px;
+    color: #333;
+}

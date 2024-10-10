@@ -1,25 +1,45 @@
-/* Estilos del header */
-header {
-  background-color: #eef1f3;
-  padding: 10px;
-  position: fixed;
+/* src/css/Header.css */
+
+.header {
+  position: fixed; /* Hace que el header se mantenga fijo en la parte superior */
   top: 0;
   width: 100%;
-  z-index: 1000;
+  height: 80px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 20px;  
 }
+
+.header h1 {
+  margin: 0;
+  font-size: 24px;
+}
+
+.header nav a {
+  margin-left: 20px;
+  text-decoration: none;
+}
+
 
 /* Estilos de la navegación */
 nav {
-  display: flex;
   justify-content: flex-end;
   align-items: center;
-  height: 40px;
+  height: 80px;
   width: 100%;
+  color: #009900;
+  background-color: #fff;
+  
 }
 
 .nav-icon {
   margin: 0 15px;
   cursor: pointer;
+
+}
+.tituloSider{
+  color: #fff;
 }
 
 /* Evitar que la lista de navegación ocupe un ancho innecesario */
@@ -31,14 +51,12 @@ ul {
   align-items: center;
   justify-content: flex-end;
   width: auto; /* Ajustar el ancho al contenido */
-  height: 40px;
   overflow: hidden;
 }
 
 li {
   margin-left: 30px;
   white-space: nowrap; /* Evita que los elementos se desborden en varias líneas */
-
 }
 
 
@@ -87,6 +105,8 @@ li {
   width: 100%;
   text-align: left;
   transition: 0.2s;
+ 
+  color: black;
 }
 
 .dropdown-button:hover {
@@ -96,6 +116,7 @@ li {
 .caret-icon {
   cursor: pointer;
   margin-left: 5px;
+
 }
 
 /* Saludo y contenedor de la imagen */
@@ -126,4 +147,7 @@ li {
 .greeting {
   display: flex;
   flex-direction: column;
+}
+@media screen {
+  
 }

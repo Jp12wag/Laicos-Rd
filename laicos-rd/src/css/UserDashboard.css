@@ -1,24 +1,41 @@
+/* src/css/UserDashboard.css */
+
 .user-dashboard {
+  margin-top: 60px; /* Espacio para que el contenido comience después del Header */
   padding: 20px;
-  display: flex;
-  flex-direction: column;
 }
 
-.share-thought {
-  margin-bottom: 20px;
+.admin-dashboard {
+  margin-top: 60px; /* Similar al UserDashboard, ajusta para Admin también */
+  padding: 20px;
 }
 
-.thoughts-feed {
-  margin-top: 20px;
+.content {
+  margin-left: 250px; /* Si tienes un sidebar en el dashboard */
+  padding: 20px;
 }
 
-.thought-item {
-  padding: 10px;
-  border: 1px solid #ddd;
-  margin-bottom: 10px;
-  border-radius: 5px;
+/* Ajusta la barra lateral */
+.sidebar {
+  position: fixed;
+  top: 60px; /* Para que la sidebar no quede debajo del Header */
+  left: 0;
+  width: 250px;
+  height: 100%;
+  background-color: #333;
+  color: white;
+  padding-top: 20px;
+  z-index: 900; /* Asegúrate de que no se superponga al Header */
 }
 
-.chat, .notifications {
-  margin-top: 20px;
+.sidebar a {
+  display: block;
+  padding: 10px 20px;
+  color: white;
+  text-decoration: none;
 }
+
+.sidebar a:hover {
+  background-color: #575757;
+}
+

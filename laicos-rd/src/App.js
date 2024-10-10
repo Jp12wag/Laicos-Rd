@@ -4,36 +4,32 @@ import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-d
 import Register from './components/Register';
 import Login from './components/Login';
 import AdminDashboard from './components/AdminDashboard';
-import UserDashboard from './components/UserDashboard';
 import RequestResetPassword from './components/RequestResetPassword';
 import ResetPassword from './components/ResetPassword';
 import Perfil from './components/Perfil';
 import Cookies from 'js-cookie';
 import PrivateRoute from './components/PrivateRoute';
-import MemberData from './components/MemberData';
+import SessionsPage from './components/sessiones/SessionsPage';
 
 const App = () => {
   const [userRole, setUserRole] = useState(null);
-  const [adminData, setAdminData] = useState(null);
-  const [isMember, setIsMember] = useState(false);
+  const [loading, setLoading] = useState(true); // Añadido para manejar la carga inicial
+  const authToken = Cookies.get('authToken');
+  const role = Cookies.get('userRole');
 
   useEffect(() => {
-    const authToken = Cookies.get('authToken');
-    const role = Cookies.get('userRole');
-    const admin = Cookies.get('adminData');
-    const memberStatus = Cookies.get('isMember') === 'true';
-  
-    // Establecer el estado basado en la existencia de las cookies
+    // Simula la carga para obtener el rol del usuario
     if (authToken) {
-      setUserRole(role); // Almacena el rol del usuario
-      setIsMember(memberStatus); // Establecer isMember
+      setUserRole(role);
+    } else {
+      setUserRole(null);
     }
-   
-    // Establecer adminData si existe
-    if (admin) {
-      setAdminData(JSON.parse(admin)); // Convertir de JSON a objeto
-    }
-  }, [isMember]); // Solo se ejecuta al montar el componente
+    setLoading(false); // Carga terminada
+  }, [authToken, role]); // Dependencias de authToken y role
+
+  if (loading) {
+    return <div>Loading...</div>; // Puedes reemplazar esto con un spinner o una pantalla de carga
+  }
 
   return (
     <Router>
@@ -42,26 +38,20 @@ const App = () => {
         <Route path="/Register" element={<Register />} />
         <Route path="/Reset" element={<RequestResetPassword />} />
         <Route path="/Reset-password/:token" element={<ResetPassword />} />
-
-        {/* Ruta para los datos adicionales del miembro */}
-        <Route path="/member-data" element={
-          <PrivateRoute>
-            {isMember ? <MemberData /> : <Navigate to="/Login" />} {/* Redirigir si no es miembro */}
-          </PrivateRoute>
-        } />
-
+        <Route path="/sessions" element={<SessionsPage />} />
+        <Route path="/Perfil" element={<Perfil/>}/>
         {/* Rutas protegidas */}
-        <Route path="/Dashboard" element={
-          <PrivateRoute>
-            {userRole === 'Administrador' && adminData ? <AdminDashboard /> : <UserDashboard />}
-          </PrivateRoute>
-        } />
+        <Route
+          path="/Dashboard"
+          element={
+            <PrivateRoute>
+              {/* Si el usuario es administrador, redirige al AdminDashboard, si no, al UserDashboard */}
+              {<AdminDashboard />}
+            </PrivateRoute>
+          }
+        />
 
-        <Route path="/Perfil" element={
-          <PrivateRoute>
-            {adminData ? <Perfil /> : <Navigate to="/Login" />} {/* Redirigir si adminData no existe */}
-          </PrivateRoute>
-        } />
+        <Route path="/Perfil"/>
 
         {/* Redirección predeterminada */}
         <Route path="*" element={<Navigate to="/Login" />} />

@@ -1,0 +1,118 @@
+/* src/css/ActividadesList.css */
+
+.actividades-list-container {
+  margin-top: 20px;
+  padding: 20px;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  align-items: center;
+  justify-content: center;
+  display: block;
+}
+
+.actividades-list-title {
+  text-align: center;
+  color: #333;
+  font-size: 2rem;
+  margin-bottom: 30px;
+}
+
+.add-actividad-form {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 20px;
+
+}
+
+.input-actividad {
+  padding: 10px;
+  font-size: 1rem;
+  width: 18%;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+}
+
+.btn-add-actividad {
+  padding: 10px 20px;
+  background-color: #28a745;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.btn-add-actividad:hover {
+  background-color: #218838;
+}
+
+/* Cambiando a un diseño de cuadrícula */
+.actividades-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); /* 300px es el ancho mínimo de la tarjeta */
+  gap: 20px; /* Espacio entre las tarjetas */
+  list-style-type: none;
+  padding: 0;
+  margin: 20px 0;
+  width: 70vw; /* Ajusta según sea necesario */
+  height: auto;
+  font-size: 1.2rem;
+  align-items: stretch;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Estilo de la tarjeta de actividad */
+.actividad-item {
+  background-color: #fff;
+  padding: 15px;
+  border-radius: 8px;
+  box-shadow: 0 1px 6px rgba(0, 0, 0, 0.1);
+  display: flex;
+
+  flex-direction: column; /* Para que los elementos dentro se apilen verticalmente */
+}
+
+.actividad-title {
+  font-size: 1.5rem;
+  color: #007bff;
+  margin-bottom: 10px;
+}
+
+.actividad-descripcion,
+.actividad-fecha,
+.actividad-ubicacion {
+  font-size: 1rem;
+  color: #555;
+  margin-bottom: 5px;
+}
+
+.btn-edit-actividad,
+.btn-delete-actividad {
+  margin-top: auto; /* Empuja los botones hacia abajo */
+  padding: 10px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.btn-edit-actividad {
+  background-color: #ffc107;
+  color: white;
+  width: 100%; /* Aseguramos que ocupen todo el ancho de la tarjeta */
+}
+
+.btn-edit-actividad:hover {
+  background-color: #e0a800;
+}
+
+.btn-delete-actividad {
+  background-color: #dc3545;
+  color: white;
+  width: 100%; /* Aseguramos que ocupen todo el ancho de la tarjeta */
+}
+
+.btn-delete-actividad:hover {
+  background-color: #c82333;
+}

@@ -1,0 +1,56 @@
+.administradores-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+  }
+  
+  .administradores-table th,
+  .administradores-table td {
+    border: 1px solid #ddd;
+    padding: 12px;
+    text-align: left;
+  }
+  
+  .administradores-table th {
+    background-color: #f4f4f4;
+    color: #333;
+  }
+  
+  .administradores-table tr:hover {
+    background-color: #f1f1f1; /* Color de fondo al pasar el mouse */
+  }
+  
+  .add-button {
+    background-color: #28a745;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    margin-bottom: 20px;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: background-color 0.3s;
+  }
+  
+  .add-button:hover {
+    background-color: #218838; /* Color más oscuro al pasar el mouse */
+  }
+  
+  .action-button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    margin-right: 10px;
+    color: #007bff; /* Color del icono */
+    transition: color 0.3s;
+  }
+  
+  .action-button:hover {
+    color: #0056b3; /* Color más oscuro al pasar el mouse */
+  }
+  
+  .no-data {
+    text-align: center;
+    color: #999;
+    font-style: italic;
+  }
+  

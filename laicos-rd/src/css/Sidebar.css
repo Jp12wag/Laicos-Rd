@@ -1,0 +1,88 @@
+/* css/Sidebar.css */
+.admin-dashboard{
+  height: auto;
+}
+.sidebar {
+ 
+  background-color: #009900;
+  padding: 10px;
+  padding-top: 10px;
+  position: fixed; /* Hace que el sidebar se quede fijo */
+  top: 0;
+  bottom: 0;
+  left: 0;
+
+}
+  
+.tituloSider{
+ color: white;
+}
+
+  .sidebar a {
+    color: white;
+    text-decoration: none;
+    padding: 10px;
+    margin: 10px 0;
+    display: block;
+
+  }
+  
+  .sidebar a:hover {
+    background-color: var(--e-global-color-text);
+  }
+  
+  .content {
+    display: flex;
+    margin-left: 350px; /* Asegura que el contenido comience después del sidebar */
+    padding: 20px;
+    flex-grow: 1; /* Hace que el contenido ocupe el espacio restante */
+    overflow-y: none;
+  }
+  
+  h1 {
+    margin-bottom: 20px;
+    font-size: 24px;
+    color: #333;
+    
+  }
+  
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  thead {
+    background-color: #4CAF50; /* Cambia a un color que prefieras */
+    color: white;
+  }
+  
+  th, td {
+    padding: 12px 15px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+  }
+  
+  tr:hover {
+    background-color: #f1f1f1; /* Color al pasar el mouse */
+  }
+ 
+  button {
+    padding: 8px 12px;
+    margin-right: 5px;
+    border: none;
+    border-radius: 5px;
+    color: white;
+    background-color: #007BFF; /* Color de fondo de los botones */
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  button:hover {
+    background-color: #0056b3; /* Color al pasar el mouse sobre el botón */
+  }
+  
+  button:focus {
+    outline: none; /* Quitar el contorno de enfoque */
+  }
+  

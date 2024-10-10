@@ -28,26 +28,26 @@
     padding: 20px; 
 } */
 
-@media (max-width: 768px) {
+/* @media (max-width: 768px) {
     .login-contenedor {
-        width: 90%; /* Ocupa el 90% del ancho de la pantalla en dispositivos más pequeños */
+        width: 90%; 
     }
     
     .formulario-registro {
-        padding: 10px; /* Reduce el padding del formulario */
+        padding: 10px; 
         width: 100%;
     }
 
     .formulario-login input,
     .formulario-login select {
-        font-size: 0.9rem; /* Reduce el tamaño de fuente para entradas */
-        padding: 8px; /* Ajusta el padding de las entradas */
+        font-size: 0.9rem; 
+        padding: 8px; 
     }
 
     .btn {
-        width: 100%; /* Botón ocupa el 100% del ancho */
+        width: 100%; 
     }
-}
+} */
 .formulario-login p, label {
     font-size: 0.9rem; /* Más pequeño */
 }

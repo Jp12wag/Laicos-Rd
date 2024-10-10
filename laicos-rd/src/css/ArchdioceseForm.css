@@ -1,0 +1,76 @@
+/* Estilos generales para el formulario */
+form {
+    display: flex;
+    flex-direction: column;
+    max-width: 400px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #f8f9fa;
+    border: 1px solid #dee2e6;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Estilos para el grupo de formularios */
+.form-group {
+    margin-bottom: 15px;
+}
+
+/* Estilos para las etiquetas */
+label {
+    font-weight: bold;
+    margin-bottom: 5px;
+    display: block;
+    font-size: 14px;
+    color: #495057;
+}
+
+/* Estilos para los inputs */
+input {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ced4da;
+    border-radius: 4px;
+    transition: border-color 0.3s ease;
+}
+
+/* Efecto al enfocar los inputs */
+input:focus {
+    border-color: #007bff;
+    outline: none;
+    box-shadow: 0 0 4px rgba(0, 123, 255, 0.25);
+}
+
+/* Estilos para el botón de envío */
+button {
+    padding: 12px;
+    font-size: 16px;
+    color: #fff;
+    background-color: #007bff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+/* Efecto hover para el botón */
+button:hover {
+    background-color: #0056b3;
+}
+
+/* Estilo para el botón en estado activo */
+button:active {
+    background-color: #004085;
+}
+
+/* Responsivo */
+@media (max-width: 500px) {
+    form {
+        padding: 15px;
+    }
+
+    input, button {
+        font-size: 14px;
+    }
+}

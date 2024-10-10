@@ -4,75 +4,137 @@ import '../css/Header.css';
 import { FaBell, FaSearch, FaCaretDown, FaUser, FaCog, FaSignOutAlt } from 'react-icons/fa';
 import Cookies from 'js-cookie';
 import axios from 'axios';
-
+import Modal from '../components/Modal/modalNotificacion'; // Asegúrate de importar el componente Modal
 
 const Header = () => {
   const [showMenu, setShowMenu] = useState(false);
   const [user, setUser] = useState({});
   const navigate = useNavigate();
+  const userId = Cookies.get('IdUser');
+  const authToken = Cookies.get('authToken');
+  const userRole = Cookies.get('userRole');
+  const [notificaciones, setShowNotificaciones] = useState([]);
+  const [showModal, setShowModal] = useState(false);
   const clearCookies = () => {
     Cookies.remove('authToken');
     Cookies.remove('userRole');
     Cookies.remove('twoFactorVerified');
-    Cookies.remove('adminData'); // Limpiar el nombre del administrador si es necesario
+    Cookies.remove('IdUser');
+    Cookies.remove('isTwoFaEnabled');
   };
-
-
-  const toggleMenu = () => {
-    setShowMenu((prevState) => !prevState); // Función flecha con prevState
-    console.log("Menu state:", !showMenu);
+  const handleClickOutside = (event) => {
+    if (!event.target.closest('.profile-container')) {
+      setShowMenu(false);
+    }
+    if (!event.target.closest('.notification-container')) {
+      setShowModal(false); // Cierra el modal si se hace clic fuera de él
+    }
   };
-  const handleLogout = async () => {
+  // Función para obtener notificaciones
+  const obtenerNotificaciones = async () => {
+    if (!authToken) return;
+
     try {
-      // Hacer una solicitud al servidor para cerrar sesión
-      await axios.post('http://localhost:3001/api/administradores/logout', {}, {
+      const response = await axios.get(`http://localhost:3001/api/notificaciones/${userId}`, {
         headers: {
-          'Authorization': `Bearer ${Cookies.get('authToken')}` // Agregar el token en los headers
-        }
+          Authorization: `Bearer ${authToken}`,
+        },
       });
-      
-      // Limpiar las cookies
-      clearCookies(); // Limpia las cookies
-      navigate('/login'); // Redirige al usuario al formulario de inicio de sesión
+
+      setShowNotificaciones(response.data);
     } catch (error) {
-      console.error("Error al cerrar sesión:", error);
-      // Puedes agregar un manejo de errores adicional aquí
+      console.error("Error al obtener notificaciones:", error);
     }
   };
 
-  // Cerrar el menú si se hace clic fuera
   useEffect(() => {
+    obtenerNotificaciones();
+  }, [authToken]);
+
+  const toggleMenu = () => {
+    setShowMenu((prevState) => !prevState);
+  };
+  const toggleNotificaciones = () => {
+    setShowModal((prevState) => !prevState); // Abre o cierra el modal
+    console.log(notificaciones); // Para verificar las notificaciones
+  };
+
+  const handleLogout = async () => {
+    //clearCookies();
+    
+    try {
+      await axios.post('http://localhost:3001/api/administradores/logout', {}, {
+        headers: {
+          'Authorization': `Bearer ${Cookies.get('authToken')}`
+        }
+      });
+
+      clearCookies();
+      navigate('/login');
+    } catch (error) {
+      console.error("Error al cerrar sesión:", error);
+    }
+  };
+
+  const obtenerUsuario = async () => {
+    if (!authToken) {
+      console.log("Token no encontrado. Redirigiendo al login...");
+      navigate('/login');
+      return;
+    }
+
+    if (!userId) return; // Asegúrate de que userId esté definido
+
+    try {
+      const response = await axios.get(`http://localhost:3001/api/administradores/${userId}`, {
+        headers: {
+          Authorization: `Bearer ${authToken}`,
+        },
+        withCredentials: true,
+      });
+
+      if (response.data) {
+        setUser(response.data);
+      } else {
+        console.log("No se encontraron datos de usuario.");
+      }
+    } catch (error) {
+      console.error("Error al obtener los datos del usuario:", error);
+    }
+  };
+
+  useEffect(() => {
+    if (!authToken || !userRole) {
+      navigate('/login'); // Redirige al login si no hay token o rol
+    } else {
+      obtenerUsuario();
+    }
     const handleClickOutside = (event) => {
       if (!event.target.closest('.profile-container')) {
         setShowMenu(false);
       }
     };
-   
-    const adminData = Cookies.get('adminData');
-  
-    console.log("Datos del admin en cookies:", adminData);
-    if (adminData) {
-      try {
-        const adminDataFromCookies = JSON.parse(Cookies.get('adminData'));
-        setUser(adminDataFromCookies); // Actualiza el estado del usuario
-      } catch (error) {
-        console.error("Error al parsear adminData:", error);
+    const checkAuthToken = setInterval(() => {
+      const token = Cookies.get('authToken');
+      if (!token) {
+        navigate('/login');
       }
-    } else {
-      // Manejo cuando no hay datos de usuario disponibles
-      console.log("No se encontró el adminData en las cookies.");
-    }
+    }, 60000); // Verifica cada 60 segundosz
 
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
-    };
-  }, []);
+    return () => clearInterval(checkAuthToken);
+
+  }, [userId]);
+
   return (
     <header>
       <nav>
         <ul>
-          <li><FaBell className="nav-icon" title="Notificaciones" /></li>
+          <li className="notification-container">
+            <FaBell className="nav-icon" title="Notificaciones" onClick={toggleNotificaciones} />
+            {notificaciones.length > 0 && (
+              <span className="notification-badge">{notificaciones.length}</span>
+            )}
+          </li>
           <li><FaSearch className="nav-icon" title="Buscar" /></li>
           <li className="profile-container">
             <FaUser className="profile-pic" onClick={toggleMenu} />
@@ -95,26 +157,23 @@ const Header = () => {
                   </li>
                 ) : (
                   <li>No se encontraron datos de usuario.</li>
-                  
                 )}
                 <li>
-                  <button onClick={() => navigate("/perfil")} className="dropdown-button">
+                  <button onClick={() => navigate("/Perfil")} className="dropdown-button">
                     <FaCog /> Mi Perfil
                   </button>
                 </li>
                 <li>
                   <button onClick={handleLogout} className="dropdown-button">
-                  <FaSignOutAlt/>
-                     Cerrar sesión
+                    <FaSignOutAlt /> Cerrar sesión
                   </button>
                 </li>
               </ul>
             )}
           </li>
         </ul>
-        {/* Mensaje de saludo y círculo de imagen de perfil */}
-
       </nav>
+      <Modal isOpen={showModal} onClose={toggleNotificaciones} notifications={notificaciones} />
     </header>
   );
 };

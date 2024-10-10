@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import '../css/RequestResetPassword.css'
 
 const RequestResetPassword = () => {
   const [email, setEmail] = useState('');
@@ -10,6 +11,7 @@ const RequestResetPassword = () => {
     e.preventDefault();
     try {
       await axios.post('http://localhost:3001/api/administradores/request-reset-password', { email });
+      console.log(email);
       setSuccess('Se ha enviado un correo con instrucciones para restablecer la contraseña.');
       setError('');
     } catch (err) {
@@ -19,20 +21,22 @@ const RequestResetPassword = () => {
   };
 
   return (
-    <div>
-      <h2>Solicitar Restablecimiento de Contraseña</h2>
-      <form onSubmit={handleRequest}>
-        <input
+    <div className='container'>
+    <div className='card'>
+      <h2 className='title'>Restablecer Contraseña</h2>
+      <form className='title' onSubmit={handleRequest}>
+        <input 
           type="email"
           placeholder="Ingresa tu correo electrónico"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           required
         />
-        <button type="submit">Enviar Correo</button>
-        {error && <p style={{ color: 'red' }}>{error}</p>}
-        {success && <p style={{ color: 'green' }}>{success}</p>}
+        <button className='title' type="submit">Enviar Correo</button>
+        {error && <p className='error'>{error}</p>}
+        {success && <p className='success'>{success}</p>}
       </form>
+    </div>
     </div>
   );
 };
