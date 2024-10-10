@@ -86,7 +86,7 @@ const ActividadesList = () => {
 
     if (formValues) {
       console.log(formValues)
-      const [nombre, descripcion, fecha, ubicacion, maxParticipantes, estado] = formValues;
+      const [nombre, descripcion, fecha, ubicacion, maxParticipantes, estado, AdminId = userId] = formValues;
       try {
         await axios.post('http://localhost:3001/api/actividades', {
           nombre,
@@ -94,7 +94,9 @@ const ActividadesList = () => {
           fecha,
           ubicacion,
           maxParticipantes: maxParticipantes || 0, // Asegúrate de que tenga un valor predeterminado
-          estado
+          estado,
+          AdminId
+
         }, {
           headers: {
             Authorization: `Bearer ${authToken}`,
@@ -115,26 +117,33 @@ const ActividadesList = () => {
     }
   };
 
-  // Editar actividad
   const handleEditActividad = async (id) => {
     const actividadToUpdate = actividades.find((actividad) => actividad._id === id);
-    // Ajuste de fecha para evitar el problema de la zona horaria
+
+    // Verificar si el usuario es el creador o administrador
+    if (actividadToUpdate.AdminId !== userId && userRole !== 'Administrador') {
+      Swal.fire('Error', 'No tienes permisos para editar esta actividad.', 'error');
+      return;
+    }
+
+    // Continuar con la lógica de edición si la verificación pasa...
     const localDate = new Date(actividadToUpdate.fecha);
     localDate.setMinutes(localDate.getMinutes() - localDate.getTimezoneOffset());
+
     const { value: formValues } = await Swal.fire({
       title: 'Editar Actividad',
       html: `
-      <input id="swal-input1" class="swal2-input" value="${actividadToUpdate.nombre}" placeholder="Nombre de la actividad">
-      <input id="swal-input2" class="swal2-input" value="${actividadToUpdate.descripcion}" placeholder="Descripción">
-      <input id="swal-input3" class="swal2-input" type="date" value="${new Date(actividadToUpdate.fecha).toISOString().split('T')[0]}" placeholder="Fecha">
-      <input id="swal-input4" class="swal2-input" value="${actividadToUpdate.ubicacion}" placeholder="Ubicación">
-      <input id="swal-input5" class="swal2-input" value="${actividadToUpdate.maxParticipantes}" placeholder="Número máximo de participantes" type="number">
-      <select id="swal-input6" class="swal2-input">
-        <option value="Pendiente" ${actividadToUpdate.estado === 'Pendiente' ? 'selected' : ''}>Pendiente</option>
-        <option value="En Curso" ${actividadToUpdate.estado === 'En Curso' ? 'selected' : ''}>En Curso</option>
-        <option value="Finalizado" ${actividadToUpdate.estado === 'Finalizado' ? 'selected' : ''}>Finalizado</option>
-      </select>
-    `,
+        <input id="swal-input1" class="swal2-input" value="${actividadToUpdate.nombre}" placeholder="Nombre de la actividad">
+        <input id="swal-input2" class="swal2-input" value="${actividadToUpdate.descripcion}" placeholder="Descripción">
+        <input id="swal-input3" class="swal2-input" type="date" value="${new Date(actividadToUpdate.fecha).toISOString().split('T')[0]}" placeholder="Fecha">
+        <input id="swal-input4" class="swal2-input" value="${actividadToUpdate.ubicacion}" placeholder="Ubicación">
+        <input id="swal-input5" class="swal2-input" value="${actividadToUpdate.maxParticipantes}" placeholder="Número máximo de participantes" type="number">
+        <select id="swal-input6" class="swal2-input">
+          <option value="Pendiente" ${actividadToUpdate.estado === 'Pendiente' ? 'selected' : ''}>Pendiente</option>
+          <option value="En Curso" ${actividadToUpdate.estado === 'En Curso' ? 'selected' : ''}>En Curso</option>
+          <option value="Finalizado" ${actividadToUpdate.estado === 'Finalizado' ? 'selected' : ''}>Finalizado</option>
+        </select>
+      `,
       focusConfirm: false,
       preConfirm: () => {
         return [
@@ -149,7 +158,6 @@ const ActividadesList = () => {
     });
 
     if (formValues) {
-
       try {
         await axios.patch(`http://localhost:3001/api/actividades/${id}`, {
           nombre: formValues[0],
@@ -157,8 +165,7 @@ const ActividadesList = () => {
           fecha: formValues[2],
           ubicacion: formValues[3],
           maxParticipantes: formValues[4],
-          estado: formValues[5], // Asegúrate de incluir el estado
-          // Asegúrate de incluir el estado
+          estado: formValues[5],
         }, {
           headers: {
             Authorization: `Bearer ${authToken}`,
@@ -176,6 +183,7 @@ const ActividadesList = () => {
       }
     }
   };
+
 
   const handleCancelarInscripcion = async (idActividad) => {
     try {
@@ -250,7 +258,7 @@ const ActividadesList = () => {
             <p className="actividad-estado">Estado: {actividad.estado}</p>
             <p className="actividad-ubicacion">Lugar: {actividad.ubicacion}</p>
             <p className="actividad-participantes">Inscritos: {actividad.inscritos.length} / {actividad.maxParticipantes}</p>
-            {userRole === 'Administrador' || userRole === 'clero' ? ( // Condicionar la visualización de botones de editar y eliminar
+            {userRole === 'Administrador' || userRole === 'clero' && actividad.AdminId === userId ? ( // Condicionar la visualización de botones de editar y eliminar
               <>
                 <button className="btn-edit-actividad" onClick={() => handleEditActividad(actividad._id)}>Editar</button>
                 <button className="btn-delete-actividad" onClick={() => handleDeleteActividad(actividad._id)}>Eliminar</button>
