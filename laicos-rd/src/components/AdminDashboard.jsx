@@ -14,6 +14,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser, faClipboardList, faChartPie, faChartArea } from '@fortawesome/free-solid-svg-icons';
 import { FiBarChart } from 'react-icons/fi';
 import SecuritySettings from './SecuritySettings';
+import Chat from './Chat';
+import io from 'socket.io-client';
 
 Modal.setAppElement('#root');
 
@@ -142,7 +144,9 @@ const AdminDashboard = () => {
           <a href="#" onClick={() => handleComponentChange('Actividades')}>
             <FontAwesomeIcon icon={faChartPie} /> Actividades
           </a>
-          
+          <a href="#" onClick={() => handleComponentChange('Chat')}>
+            <FontAwesomeIcon icon={faChartPie} /> Chat
+          </a>
           {userRole === 'Administrador' && (
             <>
               <a href="#" onClick={() => handleComponentChange('Administradores')}>
@@ -175,6 +179,7 @@ const AdminDashboard = () => {
           {activeComponent === 'Parroquias' && userRole === 'Administrador' && <Parroquias />}
           {activeComponent === 'Diocesis' && userRole === 'Administrador' && <Diocesis />}
           {activeComponent === 'security' && <SecuritySettings />}
+          {activeComponent === 'Chat' && <Chat/>}
         </div>
 
         {/* Modal para añadir o editar administradores */}

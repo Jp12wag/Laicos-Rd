@@ -15,13 +15,15 @@ const ActividadesList = () => {
     return actividad.inscritos.some(inscrito => inscrito === userId);
   };
   useEffect(() => {
+   
     const fetchActividades = async () => {
       try {
-        const response = await axios.get('http://localhost:3001/api/actividades', {
+        const response = await axios.get('http://localhost:3001/api/actividades/', {
           headers: {
             Authorization: `Bearer ${authToken}`,
           },
         });
+        console.log(authToken)
         setActividades(response.data);
       } catch (error) {
         console.error('Error al obtener actividades:', error);
@@ -159,7 +161,7 @@ const ActividadesList = () => {
 
     if (formValues) {
       try {
-        await axios.patch(`http://localhost:3001/api/actividades/${id}`, {
+        await axios.patch(`http://localhost:3001/api/actividades/actividades/${id}`, {
           nombre: formValues[0],
           descripcion: formValues[1],
           fecha: formValues[2],

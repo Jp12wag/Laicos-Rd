@@ -31,6 +31,7 @@ const Feed = () => {
       console.error('Error al obtener las publicaciones:', error);
     }
   };
+  
 
   const handleDelete = async (postId) => {
     try {
@@ -112,6 +113,7 @@ const Feed = () => {
     setEditingContent(post.content);
   };
 
+  
   const saveEdit = async (postId) => {
     try {
       const authToken = Cookies.get('authToken');
@@ -131,12 +133,15 @@ const Feed = () => {
 
   useEffect(() => {
     obtenerPosts();
+    socket.on('connect', () => {
+      console.log('Conectado al servidor con socket ID:', socket.id);
+    });
 
     socket.on('nuevaPublicacion', (nuevaPublicacion) => {
       console.log('Nueva publicación recibida:', nuevaPublicacion);
       setPosts((prevPosts) => [nuevaPublicacion, ...prevPosts]); // Agrega la nueva publicación al principio del feed
     });
-
+   
     return () => {
       socket.off('nuevaPublicacion');
     };
@@ -217,6 +222,7 @@ const Feed = () => {
         ))}
       </div>
     </div>
+    
   );
 };
 
