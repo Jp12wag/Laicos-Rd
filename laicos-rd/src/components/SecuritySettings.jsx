@@ -5,12 +5,12 @@ import axios from 'axios';
 const SecuritySettings = () => {
   const [isTwoFaEnabled, setIsTwoFaEnabled] = useState(false); // Estado por defecto es deshabilitado
   const authToken = Cookies.get('authToken');
-  const TwoFaEnabled = Cookies.get('isTwoFaEnabled')===true;
+  const TwoFaEnabled = Cookies.get('isTwoFaEnabled');
 
   useEffect(() => {
     // Obtener la configuración desde el servidor o cookies cuando el componente se monta
         setIsTwoFaEnabled(TwoFaEnabled);
-        console.log(TwoFaEnabled)
+       
   }, []);
 
   const handleToggleTwoFa = async () => {
@@ -36,7 +36,7 @@ const SecuritySettings = () => {
       console.error('Error al actualizar la configuración de seguridad:', error);
     }
   };
-
+ 
   return (
     <div className="security-settings">
       <h3>Configuración de Seguridad</h3>

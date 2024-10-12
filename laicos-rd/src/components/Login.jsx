@@ -64,6 +64,7 @@ const Login = () => {
         Cookies.set('userRole', response.data.administrador.rolUsuario, { expires: 7 });
         Cookies.set('twoFactorVerified', 'false', { expires: 7, secure: true, sameSite: 'Strict' });
         Cookies.set('IdUser', response.data.administrador._id, { expires: 7, secure: true, sameSite: 'Strict' });
+        Cookies.set('isTwoFaEnabled',response.data.administrador.isTwoFaEnabled,{ expires: 7, secure: true, sameSite: 'Strict' });
 
         // Limpiar los campos
         setEmail('');
@@ -92,6 +93,7 @@ const Login = () => {
       Cookies.set('userRole', administrador.rolUsuario, { expires: 7, secure: true, sameSite: 'Strict' });
       Cookies.set('twoFactorVerified', 'true', { expires: 7, secure: true, sameSite: 'Strict' });
       Cookies.set('IdUser', administrador._id, { expires: 7, secure: true, sameSite: 'Strict' });
+      Cookies.set('isTwoFaEnabled',response.data.administrador.isTwoFaEnabled,{ expires: 7, secure: true, sameSite: 'Strict' });
 
       navigate('/dashboard'); // Redirigir al dashboard si es miembro
     } catch (error) {
