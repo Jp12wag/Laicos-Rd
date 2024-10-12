@@ -11,11 +11,12 @@ import ActividadesList from './ActividadesList';
 import Parroquias from './Parroquia/ParroquiaList';
 import Diocesis from './Diocesis/DiocesisList';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faUser, faClipboardList, faChartPie, faChartArea } from '@fortawesome/free-solid-svg-icons';
+import { faUser, faClipboardList, faChartPie, faChartArea ,  faCog} from '@fortawesome/free-solid-svg-icons';
 import { FiBarChart } from 'react-icons/fi';
 import SecuritySettings from './SecuritySettings';
 import Chat from './Chat';
-import io from 'socket.io-client';
+import { FaOptinMonster } from 'react-icons/fa';
+
 
 Modal.setAppElement('#root');
 
@@ -156,13 +157,13 @@ const AdminDashboard = () => {
                 <FontAwesomeIcon icon={faChartArea} /> Parroquias
               </a>
               <a href="#" onClick={() => handleComponentChange('Diocesis')}>
-                <FontAwesomeIcon icon={FiBarChart} /> Diocesis
+                <FontAwesomeIcon icon={faChartArea} /> Diocesis
               </a>
               
             </>
           )}
           <a href="#" onClick={() => handleComponentChange('security')}>
-                Configuración de Seguridad
+          <FontAwesomeIcon icon={faCog} />Configuración de Seguridad
               </a>
         </div>
 

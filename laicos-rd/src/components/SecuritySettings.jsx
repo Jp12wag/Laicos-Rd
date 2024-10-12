@@ -10,7 +10,8 @@ const SecuritySettings = () => {
   useEffect(() => {
     // Obtener la configuración desde el servidor o cookies cuando el componente se monta
         setIsTwoFaEnabled(TwoFaEnabled);
-  }, [authToken]);
+        console.log(TwoFaEnabled)
+  }, []);
 
   const handleToggleTwoFa = async () => {
     const newValue = !isTwoFaEnabled;

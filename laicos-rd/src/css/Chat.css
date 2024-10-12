@@ -1,23 +1,86 @@
 .chat-container {
     display: flex;
-    height: 100vh;
     background-color: #f0f0f0;
     max-width: 800px;
+    max-height: 1200px;
+    height: 800px;
+  }
+
+  .lista-amigos{
+    width: 40%;
+    height: 95%;
+    background-color: white;
+    border-radius: 8px;
+    padding: 10px;
+    margin: 10px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+    overflow-x: auto;
+
+  }
+
+  .lista-amigos ul {
+    list-style-type: none; /* Quita los puntos de la lista */
+    padding: 0; /* Quita el padding por defecto */
+  }
+  
+  .lista-amigos li {
+    margin-bottom: 10px; /* Espaciado entre los amigos */
+  }
+  .lista-amigos button {
+    width: 80%; /* Hace que el botón ocupe todo el ancho */
+    background-color: #007bff; /* Color de fondo del botón */
+    color: white; /* Color del texto del botón */
+    border: none; /* Quita el borde del botón */
+    border-radius: 5px; /* Bordes redondeados */
+    cursor: pointer; /* Cambia el cursor al pasar sobre el botón */
+    transition: background-color 0.3s; /* Transición suave al cambiar el color */
+   align-items: center;
+   font-size: 13px;
+   margin-right: 10px;
+  }
+  .lista-amigos button:hover {
+    background-color: #a1b300; /* Cambia el color al pasar el ratón */
+ 
+  }
+
+
+
+
+
+  .chat{
+    margin: 10px;
+    width: 50%;
+    height: 100%;
   }
   
   .contenedor-chat-usuario {
-    flex: 1;
     display: flex;
     flex-direction: column;
-    width: 100%;
+    width: 20%;
+    height: 100%;
+  }
+
+
+  .lista-usuarios{
+    background-color: white;
+    border-radius: 8px;
+    padding: 10px;
+    margin: 10px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+    max-height: 200px;
+    overflow-y: scroll; 
+   
+  }
+  .contenedorSolicitud{
+    flex-direction: column;
   }
   
   .btn{
-    width: 50px;
+    width: 150px;
     height: 30px;
   }
-  .lista-usuarios,
-  .lista-amigos,
+
+ 
   .solicitudes-pendientes {
     background-color: white;
     border-radius: 8px;
@@ -83,27 +146,30 @@
     position: relative;
   }
   
-  .mensaje-enviado {
+  .mensaje-propio {
     background-color: #dcf8c6;
     align-self: flex-end;
   }
   
-  .mensaje-recibido {
+  .mensaje-receptor {
     background-color: white;
     align-self: flex-start;
+    align-items: flex-start;
   }
   
   .entrada-mensaje {
-    display: flex;
     margin-top: 10px;
+    flex-direction: column;
   }
   
   .entrada-mensaje input {
     flex: 1;
+    
     padding: 10px;
     border: 1px solid #ccc;
     border-radius: 4px;
     margin-right: 10px;
+    width: 100%;
   }
   
   .entrada-mensaje button {
@@ -118,4 +184,35 @@
   .entrada-mensaje button:hover {
     background-color: #005bb5;
   }
+  .entrada-mensaje {
+    display: flex;
+    justify-content: center;
+    padding: 10px;
+  }
   
+  .entrada-contenedor {
+    display: flex;
+    flex-direction: column; /* Organiza los elementos verticalmente */
+    width: 100%;
+    max-width: 300px; /* Ajusta el ancho máximo según sea necesario */
+  }
+  .input-mensaje {
+    padding: 10px;
+    margin-bottom: 10px; /* Espacio entre el input y el botón */
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 16px;
+  }
+  
+  .boton-enviar {
+    padding: 10px;
+    background-color: #0078ff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-size: 16px;
+    cursor: pointer;
+  }
+  .boton-enviar:hover {
+    background-color: #005bb5;
+  }

@@ -16,18 +16,15 @@ const Chat = () => {
   const [receptorId, setReceptorId] = useState('');
   const [userId, setUserId] = useState(Cookies.get('idUser')); // ID del usuario actual
   const mensajesRef = useRef(null);
-  const [conversacionesRecientes, setConversacionesRecientes] = useState([]); // Agregar el estado para las conversaciones recientes
   const [amigos, setAmigos] = useState([]); // Lista de amigos aceptados
   const [solicitudesPendientes, setSolicitudesPendientes] = useState([]); // Solicitudes de amistad pendientes
   const [usuarios, setUsuarios] = useState([]); // Lista de todos los usuarios
+  const [solicitudesEnviadas, setSolicitudesEnviadas] = useState([]); // Solicitudes de amistad enviadas
 
   useEffect(() => {
     socket.on('connect', () => {
       console.log('Conectado al servidor con socket ID:', socket.id);
     });
-
-
-
 
     // Nuevo mensaje recibido
     socket.on('nuevoMensaje', (data) => {
@@ -45,9 +42,7 @@ const Chat = () => {
     // Actualización de usuarios conectados
     socket.on('actualizarUsuariosConectados', (usuarios) => {
       const usuariosFiltrados = usuarios.filter(usuario => usuario.userInfo._id !== userId);
-      console.log(usuariosFiltrados)
       setUsuariosConectados(usuariosFiltrados);
-
     });
 
     return () => {
@@ -86,26 +81,6 @@ const Chat = () => {
   };
 
   useEffect(() => {
-    // Llamar al backend para obtener las conversaciones recientes
-    const obtenerConversacionesRecientes = async () => {
-      try {
-        const respuesta = await fetch('http://localhost:3001/api/conversaciones-recientes', {
-          headers: { 'Authorization': `Bearer ${Cookies.get('authToken')}` },
-        });
-        console.log(respuesta.data)
-        const data = await respuesta.json();
-        setConversacionesRecientes(data.conversaciones);
-      } catch (error) {
-        console.error('Error al obtener las conversaciones recientes:', error);
-      }
-    };
-
-    obtenerConversacionesRecientes();
-  }, []);
-
-
-
-  useEffect(() => {
     const obtenerDatos = async () => {
       try {
         // Obtener todos los usuarios
@@ -114,25 +89,34 @@ const Chat = () => {
         });
         const dataUsuarios = await respuestaUsuarios.json();
         setUsuarios(dataUsuarios);
-        console.log(usuarios)
 
         // Obtener amigos
         const respuestaAmigos = await fetch('http://localhost:3001/api/solicitud/aceptadas', {
-          headers: { 'Authorization': `Bearer ${Cookies.get('authToken')}` },
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${Cookies.get('authToken')}`
+          },
         });
         const dataAmigos = await respuestaAmigos.json();
-        console.log("Data: ", dataAmigos)
+        console.log(dataAmigos)
         setAmigos(dataAmigos);
-        console.log("Amigo: ", amigos)
+
         // Obtener solicitudes pendientes
         const respuestaSolicitudes = await fetch('http://localhost:3001/api/solicitud/pendientes', {
-          headers: { 'Authorization': `Bearer ${Cookies.get('authToken')}` },
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${Cookies.get('authToken')}`
+          },
         });
         const dataSolicitudes = await respuestaSolicitudes.json();
         setSolicitudesPendientes(dataSolicitudes);
+
       } catch (error) {
+
         console.error('Error al obtener datos:', error);
+
       }
+      setSolicitudesEnviadas([]);
     };
 
     obtenerDatos();
@@ -140,7 +124,6 @@ const Chat = () => {
 
   const enviarSolicitudAmistad = async (receptorId) => {
     try {
-
       const respuesta = await fetch('http://localhost:3001/api/solicitud/enviar', {
         method: 'POST',
         headers: {
@@ -152,6 +135,7 @@ const Chat = () => {
 
       const data = await respuesta.json();
       alert(data.message);
+      setSolicitudesEnviadas([...solicitudesEnviadas, { receptor: receptorId }]);
     } catch (error) {
       console.error('Error al enviar la solicitud de amistad:', error);
     }
@@ -172,10 +156,11 @@ const Chat = () => {
       if (respuesta.ok) {
         alert(data.message);
         // Actualizar la lista de amigos y solicitudes pendientes
+        console.log(data)
         setAmigos(prevAmigos => [...prevAmigos, data.amigo]);
         setSolicitudesPendientes(prevSolicitudes => prevSolicitudes.filter(s => s._id !== solicitudId));
       } else {
-        alert(data.error); // Muestra el error si la solicitud no fue exitosa
+        alert(data.error);
       }
     } catch (error) {
       console.error('Error al aceptar la solicitud de amistad:', error);
@@ -194,13 +179,11 @@ const Chat = () => {
       });
       const data = await respuesta.json();
       alert(data.message);
-      // Eliminar la solicitud de la lista
       setSolicitudesPendientes(prevSolicitudes => prevSolicitudes.filter(s => s._id !== solicitudId));
     } catch (error) {
       console.error('Error al rechazar la solicitud de amistad:', error);
     }
   };
-
 
   const seleccionarReceptor = (id) => {
     if (!amigos.find(amigo => amigo._id === id)) {
@@ -210,16 +193,74 @@ const Chat = () => {
     setReceptorId(id);
     socket.emit('cargarHistorial', { receptorId: id });
   };
+
+  const esAmigo = (id) => {
+    return amigos.some(amigo => amigo._id === id);
+  };
+
+  const solicitudEnviada = (id) => {
+    return solicitudesEnviadas.some(solicitud => solicitud.receptor === id);
+  };
+
   return (
     <div className="chat-container">
+      <div className="lista-amigos">
+        <h3>Amigos</h3>
+        <ul>
+          {Array.isArray(amigos) && amigos.length > 0 ? (
+            amigos.map((amigo) => (
+              <li key={amigo._id}>
+                <button onClick={() => seleccionarReceptor(amigo._id)} // Aquí estamos usando el _id del amigo
+                >{`${amigo.nombre} ${amigo.apellido}`} 
+                </button>
+              </li>
+            ))
+          ) : (
+            <li>No hay amigos disponibles.</li>
+          )}
+        </ul>
+      </div>
+      <div className="chat">
+
+        {/* Mostrar historial de mensajes solo si hay un receptor seleccionado */}
+        {receptorId && (
+          <div className="historial-mensajes" ref={mensajesRef}>
+            {mensajes.map((mensaje, index) => (
+              <div key={index} className={mensaje.emisor === userId ? 'mensaje-propio' : 'mensaje-receptor'}>
+                <p>{mensaje.mensaje}</p>
+                <span>{new Date(mensaje.fechaEnvio).toLocaleString()}</span>
+              </div>
+            ))}
+          </div>
+        )}
+        {/* Componente para enviar mensajes, solo visible si hay un receptor seleccionado */}
+        {receptorId && (
+          <div className="input-mensaje">
+            <textarea
+              value={mensaje}
+              onChange={(e) => setMensaje(e.target.value)}
+              placeholder="Escribe tu mensaje aquí..."
+            />
+            <button onClick={enviarMensaje}>Enviar</button>
+          </div>
+        )}
+      </div>
+
       <div className='contenedor-chat-usuario'>
+
         <div className="lista-usuarios">
           <h3>Usuarios:</h3>
           <ul className='contenedorSolicitud'>
             {usuarios.filter(usuario => usuario._id !== userId).map((usuario) => (
               <li key={usuario._id}>
                 {usuario.nombre} {usuario.apellido}
-                <button onClick={() => enviarSolicitudAmistad(usuario._id)}>Enviar Solicitud</button>
+                {esAmigo(usuario._id) ? (
+                  <span className="amigo">Ya es tu amigo</span>
+                ) : solicitudEnviada(usuario._id) ? (
+                  <button className="solicitud-enviada" disabled>Solicitud enviada</button>
+                ) : (
+                  <button onClick={() => enviarSolicitudAmistad(usuario._id)}>Enviar Solicitud</button>
+                )}
               </li>
             ))}
           </ul>
@@ -236,42 +277,10 @@ const Chat = () => {
             ))}
           </ul>
         </div>
-        <div className="lista-amigos">
-          <h3>Tus Amigos:</h3>
-          <ul>
-            {Array.isArray(amigos) && amigos.map((amigo) => (
-              <li key={amigo._id}>
-                <button className='btn' onClick={() => seleccionarReceptor(amigo._id)}>
-                  {amigo.nombre} {/* Asegúrate de que el objeto amigo tiene el campo 'nombre' */}
-                </button>
-              </li>
-            ))}
-          </ul>
-        </div>
-        <div className='contener-chat'>
-          <div className="mensajes" ref={mensajesRef}>
-            {mensajes.map((msg, index) => (
-              <div
-                key={index}
-                className={`mensaje ${msg.emisor === userId ? 'mensaje-enviado' : 'mensaje-recibido'}`}
-              >
-                <strong>{msg.emisor === userId ? 'Tú' : 'Otro usuario'}</strong>: {msg.mensaje} <span>{new Date(msg.fechaEnvio).toLocaleString()}</span>
-              </div>
-            ))}
-          </div>
-        </div>
 
-        <div className="entrada-mensaje">
-          <input
-            type="text"
-            value={mensaje}
-            onChange={(e) => setMensaje(e.target.value)}
-            placeholder="Escribe tu mensaje..."
-          />
-          <button onClick={enviarMensaje}>Enviar</button>
-        </div>
       </div>
-    </div>
+
+    </div >
   );
 };
 
