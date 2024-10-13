@@ -1,12 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { getDioesis } from '../../services/diocesisService'; // Asegúrate de tener un servicio para obtener las diócesis
-import Modal from 'react-modal';
 import Swal from 'sweetalert2'; // Importar SweetAlert2
 const ParroquiaForm = ({ onSubmit, parroquia }) => {
     const [nombre, setNombre] = useState('');
     const [dioesisId, setDioesisId] = useState('');
     const [dioesisList, setDioesisList] = useState([]);
-    const [modalIsOpen, setModalIsOpen] = useState(false);
+   
 
     useEffect(() => {
         const fetchDioesis = async () => {
@@ -41,9 +40,7 @@ const ParroquiaForm = ({ onSubmit, parroquia }) => {
         setNombre(''); // Limpiar campos
         setDioesisId(''); // Limpiar campos
     };
-    const closeModal = () => {
-        setModalIsOpen(false);
-    };
+    
     return (
        
         <form onSubmit={handleSubmit}>
