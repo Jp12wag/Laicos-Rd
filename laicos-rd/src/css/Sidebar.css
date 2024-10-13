@@ -85,4 +85,20 @@
   button:focus {
     outline: none; /* Quitar el contorno de enfoque */
   }
+  .sidebar {
+    transition: width 0.3s ease;
+    overflow: hidden;
+  }
   
+  .sidebar.collapsed {
+    width: 60px; /* Adjust this value to your icon width */
+  }
+  
+  .sidebar.expanded {
+    width: 300px; /* Adjust this to your desired expanded width */
+  }
+  
+  .sidebar a {
+    white-space: nowrap;
+    overflow: hidden;
+  }

@@ -3,6 +3,7 @@ import { getParroquias, createParroquia, deleteParroquia, updateParroquia } from
 import ParroquiaForm from './ParroquiaForm';
 import ParroquiaItem from './ParroquiaeItem';
 import '../../css/ParroquiaList.css';
+import Swal from 'sweetalert2'; // Importar SweetAlert2
 
 const ParroquiaList = () => {
     const [parroquias, setParroquias] = useState([]);
@@ -18,10 +19,30 @@ const ParroquiaList = () => {
     }, []);
 
     const handleDelete = async (id) => {
-        await deleteParroquia(id);
-        setParroquias(parroquias.filter((p) => p._id !== id));
-    };
+        // Mostrar alerta de confirmación antes de eliminar
+        const result = await Swal.fire({
+            title: '¿Estás seguro?',
+            text: "Esta acción no se puede deshacer",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Sí, eliminar',
+            cancelButtonText: 'Cancelar'
+        });
 
+        if (result.isConfirmed) {
+            // Si se confirma, eliminar la parroquia
+            await deleteParroquia(id);
+            setParroquias(parroquias.filter((p) => p._id !== id));
+
+            // Mostrar alerta de éxito
+            Swal.fire({
+                title: '¡Eliminado!',
+                text: 'La parroquia ha sido eliminada correctamente.',
+                icon: 'success',
+                confirmButtonText: 'Aceptar'
+            });
+        }
+    };
     const handleEdit = (parroquia) => {
         setSelectedParroquia(parroquia);
     };
@@ -43,7 +64,7 @@ const ParroquiaList = () => {
         <div className="parroquia-list">
             <h2>Lista de Parroquias</h2>
             <ParroquiaForm onSubmit={handleFormSubmit} parroquia={selectedParroquia} />
-            <ul>
+            <ul className='lista-parroquia'>
                 {parroquias.map((p) => (
                     <ParroquiaItem
                         key={p._id}

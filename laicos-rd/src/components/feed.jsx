@@ -78,6 +78,7 @@ const Feed = () => {
       });
       setNewPostContent('');
       setNewPostMedia('');
+      obtenerPosts();
     } catch (error) {
       console.error('Error al crear la publicación:', error);
     }

@@ -1,56 +1,86 @@
+/* Estilos generales */
+.conteneedor-administradores{
+  flex-direction: column;
+  max-width: 800px;
+}
+
+/* Encabezado */
+.administradores-titulo {
+  text-align: center;
+  margin: 20px 0;
+  color: #333;
+}
+
+/* Botón para añadir administradores */
+.add-button {
+  display: block;
+  margin: 20px auto;
+  padding: 10px 20px;
+  background-color: #007bff; /* Color azul */
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.3s;
+}
+
+.add-button:hover {
+  background-color: #0056b3; /* Azul más oscuro */
+}
+
+/* Tabla de administradores */
 .administradores-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 20px;
-  }
-  
-  .administradores-table th,
-  .administradores-table td {
-    border: 1px solid #ddd;
-    padding: 12px;
-    text-align: left;
-  }
-  
-  .administradores-table th {
-    background-color: #f4f4f4;
-    color: #333;
-  }
-  
-  .administradores-table tr:hover {
-    background-color: #f1f1f1; /* Color de fondo al pasar el mouse */
-  }
-  
-  .add-button {
-    background-color: #28a745;
-    color: white;
-    border: none;
-    padding: 10px 15px;
-    margin-bottom: 20px;
-    cursor: pointer;
-    border-radius: 4px;
-    transition: background-color 0.3s;
-  }
-  
-  .add-button:hover {
-    background-color: #218838; /* Color más oscuro al pasar el mouse */
-  }
-  
-  .action-button {
-    background: none;
-    border: none;
-    cursor: pointer;
-    margin-right: 10px;
-    color: #007bff; /* Color del icono */
-    transition: color 0.3s;
-  }
-  
-  .action-button:hover {
-    color: #0056b3; /* Color más oscuro al pasar el mouse */
-  }
-  
-  .no-data {
-    text-align: center;
-    color: #999;
-    font-style: italic;
-  }
-  
+  width: 100%;
+  margin: 0 auto;
+  border-collapse: collapse;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  background-color: white;
+}
+
+.administradores-table th,
+.administradores-table td {
+  padding: 12px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+}
+
+.administradores-table th {
+  background-color: #007bff; /* Color de fondo del encabezado */
+  color: white;
+}
+
+/* Estilos para filas de la tabla */
+.administradores-table tr:hover {
+  background-color: #f1f1f1; /* Color de fondo en hover */
+}
+
+/* Mensaje de no hay datos */
+.no-data {
+  text-align: center;
+  color: #888; /* Color gris */
+  font-style: italic;
+}
+
+/* Botones de acción */
+.action-button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  outline: none;
+  color: #007bff; /* Color del icono */
+  font-size: 20px; /* Tamaño del icono */
+  transition: color 0.3s;
+}
+
+.action-button:hover {
+  color: #0056b3; /* Color más oscuro en hover */
+}
+
+.delete-button {
+  color: #dc3545; /* Color rojo para el botón de eliminar */
+}
+
+.delete-button:hover {
+  color: #c82333; /* Color rojo más oscuro en hover */
+}

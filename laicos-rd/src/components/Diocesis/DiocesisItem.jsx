@@ -5,8 +5,10 @@ const DioesisItem = ({ dioesis, onEdit, onDelete }) => {
   return (
     <div className="dioesis-item">
       <h3>{dioesis.nombre}</h3>
-      <button onClick={() => onEdit(dioesis)}>Editar</button>
-      <button onClick={() => onDelete(dioesis._id)}>Borrar</button>
+      <div className="dioesis-buttons">
+        <button className="btn-confirm" onClick={() => onEdit(dioesis)}>Editar</button>
+        <button className="btn-cancel" onClick={() => onDelete(dioesis._id)}>Borrar</button>
+      </div>
     </div>
   );
 };

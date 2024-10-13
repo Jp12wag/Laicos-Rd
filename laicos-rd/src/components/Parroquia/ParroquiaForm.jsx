@@ -1,9 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { getDioesis } from '../../services/diocesisService'; // Asegúrate de tener un servicio para obtener las diócesis
+import Modal from 'react-modal';
+import Swal from 'sweetalert2'; // Importar SweetAlert2
 const ParroquiaForm = ({ onSubmit, parroquia }) => {
     const [nombre, setNombre] = useState('');
     const [dioesisId, setDioesisId] = useState('');
     const [dioesisList, setDioesisList] = useState([]);
+    const [modalIsOpen, setModalIsOpen] = useState(false);
 
     useEffect(() => {
         const fetchDioesis = async () => {
@@ -27,9 +30,22 @@ const ParroquiaForm = ({ onSubmit, parroquia }) => {
     const handleSubmit = (e) => {
         e.preventDefault();
         onSubmit({ nombre, dioesis: dioesisId }); // Incluir la diócesis en los datos enviados
+        // Mostrar alerta de éxito
+        Swal.fire({
+            title: '¡Registro Exitoso!',
+            text: 'La parroquia se ha registrado correctamente.',
+            icon: 'success',
+            confirmButtonText: 'Aceptar'
+        });
+        
+        setNombre(''); // Limpiar campos
+        setDioesisId(''); // Limpiar campos
     };
-
+    const closeModal = () => {
+        setModalIsOpen(false);
+    };
     return (
+       
         <form onSubmit={handleSubmit}>
             <input
                 type="text"
@@ -52,6 +68,8 @@ const ParroquiaForm = ({ onSubmit, parroquia }) => {
             </select>
             <button type="submit">{parroquia ? 'Actualizar' : 'Crear'}</button>
         </form>
+         
+     
     );
 };
 

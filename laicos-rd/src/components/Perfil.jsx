@@ -161,6 +161,20 @@ const EditProfile = () => {
         }
     };
 
+    const calculateCompletionPercentage = () => {
+        const totalFields = 4; // Total de campos requeridos para el miembro
+        let filledFields = 0;
+
+        if (miembro.direccion) filledFields++;
+        if (miembro.estadoCivil) filledFields++;
+        if (miembro.cargo) filledFields++;
+        if (miembro.nacionalidad) filledFields++;
+
+
+        return (filledFields / totalFields) * 100;
+    };
+
+
     if (loading) {
         return <div>Cargando...</div>;
     }
@@ -174,6 +188,9 @@ const EditProfile = () => {
     return (
         <div className="profile-container">
             <h1>Perfil</h1>
+            <div className="completion-percentage">
+                {calculateCompletionPercentage().toFixed(0)}%
+            </div>
             {renderProfileImage()}
             <div className="contendor">
                 <h2>{userRole}</h2>
@@ -283,6 +300,8 @@ const EditProfile = () => {
                                     <option key={p._id} value={p._id}>{p.nombre}</option>
                                 ))}
                             </select>
+
+
                             <button className="button" type="submit">Guardar Cambios</button>
                         </div>
                     </form>

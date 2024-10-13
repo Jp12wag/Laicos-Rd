@@ -11,17 +11,15 @@ import ActividadesList from './ActividadesList';
 import Parroquias from './Parroquia/ParroquiaList';
 import Diocesis from './Diocesis/DiocesisList';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faUser, faClipboardList, faChartPie, faChartArea ,  faCog} from '@fortawesome/free-solid-svg-icons';
-import { FiBarChart } from 'react-icons/fi';
+import { faUser, faClipboardList, faChartPie, faChartArea, faCog } from '@fortawesome/free-solid-svg-icons';
 import SecuritySettings from './SecuritySettings';
 import Chat from './Chat';
-import { FaOptinMonster } from 'react-icons/fa';
-
 
 Modal.setAppElement('#root');
 
 const AdminDashboard = () => {
   const userRole = Cookies.get('userRole');
+  const [isHovered, setIsHovered] = useState(false);
   const [administradores, setAdministradores] = useState([]);
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [currentAdmin, setCurrentAdmin] = useState({
@@ -32,19 +30,19 @@ const AdminDashboard = () => {
     celular: '',
     nacimiento: '',
     esMiembro: false,
-    rolUsuario: 'miembro',
+    password: '',
+    rolUsuario: userRole === 'Administrador' ? 'Administrador' : 'clero',
   });
 
   const [activeComponent, setActiveComponent] = useState('feed');
   const navigate = useNavigate();
   const authToken = Cookies.get('authToken');
- 
   const twoFaVerified = Cookies.get('twoFactorVerified');
 
   useEffect(() => {
     if (!twoFaVerified) {
       navigate('/login');
-    } else if (userRole === 'Administrador') {
+    } else if (userRole === 'Administrador' || userRole === 'clero') {
       obtenerAdministradores();
     }
   }, [twoFaVerified, navigate, userRole]);
@@ -75,7 +73,7 @@ const AdminDashboard = () => {
         celular: '',
         nacimiento: '',
         esMiembro: false,
-        rolUsuario: 'miembro',
+        rolUsuario: userRole === 'Administrador' ? 'Administrador' : 'clero',
       });
     }
     setModalIsOpen(true);
@@ -105,6 +103,13 @@ const AdminDashboard = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    // Comprobar si el usuario es clero y está intentando crear un administrador
+    if (userRole === 'clero' && currentAdmin.rolUsuario === 'Administrador') {
+      alert("No tienes permiso para crear administradores.");
+      return; // No proceder con el envío
+    }
+
     try {
       if (currentAdmin._id) {
         // Editar administrador existente
@@ -136,51 +141,55 @@ const AdminDashboard = () => {
     <>
       <Header />
       <div className="admin-dashboard">
-        <div className="sidebar">
-        {userRole==='Administrador' ? (<h2  className='tituloSider'>{userRole}</h2>
-      ): (<h2 className='tituloSider'>{userRole}</h2>)}
-          <a href="#" onClick={() => handleComponentChange('feed')}>
+      <div className={`sidebar ${isHovered ? 'expanded' : 'collapsed'}`}
+          onMouseEnter={() => setIsHovered(true)}
+          onMouseLeave={() => setIsHovered(false)} >
+         {isHovered && <h2 className='tituloSider'>{userRole}</h2>} 
+         {isHovered &&<a href="#" onClick={() => handleComponentChange('feed')}>
             <FontAwesomeIcon icon={faClipboardList} /> Feed
-          </a>
-          <a href="#" onClick={() => handleComponentChange('Actividades')}>
-            <FontAwesomeIcon icon={faChartPie} /> Actividades
-          </a>
-          <a href="#" onClick={() => handleComponentChange('Chat')}>
-            <FontAwesomeIcon icon={faChartPie} /> Chat
-          </a>
-          {userRole === 'Administrador' && (
+          </a>}
+          {isHovered &&<a href="#" onClick={() => handleComponentChange('Actividades')}>
+            <FontAwesomeIcon icon={faChartPie} />{isHovered && 'Actividades'}
+          </a>}
+          {isHovered && <a href="#" onClick={() => handleComponentChange('Chat')}>
+            <FontAwesomeIcon icon={faChartPie} /> {isHovered && 'Chat'}
+          </a>}
+          
+          {/* Renderizar opciones de administración solo si el rol es Administrador */}
+          {(userRole === 'Administrador'  || userRole === 'clero') && (
             <>
-              <a href="#" onClick={() => handleComponentChange('Administradores')}>
-                <FontAwesomeIcon icon={faUser} /> Administrador
-              </a>
-              <a href="#" onClick={() => handleComponentChange('Parroquias')}>
-                <FontAwesomeIcon icon={faChartArea} /> Parroquias
-              </a>
-              <a href="#" onClick={() => handleComponentChange('Diocesis')}>
-                <FontAwesomeIcon icon={faChartArea} /> Diocesis
-              </a>
-              
+            {isHovered &&   <a href="#" onClick={() => handleComponentChange('Administradores')}>
+                <FontAwesomeIcon icon={faUser} /> {isHovered && 'Administrador'}
+              </a>}
+              {isHovered &&  <a href="#" onClick={() => handleComponentChange('Parroquias')}>
+                <FontAwesomeIcon icon={faChartArea} />  {isHovered && 'Parroquias'}
+              </a>}
+              {isHovered && <a href="#" onClick={() => handleComponentChange('Diocesis')}>
+                <FontAwesomeIcon icon={faChartArea} />{isHovered && 'Diocesis'}
+              </a>}
             </>
           )}
-          <a href="#" onClick={() => handleComponentChange('security')}>
-          <FontAwesomeIcon icon={faCog} />Configuración de Seguridad
-              </a>
+          
+          {/* Siempre mostrar la configuración de seguridad */}
+          {isHovered &&<a href="#" onClick={() => handleComponentChange('security')}>
+            <FontAwesomeIcon icon={faCog} />{isHovered && 'Configuración de Seguridad'}
+          </a>}
         </div>
 
         <div className="content">
           {activeComponent === 'feed' && <Feed />}
           {activeComponent === 'Actividades' && <ActividadesList />}
-          {activeComponent === 'Administradores' && userRole === 'Administrador' && (
+          {activeComponent === 'Administradores' && (userRole === 'Administrador'  || userRole === 'clero') && (
             <AdministradoresList
               administradores={administradores}
               handleOpenModal={handleOpenModal}
               handleDelete={handleDelete}
             />
           )}
-          {activeComponent === 'Parroquias' && userRole === 'Administrador' && <Parroquias />}
-          {activeComponent === 'Diocesis' && userRole === 'Administrador' && <Diocesis />}
+          {activeComponent === 'Parroquias' && (userRole === 'Administrador' || userRole === 'clero') && <Parroquias />}
+          {activeComponent === 'Diocesis' && (userRole === 'Administrador' || userRole === 'clero') && <Diocesis />}
           {activeComponent === 'security' && <SecuritySettings />}
-          {activeComponent === 'Chat' && <Chat/>}
+          {activeComponent === 'Chat' && <Chat />}
         </div>
 
         {/* Modal para añadir o editar administradores */}
@@ -255,22 +264,30 @@ const AdminDashboard = () => {
                 name="rolUsuario"
                 value={currentAdmin.rolUsuario}
                 onChange={handleInputChange}
+                
               >
                 <option value="miembro">Miembro</option>
-                <option value="Administrador">Administrador</option>
+                {userRole !== 'clero' && <option value="Administrador">Administrador</option>} {/* Solo mostrar si no es clero */}
+                <option value="clero">Clero</option>
               </select>
             </label>
-            <button type="submit">Guardar</button>
+            <label>
+              Contraseña:
+              <input
+                type="password"
+                name="password"
+                value={currentAdmin.password}
+                onChange={handleInputChange}
+                required
+              />
+            </label>
+            <button type="submit">{currentAdmin._id ? 'Actualizar' : 'Crear'}</button>
             <button type="button" onClick={handleCloseModal}>Cancelar</button>
           </form>
         </Modal>
       </div>
     </>
-  ) : (
-    <div>
-      <h2>No estás autorizado para ver esta página. Por favor, verifica tu autenticación de dos factores.</h2>
-    </div>
-  );
+  ) : null;
 };
 
 export default AdminDashboard;

@@ -6,16 +6,18 @@ import '../css/ActividadesList.css'; // Importar el CSS
 
 
 
+
 const ActividadesList = () => {
   const [actividades, setActividades] = useState([]);
   const userRole = Cookies.get('userRole');
   const userId = Cookies.get('IdUser');
   const authToken = Cookies.get('authToken');
+  const [nuevoEnlace, setNuevoEnlace] = useState('');
   const isInscrito = (actividad) => {
     return actividad.inscritos.some(inscrito => inscrito === userId);
   };
   useEffect(() => {
-   
+
     const fetchActividades = async () => {
       try {
         const response = await axios.get('http://localhost:3001/api/actividades/', {
@@ -25,6 +27,7 @@ const ActividadesList = () => {
         });
         console.log(authToken)
         setActividades(response.data);
+
       } catch (error) {
         console.error('Error al obtener actividades:', error);
       }
@@ -90,7 +93,7 @@ const ActividadesList = () => {
       console.log(formValues)
       const [nombre, descripcion, fecha, ubicacion, maxParticipantes, estado, AdminId = userId] = formValues;
       try {
-        await axios.post('http://localhost:3001/api/actividades', {
+        const valor = await axios.post('http://localhost:3001/api/actividades', {
           nombre,
           descripcion,
           fecha,
@@ -106,6 +109,8 @@ const ActividadesList = () => {
         });
         Swal.fire('Guardado', 'La actividad ha sido añadida.', 'success');
 
+
+
         // Refrescar la lista de actividades
         const response = await axios.get('http://localhost:3001/api/actividades', {
           headers: {
@@ -117,6 +122,16 @@ const ActividadesList = () => {
         Swal.fire('Error', 'No se pudo añadir la actividad.', 'error');
       }
     }
+  };
+
+  const handleCopyLink = () => {
+    navigator.clipboard.writeText(nuevoEnlace)
+      .then(() => {
+        Swal.fire('Copiado', 'El enlace ha sido copiado al portapapeles.', 'success');
+      })
+      .catch(err => {
+        Swal.fire('Error', 'No se pudo copiar el enlace.', 'error');
+      });
   };
 
   const handleEditActividad = async (id) => {
@@ -249,6 +264,7 @@ const ActividadesList = () => {
         <button className="btn-add-actividad" onClick={handleAddActividad}>Añadir Actividad</button>
       ) : null}
 
+
       <ul className="actividades-list">
         {actividades.map((actividad) => (
           <li key={actividad._id} className="actividad-item">
@@ -259,6 +275,13 @@ const ActividadesList = () => {
             </p>
             <p className="actividad-estado">Estado: {actividad.estado}</p>
             <p className="actividad-ubicacion">Lugar: {actividad.ubicacion}</p>
+            <div className="nuevo-enlace-container">
+              <p><a href={actividad.enlace} target="_blank" rel="noopener noreferrer">{actividad.enlace}</a></p>
+              <button onClick={() => {
+                setNuevoEnlace(actividad.enlace); // Establece el nuevo enlace al hacer clic
+                handleCopyLink(); // Copia el enlace
+              }}>Copiar Enlace</button>
+            </div>
             <p className="actividad-participantes">Inscritos: {actividad.inscritos.length} / {actividad.maxParticipantes}</p>
             {userRole === 'Administrador' || userRole === 'clero' && actividad.AdminId === userId ? ( // Condicionar la visualización de botones de editar y eliminar
               <>
@@ -281,6 +304,7 @@ const ActividadesList = () => {
               >
                 Cancelar Inscripción
               </button>
+
             )}
           </li>
         ))}

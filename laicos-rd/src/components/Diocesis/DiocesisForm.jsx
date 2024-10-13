@@ -26,8 +26,7 @@ const DioesisForm = ({ selectedDioesis, onFormSubmit, onCancel }) => {
         placeholder="Nombre de la Diócesis"
         required
       />
-      <button type="submit">{selectedDioesis ? 'Actualizar' : 'Crear'} Diócesis</button>
-      <button type="button" onClick={onCancel}>Cancelar</button>
+      <button className="btn-crear" type="submit">{selectedDioesis ? 'Actualizar' : 'Crear'} Diócesis</button>
     </form>
   );
 };

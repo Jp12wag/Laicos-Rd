@@ -2,11 +2,11 @@ import React from 'react';
 
 const ParroquiaItem = ({ parroquia, onDelete, onEdit }) => {
     return (
-        <li>
-            <h3>{parroquia.nombre}</h3>
-            <p>Diócesis: {parroquia.dioesis.nombre}</p> {/* Muestra el nombre de la diócesis */}
-            <button onClick={() => onEdit(parroquia)}>Editar</button>
-            <button onClick={() => onDelete(parroquia._id)}>Eliminar</button>
+        <li className='parroquia-item'>
+            <h3 className='parroquia-title'>{parroquia.nombre}</h3>
+            <p className='parroquia-info'>{parroquia.dioesis.nombre}</p> {/* Muestra el nombre de la diócesis */}
+            <button className='btn-edit-parroquia' onClick={() => onEdit(parroquia)}>Editar</button>
+            <button  className='btn-delete-parroquia' onClick={() => onDelete(parroquia._id)}>Eliminar</button>
         </li>
     );
 };

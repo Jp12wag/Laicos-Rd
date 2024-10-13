@@ -3,7 +3,7 @@
     flex-direction: column;
     margin-bottom: 20px;
   }
-  
+ 
   .dioesis-form input {
     margin-bottom: 10px;
     padding: 10px;
@@ -14,17 +14,13 @@
   .dioesis-form button {
     padding: 10px;
     margin: 5px 0;
-    background-color: #007bff;
     color: white;
     border: none;
     border-radius: 5px;
     cursor: pointer;
   }
   
-  .dioesis-form button:hover {
-    background-color: #0056b3;
-  }
-  
+ 
   .dioesis-item {
     border: 1px solid #ccc;
     padding: 10px;
@@ -38,3 +34,83 @@
     margin-top: 20px;
   }
   
+
+
+/* Botón de crear/actualizar */
+.btn-crear {
+  background-color: #4CAF50; /* Verde para crear o actualizar */
+  color: white;
+  border: none;
+}
+
+.btn-crear:hover {
+  background-color: #45a049; /* Un poco más oscuro al pasar el mouse */
+}
+
+/* Botón de cancelar */
+.btn-delete {
+  background-color: #f44336; /* Rojo para cancelar */
+  color: white;
+  border: none;
+  margin-left: 10px; /* Separación entre botones */
+}
+
+.btn-delete:hover {
+  background-color: #e53935; /* Un poco más oscuro al pasar el mouse */
+}
+
+/* Responsividad para botones en pantallas más pequeñas */
+@media (max-width: 600px) {
+  button {
+    width: 100%;
+    margin-top: 10px;
+  }
+}
+
+
+
+
+
+.dioesis-item {
+  padding: 15px;
+  border: 1px solid #ccc;
+  margin-bottom: 10px;
+  border-radius: 5px;
+  background-color: #f9f9f9;
+}
+
+/* Contenedor para los botones debajo del h3 */
+.dioesis-buttons {
+  margin-top: 10px; /* Espacio entre el título y los botones */
+}
+
+/* Estilo para el botón de confirmación (Editar) */
+.btn-confirm {
+  background-color: #4CAF50; /* Verde */
+  color: white;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 5px;
+  font-size: 14px;
+  cursor: pointer;
+  margin-right: 10px; /* Separar los botones */
+}
+
+.btn-confirm:hover {
+  background-color: #45a049;
+}
+
+/* Estilo para el botón de cancelar (Borrar) */
+.btn-cancel {
+  background-color: #f44336; /* Rojo */
+  color: white;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 5px;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.btn-cancel:hover {
+  background-color: #e53935;
+}
