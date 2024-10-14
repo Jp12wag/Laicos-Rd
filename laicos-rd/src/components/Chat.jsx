@@ -2,6 +2,12 @@ import React, { useState, useEffect, useRef } from 'react';
 import '../css/Chat.css';
 import io from 'socket.io-client';
 import Cookies from 'js-cookie';
+import AmigosList from './AmigosList';
+import ChatWindow from './ChatWindow';
+import UsuariosList from './UsuariosList';
+import SolicitudesPendientes from './SolicitudesPendientes';
+import axios from 'axios';
+
 
 const socket = io('http://localhost:3001', {
   auth: {
@@ -20,7 +26,8 @@ const Chat = () => {
   const [solicitudesPendientes, setSolicitudesPendientes] = useState([]); // Solicitudes de amistad pendientes
   const [usuarios, setUsuarios] = useState([]); // Lista de todos los usuarios
   const [solicitudesEnviadas, setSolicitudesEnviadas] = useState([]); // Solicitudes de amistad enviadas
-
+  const [user, setUser] = useState({});
+  const authToken = Cookies.get('authToken');
   useEffect(() => {
     socket.on('connect', () => {
       console.log('Conectado al servidor con socket ID:', socket.id);
@@ -45,6 +52,7 @@ const Chat = () => {
       setUsuariosConectados(usuariosFiltrados);
     });
 
+
     return () => {
       socket.off('connect');
       socket.off('nuevoMensaje');
@@ -53,6 +61,35 @@ const Chat = () => {
     };
   }, [userId]);
 
+  useEffect(() => {
+    const obtenerUsuario = async () => {
+      if (!authToken) {
+        console.log("Token no encontrado. Redirigiendo al login...");
+        return;
+      }
+
+      if (!userId) return; // Asegúrate de que userId esté definido
+
+      try {
+        const response = await axios.get(`http://localhost:3001/api/administradores/${userId}`, {
+          headers: {
+            Authorization: `Bearer ${authToken}`,
+          },
+          withCredentials: true,
+        });
+
+        if (response.data) {
+          setUser(response.data);
+          console.log(user)
+        } else {
+          console.log("No se encontraron datos de usuario.");
+        }
+      } catch (error) {
+        console.error("Error al obtener los datos del usuario:", error);
+      }
+    };
+    obtenerUsuario();
+  }, [])
   // Scroll automático al último mensaje
   useEffect(() => {
     if (mensajesRef.current) {
@@ -89,7 +126,7 @@ const Chat = () => {
         });
         const dataUsuarios = await respuestaUsuarios.json();
         setUsuarios(dataUsuarios);
-
+        setUser(dataUsuarios)
         // Obtener amigos
         const respuestaAmigos = await fetch('http://localhost:3001/api/solicitud/aceptadas', {
           headers: {
@@ -120,6 +157,8 @@ const Chat = () => {
     };
 
     obtenerDatos();
+
+
   }, []);
 
   const enviarSolicitudAmistad = async (receptorId) => {
@@ -205,13 +244,29 @@ const Chat = () => {
   return (
     <div className="chat-container">
       <div className="lista-amigos">
-        <h3>Amigos</h3>
+        <h3>Chats</h3>
+        <div className='header'>
+          <div className='user-info'>
+            {user.foto ? (
+              <img src={user.foto} alt={user.nombre} className='cover' />
+            ) : (
+              <span>{user.nombre && user.apellido ? `${user.nombre.charAt(0)}${user.apellido.charAt(0)}` : 'NA'}</span>
+            )}
+
+          </div>
+          <ul className="nav_icons">
+            <li><ion-icon name="scan-circle-outline"></ion-icon>Hola</li>
+            <li><ion-icon name="chatbox"></ion-icon></li>
+            <li><ion-icon name="ellipsis-vertical"></ion-icon></li>
+          </ul>
+
+        </div>
         <ul>
           {Array.isArray(amigos) && amigos.length > 0 ? (
             amigos.map((amigo) => (
               <li key={amigo._id}>
                 <button onClick={() => seleccionarReceptor(amigo._id)} // Aquí estamos usando el _id del amigo
-                >{`${amigo.nombre} ${amigo.apellido}`} 
+                > {amigo?.nombre ? `${amigo.nombre} ${amigo.apellido}` : 'Nombre no disponible'}
                 </button>
               </li>
             ))

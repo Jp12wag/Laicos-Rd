@@ -9,11 +9,13 @@
   justify-content: space-between;
   align-items: center;
   padding: 0 20px;  
+  background-color: transparent;
 }
 
 .header h1 {
   margin: 0;
   font-size: 24px;
+   background-color: transparent;
 }
 
 .header nav a {
@@ -28,8 +30,8 @@ nav {
   align-items: center;
   height: 80px;
   width: 100%;
-  color: #009900;
-  background-color: #fff;
+  color: #ebebeb;
+  background-color:transparent;
   
 }
 

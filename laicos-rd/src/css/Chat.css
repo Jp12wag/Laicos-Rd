@@ -1,10 +1,79 @@
 .chat-container {
+    position: relative;
     display: flex;
+    margin-top: 30px;
+    margin-left: 0%;
     background-color: #f0f0f0;
-    max-width: 800px;
+    width: 1396px;
+    max-width: 100%;
     max-height: 1200px;
-    height: 800px;
-  }
+    background: #fff;
+    height: calc(100vh - 40px);
+    box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.06), 0 2px 5px 0 rgba(0, 0, 0, 0.06);
+    display: flex;
+}
+
+.chat-container .lista-amigos {
+    position: relative;
+    flex: 30%;
+    background: rgb(255, 255, 255);
+    border-right: 1px solid rgba(0, 0, 0, 0.2);
+    height: 98%;
+
+}
+
+.chat-container .chat {
+    position: relative;
+    flex: 70%;
+    background: #e5ddd5;
+    height: 98%;
+
+}
+
+.chat-container .chat::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: url('../img/fondochat.jpeg');
+    opacity: 0.06;
+    z-index: -999;
+
+}
+
+.header{
+    position: relative;
+    width: 100%;
+    height: 60px;
+    background: #ededed;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 15px;
+}
+.user-info{
+    position: relative;
+    width: 40px;
+    height: 40px;
+    overflow: hidden;
+    border-radius: 50%;
+    align-items: center;
+    justify-content: center;
+  
+}
+.cover{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    background: url('../img/logo.png');
+}
+
+/*
 
   .lista-amigos{
     width: 40%;
@@ -16,99 +85,114 @@
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
     overflow-x: auto;
 
-  }
+  }*/
 
-  .lista-amigos ul {
-    list-style-type: none; /* Quita los puntos de la lista */
-    padding: 0; /* Quita el padding por defecto */
-  }
-  
-  .lista-amigos li {
-    margin-bottom: 10px; /* Espaciado entre los amigos */
-  }
-  .lista-amigos button {
-    width: 80%; /* Hace que el botón ocupe todo el ancho */
-    background-color: #007bff; /* Color de fondo del botón */
-    color: white; /* Color del texto del botón */
-    border: none; /* Quita el borde del botón */
-    border-radius: 5px; /* Bordes redondeados */
-    cursor: pointer; /* Cambia el cursor al pasar sobre el botón */
-    transition: background-color 0.3s; /* Transición suave al cambiar el color */
-   align-items: center;
-   font-size: 13px;
-   margin-right: 10px;
-  }
-  .lista-amigos button:hover {
-    background-color: #a1b300; /* Cambia el color al pasar el ratón */
- 
-  }
+.lista-amigos ul {
+    list-style-type: none;
+    /* Quita los puntos de la lista */
+    padding: 0;
+    /* Quita el padding por defecto */
+}
+
+.lista-amigos li {
+    margin-bottom: 10px;
+    /* Espaciado entre los amigos */
+}
+
+.lista-amigos button {
+    width: 100%;
+    /* Hace que el botón ocupe todo el ancho */
+    background-color: #007bff;
+    /* Color de fondo del botón */
+    color: white;
+    /* Color del texto del botón */
+    border: none;
+    /* Quita el borde del botón */
+    border-radius: 5px;
+    /* Bordes redondeados */
+    cursor: pointer;
+    /* Cambia el cursor al pasar sobre el botón */
+    transition: background-color 0.3s;
+    /* Transición suave al cambiar el color */
+    align-items: flex-start;
+    font-size: 13px;
+}
+
+.lista-amigos button:hover {
+    background-color: #a1b300;
+    /* Cambia el color al pasar el ratón */
+
+}
 
 
 
 
 
-  .chat{
+.chat {
     margin: 10px;
     width: 50%;
     height: 100%;
-  }
-  
-  .contenedor-chat-usuario {
+}
+
+.contenedor-chat-usuario {
     display: flex;
     flex-direction: column;
     width: 20%;
     height: 100%;
-  }
+}
 
 
-  .lista-usuarios{
+.lista-usuarios {
     background-color: white;
     border-radius: 8px;
     padding: 10px;
     margin: 10px;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
     max-height: 200px;
-    overflow-y: scroll; 
-   
-  }
-  .contenedorSolicitud{
+    overflow-y: scroll;
+
+}
+
+.contenedorSolicitud {
     flex-direction: column;
-  }
-  
-  .btn{
+}
+
+.btn {
     width: 150px;
     height: 30px;
-  }
+}
 
- 
-  .solicitudes-pendientes {
+
+.solicitudes-pendientes {
     background-color: white;
     border-radius: 8px;
     padding: 10px;
     margin: 10px;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
     overflow-y: auto;
-    max-height: 200px;
-  }
-  
-  .lista-usuarios h3,
-  .lista-amigos h3,
-  .solicitudes-pendientes h3 {
+    max-height: 300px;
+    width: 300px;
+}
+
+.lista-usuarios h3,
+.lista-amigos h3,
+.solicitudes-pendientes h3 {
     margin: 0;
-  }
-  
-  .contenedorSolicitud {
+}
+
+.contenedorSolicitud {
     list-style: none;
     padding: 0;
-  }
-  
-  .contenedorSolicitud li {
+    width: 300px;
+}
+
+.contenedorSolicitud li {
     display: flex;
     justify-content: space-between;
     padding: 5px 0;
-  }
-  
-  .contenedorSolicitud button {
+}
+
+.contenedorSolicitud button {
     margin-left: 10px;
     background-color: #0078ff;
     color: white;
@@ -116,13 +200,13 @@
     border-radius: 4px;
     padding: 5px 10px;
     cursor: pointer;
-  }
-  
-  .contenedorSolicitud button:hover {
+}
+
+.contenedorSolicitud button:hover {
     background-color: #005bb5;
-  }
-  
-  .contener-chat {
+}
+
+.contener-chat {
     flex: 1;
     display: flex;
     flex-direction: column;
@@ -131,80 +215,85 @@
     padding: 10px;
     border-radius: 8px;
     overflow-y: auto;
-  }
-  
-  .mensajes {
+}
+
+.mensajes {
     overflow-y: auto;
     max-height: 100%;
-  }
-  
-  .mensaje {
+}
+
+.mensaje {
     margin: 5px 0;
     padding: 10px;
     border-radius: 10px;
     max-width: 70%;
     position: relative;
-  }
-  
-  .mensaje-propio {
+}
+
+.mensaje-propio {
     background-color: #dcf8c6;
     align-self: flex-end;
-  }
-  
-  .mensaje-receptor {
+}
+
+.mensaje-receptor {
     background-color: white;
     align-self: flex-start;
     align-items: flex-start;
-  }
-  
-  .entrada-mensaje {
+}
+
+.entrada-mensaje {
     margin-top: 10px;
     flex-direction: column;
-  }
-  
-  .entrada-mensaje input {
+}
+
+.entrada-mensaje input {
     flex: 1;
-    
+
     padding: 10px;
     border: 1px solid #ccc;
     border-radius: 4px;
     margin-right: 10px;
     width: 100%;
-  }
-  
-  .entrada-mensaje button {
+}
+
+.entrada-mensaje button {
     background-color: #0078ff;
     color: white;
     border: none;
     border-radius: 4px;
     padding: 10px 15px;
     cursor: pointer;
-  }
-  
-  .entrada-mensaje button:hover {
+}
+
+.entrada-mensaje button:hover {
     background-color: #005bb5;
-  }
-  .entrada-mensaje {
+}
+
+.entrada-mensaje {
     display: flex;
     justify-content: center;
     padding: 10px;
-  }
-  
-  .entrada-contenedor {
+}
+
+.entrada-contenedor {
     display: flex;
-    flex-direction: column; /* Organiza los elementos verticalmente */
+    flex-direction: column;
+    /* Organiza los elementos verticalmente */
     width: 100%;
-    max-width: 300px; /* Ajusta el ancho máximo según sea necesario */
-  }
-  .input-mensaje {
+    max-width: 300px;
+    /* Ajusta el ancho máximo según sea necesario */
+}
+
+.input-mensaje {
     padding: 10px;
-    margin-bottom: 10px; /* Espacio entre el input y el botón */
+    margin-bottom: 10px;
+    /* Espacio entre el input y el botón */
     border: 1px solid #ccc;
     border-radius: 4px;
     font-size: 16px;
-  }
-  
-  .boton-enviar {
+}
+
+.boton-enviar {
     padding: 10px;
     background-color: #0078ff;
     color: white;
@@ -212,7 +301,26 @@
     border-radius: 4px;
     font-size: 16px;
     cursor: pointer;
-  }
-  .boton-enviar:hover {
+}
+
+.boton-enviar:hover {
     background-color: #005bb5;
-  }
+}
+
+.lista-amigos {
+    width: 50%;
+    justify-content: flex-start;
+    display: flex-start;
+}
+
+.lista-amigos ul {
+    align-items: center;
+    width: 100%;
+    justify-content: flex-start;
+    display: flex-start;
+    flex-direction: column;
+}
+
+.lista-amigos ul li {
+    width: 100%;
+}

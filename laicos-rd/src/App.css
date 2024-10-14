@@ -48,6 +48,9 @@
 body {
   font-family: "Montserrat", sans-serif;
   color: var(--e-global-color-primary);
+  display: flex;
+  min-height: 100vh;
+  background: linear-gradient(var(--e-global-color-primary) 0%,var(--e-global-color-primary) 130px, var(--e-global-color-secondary) 3%,  var(--e-global-color-secondary) 100% );
 }
 
 h1, h2, h3, h4, h5, h6 {
