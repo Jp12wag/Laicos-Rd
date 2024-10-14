@@ -149,7 +149,7 @@ const AdminDashboard = () => {
             <FontAwesomeIcon icon={faClipboardList} /> Feed
           </a>}
           {isHovered &&<a href="#" onClick={() => handleComponentChange('Actividades')}>
-            <FontAwesomeIcon icon={faChartPie} />{isHovered && 'Actividades'}
+            <FontAwesomeIcon icon={faChartPie} />{isHovered && ' Actividades'}
           </a>}
           {isHovered && <a href="#" onClick={() => handleComponentChange('Chat')}>
             <FontAwesomeIcon icon={faChartPie} /> {isHovered && 'Chat'}
@@ -159,20 +159,20 @@ const AdminDashboard = () => {
           {(userRole === 'Administrador'  || userRole === 'clero') && (
             <>
             {isHovered &&   <a href="#" onClick={() => handleComponentChange('Administradores')}>
-                <FontAwesomeIcon icon={faUser} /> {isHovered && 'Administrador'}
+                <FontAwesomeIcon icon={faUser} /> {isHovered && ' Administrador'}
               </a>}
               {isHovered &&  <a href="#" onClick={() => handleComponentChange('Parroquias')}>
-                <FontAwesomeIcon icon={faChartArea} />  {isHovered && 'Parroquias'}
+                <FontAwesomeIcon icon={faChartArea} />  {isHovered && ' Parroquias'}
               </a>}
               {isHovered && <a href="#" onClick={() => handleComponentChange('Diocesis')}>
-                <FontAwesomeIcon icon={faChartArea} />{isHovered && 'Diocesis'}
+                <FontAwesomeIcon icon={faChartArea} />{isHovered && ' Diocesis'}
               </a>}
             </>
           )}
           
           {/* Siempre mostrar la configuración de seguridad */}
           {isHovered &&<a href="#" onClick={() => handleComponentChange('security')}>
-            <FontAwesomeIcon icon={faCog} />{isHovered && 'Configuración de Seguridad'}
+            <FontAwesomeIcon icon={faCog} />{isHovered && ' Seguridad'}
           </a>}
         </div>
 

@@ -1,7 +1,6 @@
 .chat-container {
     position: relative;
     display: flex;
-    margin-top: 30px;
     margin-left: 0%;
     background-color: #f0f0f0;
     width: 1396px;
@@ -46,7 +45,7 @@
 .header{
     position: relative;
     width: 100%;
-    height: 60px;
+    height: 70px;
     background: #ededed;
     display: flex;
     justify-content: space-between;
@@ -70,76 +69,96 @@
     width: 100%;
     height: 100%;
     object-fit: cover;
-    background: url('../img/logo.png');
 }
 
-/*
-
-  .lista-amigos{
-    width: 40%;
-    height: 95%;
-    background-color: white;
-    border-radius: 8px;
-    padding: 10px;
-    margin: 10px;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
-    overflow-x: auto;
-
-  }*/
-
-.lista-amigos ul {
-    list-style-type: none;
-    /* Quita los puntos de la lista */
-    padding: 0;
-    /* Quita el padding por defecto */
-}
-
-.lista-amigos li {
-    margin-bottom: 10px;
-    /* Espaciado entre los amigos */
-}
-
-.lista-amigos button {
-    width: 100%;
-    /* Hace que el botón ocupe todo el ancho */
-    background-color: #007bff;
-    /* Color de fondo del botón */
-    color: white;
-    /* Color del texto del botón */
-    border: none;
-    /* Quita el borde del botón */
-    border-radius: 5px;
-    /* Bordes redondeados */
-    cursor: pointer;
-    /* Cambia el cursor al pasar sobre el botón */
-    transition: background-color 0.3s;
-    /* Transición suave al cambiar el color */
-    align-items: flex-start;
-    font-size: 13px;
-}
-
-.lista-amigos button:hover {
-    background-color: #a1b300;
-    /* Cambia el color al pasar el ratón */
-
-}
-
-
-
-
-
-.chat {
-    margin: 10px;
-    width: 50%;
-    height: 100%;
-}
-
-.contenedor-chat-usuario {
+.nav_icons{
     display: flex;
-    flex-direction: column;
-    width: 20%;
-    height: 100%;
+    flex-direction: row;
+    width: 200px;
+
 }
+.nav_icons li{
+    display: flex;
+    list-style: none;
+    cursor: pointer;
+    color: #51585c;
+    font-size: 1.5em;
+    margin-left: 22px;    
+}
+
+.search_chat{
+    position: relative;
+    width: 100%;
+    height: 50px;
+    background-color: #f6f6f6;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0 15px;
+}
+
+.search_chat div{
+    width: 100%;
+}
+
+.search_chat div input{
+    width: 100%;
+    outline: none;
+    border: none;
+    background: #fff;
+    padding: 6px;
+    height: 38px;
+    border-radius: 30px;
+    font-size: 14px;
+    padding-left: 40px;
+    margin-top: 10px;
+}
+.search_chat div input::before{
+    color: #bbb;
+}
+
+.search_chat div .IoSearch{
+    position: absolute;
+    left: 30px;
+    top: 10px;
+    font-size: 1.2em;
+}
+
+.chatlist{
+    position: relative;
+    height: calc(100% - 120px);
+    overflow-y: auto;
+}
+
+.chatlist .block{
+    position: relative;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 10px 0;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+    cursor: pointer;
+}
+.chatlist .block .imgbx{
+    width: 60px;
+    height: 60px;
+    display: flex;
+    border-radius: 50%;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+
+
+
+
+
+
+
+
+
 
 
 .lista-usuarios {
@@ -157,12 +176,6 @@
     flex-direction: column;
 }
 
-.btn {
-    width: 150px;
-    height: 30px;
-}
-
-
 .solicitudes-pendientes {
     background-color: white;
     border-radius: 8px;
@@ -175,7 +188,6 @@
 }
 
 .lista-usuarios h3,
-.lista-amigos h3,
 .solicitudes-pendientes h3 {
     margin: 0;
 }
@@ -204,17 +216,6 @@
 
 .contenedorSolicitud button:hover {
     background-color: #005bb5;
-}
-
-.contener-chat {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-end;
-    background-color: #e5ddd5;
-    padding: 10px;
-    border-radius: 8px;
-    overflow-y: auto;
 }
 
 .mensajes {
@@ -269,12 +270,6 @@
     background-color: #005bb5;
 }
 
-.entrada-mensaje {
-    display: flex;
-    justify-content: center;
-    padding: 10px;
-}
-
 .entrada-contenedor {
     display: flex;
     flex-direction: column;
@@ -307,20 +302,6 @@
     background-color: #005bb5;
 }
 
-.lista-amigos {
-    width: 50%;
-    justify-content: flex-start;
-    display: flex-start;
-}
 
-.lista-amigos ul {
-    align-items: center;
-    width: 100%;
-    justify-content: flex-start;
-    display: flex-start;
-    flex-direction: column;
-}
 
-.lista-amigos ul li {
-    width: 100%;
-}
+

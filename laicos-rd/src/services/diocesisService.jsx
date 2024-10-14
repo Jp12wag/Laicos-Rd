@@ -1,8 +1,7 @@
 import axios from 'axios';
 import Cookies from 'js-cookie';
 
-const API_URL = 'http://localhost:3001/api/diocesis'; // Cambia la URL según tu configuración
-
+const API_URL = 'http://localhost:3001/api/diocesis'; 
 export const getDioesis = async () => {
   const authToken = Cookies.get('authToken');
   const response = await axios.get(API_URL, {

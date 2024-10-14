@@ -7,6 +7,9 @@ import ChatWindow from './ChatWindow';
 import UsuariosList from './UsuariosList';
 import SolicitudesPendientes from './SolicitudesPendientes';
 import axios from 'axios';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+
+import { IoScanCircleOutline, IoChatbox, IoEllipsisVertical, IoSearch } from 'react-icons/io5';
 
 
 const socket = io('http://localhost:3001', {
@@ -245,6 +248,7 @@ const Chat = () => {
     <div className="chat-container">
       <div className="lista-amigos">
         <h3>Chats</h3>
+
         <div className='header'>
           <div className='user-info'>
             {user.foto ? (
@@ -255,25 +259,40 @@ const Chat = () => {
 
           </div>
           <ul className="nav_icons">
-            <li><ion-icon name="scan-circle-outline"></ion-icon>Hola</li>
-            <li><ion-icon name="chatbox"></ion-icon></li>
-            <li><ion-icon name="ellipsis-vertical"></ion-icon></li>
+            <li> <IoScanCircleOutline size={20} /></li>
+            <li> <IoChatbox size={20} /></li>
+            <li>  <IoEllipsisVertical size={20} /></li>
           </ul>
 
         </div>
-        <ul>
+        <div className="search_chat">
+          <div>
+            <input type="text" placeholder='Search or start new chat' />
+            <IoSearch className='IoSearch' />
+          </div>
+
+        </div>
+        <div className="chatlist">
           {Array.isArray(amigos) && amigos.length > 0 ? (
             amigos.map((amigo) => (
-              <li key={amigo._id}>
-                <button onClick={() => seleccionarReceptor(amigo._id)} // Aquí estamos usando el _id del amigo
-                > {amigo?.nombre ? `${amigo.nombre} ${amigo.apellido}` : 'Nombre no disponible'}
-                </button>
-              </li>
+              <div key={amigo._id} className="block">
+                <div className="imgbx">
+                <img src={amigo.foto ? "" : "Na"} className='cover' />
+                </div>
+                 <div className="detalles">
+                  <div className="listHead">
+                    <h4>{amigo?.nombre ? `${amigo.nombre} ${amigo.apellido}` : 'Nombre no disponible'}</h4>
+                  </div>
+                 <button onClick={() => seleccionarReceptor(amigo._id)}>
+                  </button>
+                 </div>
+              </div>
             ))
           ) : (
             <li>No hay amigos disponibles.</li>
           )}
-        </ul>
+        </div>
+
       </div>
       <div className="chat">
 
