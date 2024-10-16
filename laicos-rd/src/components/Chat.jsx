@@ -2,14 +2,13 @@ import React, { useState, useEffect, useRef } from 'react';
 import '../css/Chat.css';
 import io from 'socket.io-client';
 import Cookies from 'js-cookie';
-import AmigosList from './AmigosList';
-import ChatWindow from './ChatWindow';
-import UsuariosList from './UsuariosList';
-import SolicitudesPendientes from './SolicitudesPendientes';
 import axios from 'axios';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import Modal from './Modal/modalUsuarios';
+import useUser from './useUser'
 
-import { IoScanCircleOutline, IoChatbox, IoEllipsisVertical, IoSearch } from 'react-icons/io5';
+import { IoScanCircleOutline, IoChatbox,  IoSearch } from 'react-icons/io5';
+import { faUser } from '@fortawesome/free-solid-svg-icons';
 
 
 const socket = io('http://localhost:3001', {
@@ -19,6 +18,7 @@ const socket = io('http://localhost:3001', {
 });
 
 const Chat = () => {
+  const [mostrarModal, setMostrarModal] = useState(false);
   const [mensaje, setMensaje] = useState('');
   const [mensajes, setMensajes] = useState([]); // Historial de mensajes
   const [usuariosConectados, setUsuariosConectados] = useState([]);
@@ -31,6 +31,7 @@ const Chat = () => {
   const [solicitudesEnviadas, setSolicitudesEnviadas] = useState([]); // Solicitudes de amistad enviadas
   const [user, setUser] = useState({});
   const authToken = Cookies.get('authToken');
+  const [notificaciones, setNotificaciones] = useState([]); 
   useEffect(() => {
     socket.on('connect', () => {
       console.log('Conectado al servidor con socket ID:', socket.id);
@@ -64,6 +65,14 @@ const Chat = () => {
     };
   }, [userId]);
 
+
+   const abrirModal = () => {
+    setMostrarModal(true);
+  };
+
+  const cerrarModal = () => {
+    setMostrarModal(false);
+  };
   useEffect(() => {
     const obtenerUsuario = async () => {
       if (!authToken) {
@@ -71,7 +80,7 @@ const Chat = () => {
         return;
       }
 
-      if (!userId) return; // Asegúrate de que userId esté definido
+      if (!userId) return;
 
       try {
         const response = await axios.get(`http://localhost:3001/api/administradores/${userId}`, {
@@ -259,14 +268,14 @@ const Chat = () => {
 
           </div>
           <ul className="nav_icons">
-            <li> <IoScanCircleOutline size={20} /></li>
+            <li> <IoScanCircleOutline size={20}/></li>
             <li> <IoChatbox size={20} /></li>
-            <li>  <IoEllipsisVertical size={20} /></li>
+            <li onClick={abrirModal}>  <FontAwesomeIcon icon={faUser}/></li>
           </ul>
 
         </div>
         <div className="search_chat">
-          <div>
+          <div className='search_chat_contenedor'>
             <input type="text" placeholder='Search or start new chat' />
             <IoSearch className='IoSearch' />
           </div>
@@ -275,16 +284,15 @@ const Chat = () => {
         <div className="chatlist">
           {Array.isArray(amigos) && amigos.length > 0 ? (
             amigos.map((amigo) => (
-              <div key={amigo._id} className="block">
+              <div key={amigo._id} className="block" onClick={() => seleccionarReceptor(amigo._id)}>
                 <div className="imgbx">
-                <img src={amigo.foto ? "" : "Na"} className='cover' />
+                <img src={amigo.foto? `${amigo.nombre.charAt(0)}${amigo.apellido.charAt(0)}` : "Na"} className='cover' />
                 </div>
                  <div className="detalles">
                   <div className="listHead">
                     <h4>{amigo?.nombre ? `${amigo.nombre} ${amigo.apellido}` : 'Nombre no disponible'}</h4>
+                    <button onClick={() => seleccionarReceptor(amigo._id)}></button>
                   </div>
-                 <button onClick={() => seleccionarReceptor(amigo._id)}>
-                  </button>
                  </div>
               </div>
             ))
@@ -321,24 +329,6 @@ const Chat = () => {
       </div>
 
       <div className='contenedor-chat-usuario'>
-
-        <div className="lista-usuarios">
-          <h3>Usuarios:</h3>
-          <ul className='contenedorSolicitud'>
-            {usuarios.filter(usuario => usuario._id !== userId).map((usuario) => (
-              <li key={usuario._id}>
-                {usuario.nombre} {usuario.apellido}
-                {esAmigo(usuario._id) ? (
-                  <span className="amigo">Ya es tu amigo</span>
-                ) : solicitudEnviada(usuario._id) ? (
-                  <button className="solicitud-enviada" disabled>Solicitud enviada</button>
-                ) : (
-                  <button onClick={() => enviarSolicitudAmistad(usuario._id)}>Enviar Solicitud</button>
-                )}
-              </li>
-            ))}
-          </ul>
-        </div>
         <div className="solicitudes-pendientes">
           <h3>Solicitudes de Amistad Pendientes:</h3>
           <ul>
@@ -353,6 +343,35 @@ const Chat = () => {
         </div>
 
       </div>
+
+       {/* Modal */}
+       {mostrarModal && (
+        
+        <div className="modal-background" onClick={cerrarModal}> {/* Fondo del modal */}
+          <div className="modal-content" onClick={(e) => e.stopPropagation()}> {/* Contenido del modal */}
+            <button className="close-modal" onClick={cerrarModal}>Cerrar</button>
+            <div className="contenedor-chat-usuario">
+              <div className="lista-usuarios">
+                <h3>Usuarios:</h3>
+                <ul className='contenedorSolicitud'>
+                  {usuarios.filter(usuario => usuario._id !== userId).map((usuario) => (
+                    <li key={usuario._id}>
+                      {usuario.nombre} {usuario.apellido}
+                      {esAmigo(usuario._id) ? (
+                        <span className="amigo">Ya es tu amigo</span>
+                      ) : solicitudEnviada(usuario._id) ? (
+                        <button className="solicitud-enviada" disabled>Solicitud enviada</button>
+                      ) : (
+                        <button onClick={() => enviarSolicitudAmistad(usuario._id)}>Enviar Solicitud</button>
+                      )}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
 
     </div >
   );

@@ -21,44 +21,7 @@ const Header = () => {
     Cookies.remove('twoFactorVerified');
     Cookies.remove('IdUser');
     Cookies.remove('isTwoFaEnabled');
-  };
-  const handleClickOutside = (event) => {
-    if (!event.target.closest('.profile-container')) {
-      setShowMenu(false);
-    }
-    if (!event.target.closest('.notification-container')) {
-      setShowModal(false); // Cierra el modal si se hace clic fuera de él
-    }
-  };
-  // Función para obtener notificaciones
-  const obtenerNotificaciones = async () => {
-    if (!authToken) return;
-
-    try {
-      const response = await axios.get(`http://localhost:3001/api/notificaciones/${userId}`, {
-        headers: {
-          Authorization: `Bearer ${authToken}`,
-        },
-      });
-
-      setShowNotificaciones(response.data);
-    } catch (error) {
-      console.error("Error al obtener notificaciones:", error);
-    }
-  };
-
-  useEffect(() => {
-    obtenerNotificaciones();
-  }, [authToken]);
-
-  const toggleMenu = () => {
-    setShowMenu((prevState) => !prevState);
-  };
-  const toggleNotificaciones = () => {
-    setShowModal((prevState) => !prevState); // Abre o cierra el modal
-    console.log(notificaciones); // Para verificar las notificaciones
-  };
-
+  }
   const handleLogout = async () => {
     //clearCookies();
     try {
@@ -73,6 +36,14 @@ const Header = () => {
     } catch (error) {
       console.error("Error al cerrar sesión:", error);
     }
+  };
+
+  const toggleNotificaciones = () => {
+    setShowModal((prevState) => !prevState); // Abre o cierra el modal
+    console.log(notificaciones); // Para verificar las notificaciones
+  };
+  const toggleMenu = () => {
+    setShowMenu((prevState) => !prevState);
   };
 
   const obtenerUsuario = async () => {
@@ -124,6 +95,7 @@ const Header = () => {
 
   }, [userId]);
 
+
   return (
     <header>
       <nav>
@@ -172,7 +144,6 @@ const Header = () => {
           </li>
         </ul>
       </nav>
-      <Modal isOpen={showModal} onClose={toggleNotificaciones} notifications={notificaciones} />
     </header>
   );
 };
