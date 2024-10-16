@@ -53,29 +53,6 @@ body {
   background: linear-gradient(var(--e-global-color-primary) 0%,var(--e-global-color-primary) 130px, var(--e-global-color-secondary) 3%,  var(--e-global-color-secondary) 100% );
 }
 
-h1, h2, h3, h4, h5, h6 {
-  font-family: var(--e-global-typography-primary-font-family);
-  font-weight: var(--e-global-typography-primary-font-weight);
-  text-transform: var(--e-global-typography-primary-text-transform);
-}
-
-h1 {
-  font-size: var(--e-global-typography-primary-font-size);
-}
-
-h2 {
-  font-size: var(--e-global-typography-accent-font-size);
-}
-
-h3 {
-  font-size: var(--e-global-typography-secondary-font-size);
-}
-
-p {
-  font-family: var(--e-global-typography-text-font-family);
-  font-size: var(--e-global-typography-text-font-size);
-  font-weight: var(--e-global-typography-text-font-weight);
-}
 
 .small-text {
   font-size: var(--e-global-typography-2c5a40d-font-size);

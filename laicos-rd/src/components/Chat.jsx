@@ -7,7 +7,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Modal from './Modal/modalUsuarios';
 import useUser from './useUser'
 
-import { IoScanCircleOutline, IoChatbox,  IoSearch } from 'react-icons/io5';
+import { IoScanCircleOutline, IoChatbox, IoSearch } from 'react-icons/io5';
 import { faUser } from '@fortawesome/free-solid-svg-icons';
 
 
@@ -31,7 +31,7 @@ const Chat = () => {
   const [solicitudesEnviadas, setSolicitudesEnviadas] = useState([]); // Solicitudes de amistad enviadas
   const [user, setUser] = useState({});
   const authToken = Cookies.get('authToken');
-  const [notificaciones, setNotificaciones] = useState([]); 
+  const [notificaciones, setNotificaciones] = useState([]);
   useEffect(() => {
     socket.on('connect', () => {
       console.log('Conectado al servidor con socket ID:', socket.id);
@@ -66,7 +66,7 @@ const Chat = () => {
   }, [userId]);
 
 
-   const abrirModal = () => {
+  const abrirModal = () => {
     setMostrarModal(true);
   };
 
@@ -257,7 +257,6 @@ const Chat = () => {
     <div className="chat-container">
       <div className="lista-amigos">
         <h3>Chats</h3>
-
         <div className='header'>
           <div className='user-info'>
             {user.foto ? (
@@ -268,9 +267,9 @@ const Chat = () => {
 
           </div>
           <ul className="nav_icons">
-            <li> <IoScanCircleOutline size={20}/></li>
+            <li> <IoScanCircleOutline size={20} /></li>
             <li> <IoChatbox size={20} /></li>
-            <li onClick={abrirModal}>  <FontAwesomeIcon icon={faUser}/></li>
+            <li onClick={abrirModal}>  <FontAwesomeIcon icon={faUser} /></li>
           </ul>
 
         </div>
@@ -286,14 +285,26 @@ const Chat = () => {
             amigos.map((amigo) => (
               <div key={amigo._id} className="block" onClick={() => seleccionarReceptor(amigo._id)}>
                 <div className="imgbx">
-                <img src={amigo.foto? `${amigo.nombre.charAt(0)}${amigo.apellido.charAt(0)}` : "Na"} className='cover' />
+                  {amigo.foto ? (
+                    <img src={amigo.foto} alt={amigo.nombre} />
+                  ) : (
+                    <span>{amigo.nombre.charAt(0)}{amigo.apellido.charAt(0)}</span>
+                  )}
+
                 </div>
-                 <div className="detalles">
+                <div className="detalles">
                   <div className="listHead">
-                    <h4>{amigo?.nombre ? `${amigo.nombre} ${amigo.apellido}` : 'Nombre no disponible'}</h4>
-                    <button onClick={() => seleccionarReceptor(amigo._id)}></button>
+                    <h4 className='nombreDetalles'>{amigo?.nombre ? `${amigo.nombre} ${amigo.apellido}` : 'Nombre no disponible'}</h4>
+                    <p className="tiempo">04:00</p>
                   </div>
-                 </div>
+                  {mensajes.map((mensaje, index) => (
+                    
+                    <div className="messageP" key={index}>
+                      <p className="parrafoMensaje">{mensaje.mensaje}</p>
+                      <b className='contador'>{index+1}</b>
+                    </div>
+                  ))}
+                </div>
               </div>
             ))
           ) : (
@@ -303,7 +314,6 @@ const Chat = () => {
 
       </div>
       <div className="chat">
-
         {/* Mostrar historial de mensajes solo si hay un receptor seleccionado */}
         {receptorId && (
           <div className="historial-mensajes" ref={mensajesRef}>
@@ -344,9 +354,9 @@ const Chat = () => {
 
       </div>
 
-       {/* Modal */}
-       {mostrarModal && (
-        
+      {/* Modal */}
+      {mostrarModal && (
+
         <div className="modal-background" onClick={cerrarModal}> {/* Fondo del modal */}
           <div className="modal-content" onClick={(e) => e.stopPropagation()}> {/* Contenido del modal */}
             <button className="close-modal" onClick={cerrarModal}>Cerrar</button>
