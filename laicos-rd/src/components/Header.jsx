@@ -22,6 +22,7 @@ const Header = () => {
     Cookies.remove('IdUser');
     Cookies.remove('isTwoFaEnabled');
   };
+// clearCookies()
   const handleClickOutside = (event) => {
     if (!event.target.closest('.profile-container')) {
       setShowMenu(false);
