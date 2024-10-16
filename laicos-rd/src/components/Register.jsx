@@ -3,6 +3,7 @@ import axios from 'axios';
 import Swal from 'sweetalert2'; // Importa SweetAlert
 import "../css/registro.css";
 import { useNavigate } from 'react-router-dom';
+import { TiArrowBack } from "react-icons/ti";
 
 const Register = () => {
   const [name, setName] = useState('');
@@ -51,7 +52,7 @@ const Register = () => {
         celular,
         nacimiento: fechaN,
         esMiembro
-      });
+      })
 
       // Limpiar los campos
       setName('');
@@ -91,118 +92,105 @@ const Register = () => {
     const birthDate = new Date(date);
     const age = today.getFullYear() - birthDate.getFullYear();
     const monthDifference = today.getMonth() - birthDate.getMonth();
-    
+
     // Verifica si es mayor de 18 años
     return age > 18 || (age === 18 && monthDifference > 0) || (age === 18 && monthDifference === 0 && today.getDate() >= birthDate.getDate());
   };
 
   return (
-    <section className='contenedor-principal'>
-      <div className="login-contenedor registro d-flex shadow-lg rounded-2 overflow-hidden">
-        <div className="bg-white registro-contenedor">
-          <h2 className='titulo-registro my-3'>Registro</h2>
-          <form className="formulario-registro px-4" onSubmit={handleRegister}>
-            <div className='d-flex gap-3 justify-content-center'>
-              <div>
-                <div>
-                  <label htmlFor="nombre">Nombre</label>
-                  <input
-                    id="nombre"
-                    type="text"
-                    placeholder="Nombre"
-                    value={name}
-                    onChange={(e) => setName(e.target.value)}
-                    required
-                  />
-                </div>
+    <section className="container-principal-registro d-flex align-items-center justify-content-center">
 
-                <div>
-                  <label htmlFor="apellido">Apellidos</label>
-                  <input
-                    id="apellido"
-                    type="text"
-                    placeholder="Apellidos"
-                    value={apellido}
-                    onChange={(e) => setApellido(e.target.value)}
-                    required
-                  />
-                </div>
+      <form className="formulario-registro rounded-3 d-flex flex-column px-4 pb-3 mx-3 mb-5 mt-4 shadow" onSubmit={handleRegister}>
 
-                <div>
-                  <label htmlFor="genero">Género</label>
-                  <select id="genero" value={sexo} onChange={(e) => setSexo(e.target.value)} required>
-                    <option value="Seleccionar" disabled>Seleccionar</option>
-                    <option value="femenino">Femenino</option>
-                    <option value="masculino">Masculino</option>
-                  </select>
-                </div>
+        <a href="/login" className='text-dark back'><TiArrowBack className='text-white'/></a>
+        <h1 className="my-0">Registro</h1>
+        <p className="mb-5">Crea una nueva cuenta para comenzar</p>
 
-                <div>
-                  <label htmlFor="email">Email</label>
-                  <input
-                    id="email"
-                    type="email"
-                    placeholder="Email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    required
-                  />
-                </div>
-              </div>
-              <div>
-                <div>
-                  <label htmlFor="password">Contraseña</label>
-                  <input
-                    id="password"
-                    type="password"
-                    placeholder="Contraseña"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    required
-                  />
-                </div>
+        <div className="d-flex gap-3">
+          <div className="d-flex flex-column w-100">
+            <label htmlFor="nombre">Nombre</label>
+            <input
+              className="rounded-3"
+              id="nombre"
+              type="text"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              required />
+          </div>
 
-                <div>
-                  <label htmlFor="celular">Teléfono</label>
-                  <input
-                    id="celular"
-                    type="tel"
-                    placeholder="Teléfono"
-                    value={celular}
-                    onChange={(e) => setCelular(e.target.value)}
-                    required
-                  />
-                </div>
-
-                <div>
-                  <label htmlFor="fechaNacimiento">Fecha de Nacimiento</label>
-                  <input
-                    id="fechaNacimiento"
-                    type="date"
-                    value={fechaN}
-                    onChange={(e) => setFechaN(e.target.value)}
-                    required
-                  />
-                </div>
-
-                <div className={`custom-checkbox ${esMiembro ? 'checked' : ''}`}>
-                  <input
-                    id='check'
-                    type="checkbox"
-                    checked={esMiembro}
-                    onChange={(e) => setEsMiembro(e.target.checked)}
-                  />
-                  <label htmlFor='check'>¿Eres miembro de la iglesia?</label>
-                </div>
-                <p className='label-miembro'>{esMiembro ? 'Sí, soy miembro de la iglesia.' : 'No, no soy miembro de la iglesia.'}</p>
-              </div>
-            </div>
-            <button type="submit" className='btn btn-primary w-100 my-3' disabled={loading}>
-              {loading ? 'Registrando...' : 'Registrarse'}
-            </button>
-          </form>
+          <div className="d-flex flex-column w-100">
+            <label htmlFor="apellido">Apellido</label>
+            <input
+              className="rounded-3"
+              id="apellido"
+              type="text"
+              value={apellido}
+              onChange={(e) => setApellido(e.target.value)}
+              required />
+          </div>
         </div>
-      </div>
+
+        <label htmlFor="genero">Género</label>
+        <select className='rounded-3' id="genero" value={sexo} onChange={(e) => setSexo(e.target.value)} required>
+          <option value="Seleccionar" disabled>Seleccionar</option>
+          <option value="femenino">Femenino</option>
+          <option value="masculino">Masculino</option>
+        </select>
+
+        <label htmlFor="email">Email</label>
+        <input
+          className="rounded-3 "
+          id="email"
+          type="email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          required />
+
+        <label htmlFor="">Contraseña</label>
+        <input
+          className="rounded-3 "
+          id="password"
+          type="password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          required />
+
+        <label htmlFor="celular">Celular</label>
+        <input
+          className="rounded-3"
+          id="celular"
+          type="tel"
+          value={celular}
+          onChange={(e) => setCelular(e.target.value)}
+          required />
+
+        <label htmlFor="fechaNacimiento">Fecha de Nacimiento</label>
+        <input
+          className="rounded-3"
+          id="fechaNacimiento"
+          type="date"
+          value={fechaN}
+          onChange={(e) => setFechaN(e.target.value)}
+          required />
+
+        <div className={`custom-checkbox ${esMiembro ? 'checked' : ''}`}>
+          <input
+            id='check'
+            type="checkbox"
+            checked={esMiembro}
+            onChange={(e) => setEsMiembro(e.target.checked)}
+          />
+          <label htmlFor='check'>¿Eres miembro de la iglesia?</label>
+        </div>
+        <p className='label-miembro text-center'>{esMiembro ? 'Sí, soy miembro de la iglesia.' : 'No, no soy miembro de la iglesia.'}</p>
+
+        <button
+          type="submit"
+          className='btn w-100 my-2'
+          disabled={loading}>
+          {loading ? 'Registrando...' : 'Registrarse'}
+        </button>
+      </form>
     </section>
   );
 };
