@@ -21,7 +21,38 @@ const Header = () => {
     Cookies.remove('twoFactorVerified');
     Cookies.remove('IdUser');
     Cookies.remove('isTwoFaEnabled');
-  }
+  };
+// clearCookies()
+  const handleClickOutside = (event) => {
+    if (!event.target.closest('.profile-container')) {
+      setShowMenu(false);
+    }
+    if (!event.target.closest('.notification-container')) {
+      setShowModal(false); // Cierra el modal si se hace clic fuera de él
+    }
+  };
+  // Función para obtener notificaciones
+  const obtenerNotificaciones = async () => {
+    if (!authToken) return;
+
+    try {
+      const response = await axios.get(`http://localhost:3001/api/notificaciones/${userId}`, {
+        headers: {
+          Authorization: `Bearer ${authToken}`,
+        },
+      });
+
+      setShowNotificaciones(response.data);
+    } catch (error) {
+      console.error("Error al obtener notificaciones:", error);
+    }
+  };
+
+  useEffect(() => {
+    obtenerNotificaciones();
+  }, [authToken]);
+
+
   const handleLogout = async () => {
     //clearCookies();
     try {

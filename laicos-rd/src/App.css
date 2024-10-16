@@ -1,4 +1,4 @@
-:root {
+/* :root {
   --e-global-color-primary: #009900;
   --e-global-color-secondary: rgb(193, 222, 190);
   --e-global-color-text: #FFCC00;
@@ -42,10 +42,10 @@
   --e-global-typography-5813241-font-size: 12px;
   --e-global-typography-5813241-font-weight: 600;
   --e-global-typography-5813241-text-transform: uppercase;
-}
+} */
 
 /* Aplicando las variables en los elementos */
-body {
+/* body {
   font-family: "Montserrat", sans-serif;
   color: var(--e-global-color-primary);
   display: flex;
@@ -68,10 +68,10 @@ body {
   font-size: var(--e-global-typography-5813241-font-size);
   font-weight: var(--e-global-typography-5813241-font-weight);
   text-transform: var(--e-global-typography-5813241-text-transform);
-}
+} */
 
 /* Colores */
-.primary-color {
+/* .primary-color {
   color: var(--e-global-color-primary);
 }
 
@@ -98,5 +98,5 @@ body {
 
 .App {
   height: 100vh;
-  width: 100vw;
-}
+  width: 100%;
+} */

@@ -1,9 +1,9 @@
 import "../css/Login.css";
-import pic from "../img/logo.png";
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import Cookies from 'js-cookie';
+import { FaEye, FaEyeSlash } from "react-icons/fa";
 
 const Login = () => {
   const [email, setEmail] = useState('');
@@ -15,27 +15,16 @@ const Login = () => {
 
   const navigate = useNavigate();
 
-  const bienvenida = () => {
-    const hora = new Date().getHours();
-    if (hora >= 6 && hora < 12) {
-      return "Buenos Días";
-    } else if (hora >= 12 && hora < 18) {
-      return "Buenas Tardes";
-    } else {
-      return "Buenas Noches";
-    }
-  };
-
   useEffect(() => {
     const twoFaVerified = Cookies.get('twoFactorVerified');
     const isTwoFaEnabled = Cookies.get('isTwoFaEnabled') === 'true';
     const authToken = Cookies.get('authToken');
-  
+
     if (!authToken) {
       setShow2FA(false);
       return;
     }
-  
+
     if (isTwoFaEnabled && twoFaVerified === 'true' && authToken) {
       navigate('/dashboard');
     } else if (isTwoFaEnabled) {
@@ -64,7 +53,7 @@ const Login = () => {
         Cookies.set('userRole', response.data.administrador.rolUsuario, { expires: 7 });
         Cookies.set('twoFactorVerified', 'false', { expires: 7, secure: true, sameSite: 'Strict' });
         Cookies.set('IdUser', response.data.administrador._id, { expires: 7, secure: true, sameSite: 'Strict' });
-        Cookies.set('isTwoFaEnabled',response.data.administrador.isTwoFaEnabled,{ expires: 7, secure: true, sameSite: 'Strict' });
+        Cookies.set('isTwoFaEnabled', response.data.administrador.isTwoFaEnabled, { expires: 7, secure: true, sameSite: 'Strict' });
 
         // Limpiar los campos
         setEmail('');
@@ -93,7 +82,7 @@ const Login = () => {
       Cookies.set('userRole', administrador.rolUsuario, { expires: 7, secure: true, sameSite: 'Strict' });
       Cookies.set('twoFactorVerified', 'true', { expires: 7, secure: true, sameSite: 'Strict' });
       Cookies.set('IdUser', administrador._id, { expires: 7, secure: true, sameSite: 'Strict' });
-      Cookies.set('isTwoFaEnabled',response.data.administrador.isTwoFaEnabled,{ expires: 7, secure: true, sameSite: 'Strict' });
+      Cookies.set('isTwoFaEnabled', response.data.administrador.isTwoFaEnabled, { expires: 7, secure: true, sameSite: 'Strict' });
 
       navigate('/dashboard'); // Redirigir al dashboard si es miembro
     } catch (error) {
@@ -104,37 +93,40 @@ const Login = () => {
   };
 
   return (
-    <section className="login-contenedor d-flex justify-content-between shadow-lg rounded-3 overflow-hidden">
-      <div className="imagen-login">
-        <img src={pic} alt="" className="img-fluid" />
-      </div>
+    <section className="container-principal-login d-flex align-items-center justify-content-center">
 
-      <div className="bg-white p-3">
-        <p className="fs-5">Hola!</p>
-        <p className="fs-5">{bienvenida()}</p>
 
-        <form className="formulario-login d-flex flex-column px-4 py-4" onSubmit={show2FA ? handle2FAVerification : handleLogin}>
-          <h2 className="text-center fs-5">Login your account</h2>
+      <form className="formulario-login d-flex flex-column p-4 rounded-3 mb-1 shadow" onSubmit={show2FA ? handle2FAVerification : handleLogin}>
+        <h1 className="my-0">Iniciar sesión</h1>
+        <p className="mb-5">Ingresa tus credenciales para acceder</p>
 
-          <input className="inputName fs-10 bg-white" type="email" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} required />
-          <input className="inputName" type="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} required />
+        <label htmlFor="email">Correo electrónico</label>
+        <input className="rounded-3" type="email" name="email" id="email" placeholder="tu@ejemplo.com" value={email} onChange={(e) => setEmail(e.target.value)} required />
 
-          {show2FA && (
-            <input type="text" placeholder="Código 2FA" value={token} onChange={(e) => setToken(e.target.value)} required />
-          )}
+        <label htmlFor="password">Contraseña</label>
+        <div className="d-flex align-items-center">
+          <input className="rounded-3 " type="password" name="password" id="password" value={password} onChange={(e) => setPassword(e.target.value)} required />
+          <FaEye className="text-dark FaEye-icon" />
+        </div>
 
-          <p className="forget-password" id="forget-password">
-            <a href="/reset">Forget password?</a>
-          </p>
+        {show2FA && (
+          <input type="text" placeholder="Código 2FA" value={token} onChange={(e) => setToken(e.target.value)} required />
+        )}
 
-          <button type="submit" className="mt-2 mb-3 btn btn-primary mx-4 fs-5">
-            {show2FA ? "Verify 2FA" : "Login"}
-          </button>
+        <p className="olvidaste-contrasena" id="olvidaste-contrasena">
+          <a href="/reset">¿Olvidaste tu contraseña?</a>
+        </p>
 
-          <a href="/register"><p className="text-center">Create Account</p></a>
-          {error && <p>{error}</p>}
-        </form>
-      </div>
+        <button type="submit" className="my-4 btn">
+          {show2FA ? "Verify 2FA" : "Iniciar Sesión"}
+        </button>
+
+        <p className="text-center">¿No tienes una cuenta? <a href="/register" id="link-registro">Regístrate</a></p>
+        {error && <p>{error}</p>}
+
+
+      </form>
+
     </section>
   );
 };
