@@ -11,7 +11,7 @@ import ActividadesList from './ActividadesList';
 import Parroquias from './Parroquia/ParroquiaList';
 import Diocesis from './Diocesis/DiocesisList';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faUser, faClipboardList, faChartPie, faChartArea, faCog } from '@fortawesome/free-solid-svg-icons';
+import { faUser, faClipboardList, faChartPie, faChartArea, faCog, faBars } from '@fortawesome/free-solid-svg-icons';
 import SecuritySettings from './SecuritySettings';
 import Chat from './Chat';
 
@@ -145,6 +145,12 @@ const AdminDashboard = () => {
       <div className={`sidebar ${isHovered ? 'expanded' : 'collapsed'}`}
           onMouseEnter={() => setIsHovered(true)}
           onMouseLeave={() => setIsHovered(false)} >
+            {/* Icono del menú visible solo en modo colapsado */}
+          <FontAwesomeIcon
+            icon={faBars}
+            className="menu-icon"
+            onClick={() => setIsHovered(!isHovered)}
+          />
          {isHovered && <h2 className='tituloSider'>{userRole}</h2>} 
          {isHovered &&<a href="#" onClick={() => handleComponentChange('feed')}>
             <FontAwesomeIcon icon={faClipboardList} /> Feed

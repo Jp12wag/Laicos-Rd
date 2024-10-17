@@ -3,6 +3,10 @@ import axios from 'axios';
 import Cookies from 'js-cookie';
 import '../css/feed.css';
 import io from 'socket.io-client';
+import Modal from 'react-modal'; 
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faEdit, faComments, faTrash, faThumbsUp, faPen } from '@fortawesome/free-solid-svg-icons';
+
 
 const socket = io('http://localhost:3001', {
   transports: ['websocket'],
@@ -17,6 +21,8 @@ const Feed = () => {
   const [editingPostId, setEditingPostId] = useState(null);
   const [editingContent, setEditingContent] = useState('');
   const [likedPosts, setLikedPosts] = useState([]);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedPost, setSelectedPost] = useState(null);
 
   const obtenerPosts = async () => {
     try {
@@ -32,6 +38,15 @@ const Feed = () => {
     }
   };
   
+  const openModal = (post) => {
+    setSelectedPost(post);
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setSelectedPost(null);
+    setIsModalOpen(false);
+  };
 
   const handleDelete = async (postId) => {
     try {
@@ -104,6 +119,7 @@ const Feed = () => {
       });
       setPosts(updatedPosts);
       setNewComment('');
+      closeModal();
     } catch (error) {
       console.error('Error al agregar comentario:', error);
     }
@@ -150,62 +166,69 @@ const Feed = () => {
 
   return (
     <div className="feed">
-      <h2>Feed de Publicaciones</h2>
-
       <div className="new-post">
-        <textarea
+        <input className='inputpost'
           value={newPostContent}
           onChange={(e) => setNewPostContent(e.target.value)}
           placeholder="¿Qué estás pensando?"
         />
-        <input
+        <input className='inputpost'
           type="text"
           value={newPostMedia}
           onChange={(e) => setNewPostMedia(e.target.value)}
           placeholder="URL de la imagen o video"
         />
-        <button onClick={crearPost}>Publicar</button>
+        
+        <button className='btnpost' onClick={crearPost}>Publicar</button>
       </div>
 
       <div className="posts">
         {posts.map((post) => (
           <div key={post._id} className="post">
-            <h3>
+
+
+            <h3 className="cabeceraPost">
               {post.AdminId.nombre} {post.AdminId.apellido}
             </h3>
+             <span>{new Date(post.createdAt).toLocaleString()}</span>
             {editingPostId === post._id ? (
-              <>
-                <textarea
+              <div className="cabeceraPost">
+                <input className='inputpost'
                   value={editingContent}
                   onChange={(e) => setEditingContent(e.target.value)}
                 />
-                <button onClick={() => saveEdit(post._id)}>Guardar</button>
-              </>
+                <button className='btnpost' onClick={() => saveEdit(post._id)}>Guardar</button>
+              </div>
             ) : (
-              <>
+              <div className="post">
                 <p>{post.content}</p>
-                {post.media && <img src={post.media} alt="Post media" />}
+                {post.media && <img src={post.media} alt="Post media" className="postmedia" />}
                 <div className="post-footer">
-                  <span>{new Date(post.createdAt).toLocaleString()}</span>
-                  <button
-                    style={{
-                      backgroundColor: likedPosts.includes(post._id) ? 'blue' : 'gray',
-                      color: 'white',
-                    }}
-                    onClick={() => darLike(post._id)}
-                  >
-                    Like
-                  </button>
+                <FontAwesomeIcon icon={faThumbsUp}  onClick={() => darLike(post._id)} className='btnposts'/>
                   {post.AdminId._id === Cookies.get('IdUser') && (
-                    <button onClick={() => handleDelete(post._id)}>Borrar</button>
+                     <FontAwesomeIcon icon={faTrash} onClick={() => handleDelete(post._id)} className='btnposts'/>
                   )}
-                  <button onClick={() => handleEdit(post)}>Editar</button>
+                  <FontAwesomeIcon icon={faEdit} onClick={() => handleEdit(post)} className='btnposts'/>
+                  <FontAwesomeIcon icon={faComments} onClick={() => openModal(post)} className='btnposts'/>
+                
                 </div>
-              </>
+              </div>
             )}
+          </div>
+        ))}
+      </div>
+
+       {/* Modal de comentarios */}
+       <Modal isOpen={isModalOpen} onRequestClose={closeModal} className="modal-overlay modal-content" >
+        {selectedPost && (
+          <>
+            <h3>Comentarios en la publicación de {selectedPost.AdminId.nombre} {selectedPost.AdminId.apellido}</h3>
+            <p>{selectedPost.content}</p>
+            {selectedPost.media && <img src={selectedPost.media} alt="Post media" />}
+            
             <div>
               <h4>Comentarios:</h4>
-              {post.comments.map((comment, index) => (
+              {selectedPost.comments.map((comment, index) => (
                 <p key={index}>
                   {comment.comment} - {comment.AdminId.nombre} {comment.AdminId.apellido}
                 </p>
@@ -216,12 +239,12 @@ const Feed = () => {
                   onChange={(e) => setNewComment(e.target.value)}
                   placeholder="Escribe un comentario"
                 />
-                <button onClick={() => handleCommentSubmit(post._id)}>Comentar</button>
+                <button onClick={() => handleCommentSubmit(selectedPost._id)}>Comentar</button>
               </div>
             </div>
-          </div>
-        ))}
-      </div>
+          </>
+        )}
+      </Modal>
     </div>
     
   );

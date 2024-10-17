@@ -129,8 +129,8 @@ const Header = () => {
 
   return (
     <header>
-      <nav>
-        <ul>
+      <nav  className="navegador">
+        <ul className="nav-icon-lista">
           <li className="notification-container">
             <FaBell className="nav-icon" title="Notificaciones" onClick={toggleNotificaciones} />
             {notificaciones.length > 0 && (
