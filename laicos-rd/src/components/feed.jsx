@@ -3,7 +3,7 @@ import axios from 'axios';
 import Cookies from 'js-cookie';
 import '../css/feed.css';
 import io from 'socket.io-client';
-import Modal from 'react-modal'; 
+import Modal from 'react-modal';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEdit, faComments, faTrash, faThumbsUp, faPen } from '@fortawesome/free-solid-svg-icons';
 
@@ -37,7 +37,7 @@ const Feed = () => {
       console.error('Error al obtener las publicaciones:', error);
     }
   };
-  
+
   const openModal = (post) => {
     setSelectedPost(post);
     setIsModalOpen(true);
@@ -130,7 +130,7 @@ const Feed = () => {
     setEditingContent(post.content);
   };
 
-  
+
   const saveEdit = async (postId) => {
     try {
       const authToken = Cookies.get('authToken');
@@ -146,7 +146,7 @@ const Feed = () => {
       console.error('Error al editar la publicación:', error);
     }
   };
-  
+
 
   useEffect(() => {
     obtenerPosts();
@@ -158,7 +158,7 @@ const Feed = () => {
       console.log('Nueva publicación recibida:', nuevaPublicacion);
       setPosts((prevPosts) => [nuevaPublicacion, ...prevPosts]); // Agrega la nueva publicación al principio del feed
     });
-   
+
     return () => {
       socket.off('nuevaPublicacion');
     };
@@ -178,19 +178,21 @@ const Feed = () => {
           onChange={(e) => setNewPostMedia(e.target.value)}
           placeholder="URL de la imagen o video"
         />
-        
         <button className='btnpost' onClick={crearPost}>Publicar</button>
       </div>
+
 
       <div className="posts">
         {posts.map((post) => (
           <div key={post._id} className="post">
 
 
-            <h3 className="cabeceraPost">
-              {post.AdminId.nombre} {post.AdminId.apellido}
-            </h3>
-             <span>{new Date(post.createdAt).toLocaleString()}</span>
+            <div className='cabecera'>
+              <h3 className="cabeceraPost">
+                {post.AdminId.nombre} {post.AdminId.apellido}
+              </h3>
+              <span className='cabeceraFecha'>{new Date(post.createdAt).toLocaleString()}</span>
+            </div>
             {editingPostId === post._id ? (
               <div className="cabeceraPost">
                 <input className='inputpost'
@@ -201,16 +203,16 @@ const Feed = () => {
               </div>
             ) : (
               <div className="post">
-                <p>{post.content}</p>
+                <p className='postContent'>{post.content}</p>
                 {post.media && <img src={post.media} alt="Post media" className="postmedia" />}
                 <div className="post-footer">
-                <FontAwesomeIcon icon={faThumbsUp}  onClick={() => darLike(post._id)} className='btnposts'/>
+                  <FontAwesomeIcon icon={faThumbsUp} onClick={() => darLike(post._id)} className='btnposts' />
                   {post.AdminId._id === Cookies.get('IdUser') && (
-                     <FontAwesomeIcon icon={faTrash} onClick={() => handleDelete(post._id)} className='btnposts'/>
+                    <FontAwesomeIcon icon={faTrash} onClick={() => handleDelete(post._id)} className='btnposts' />
                   )}
-                  <FontAwesomeIcon icon={faEdit} onClick={() => handleEdit(post)} className='btnposts'/>
-                  <FontAwesomeIcon icon={faComments} onClick={() => openModal(post)} className='btnposts'/>
-                
+                  <FontAwesomeIcon icon={faEdit} onClick={() => handleEdit(post)} className='btnposts' />
+                  <FontAwesomeIcon icon={faComments} onClick={() => openModal(post)} className='btnposts' />
+
                 </div>
               </div>
             )}
@@ -218,14 +220,15 @@ const Feed = () => {
         ))}
       </div>
 
-       {/* Modal de comentarios */}
-       <Modal isOpen={isModalOpen} onRequestClose={closeModal} className="modal-overlay modal-content" >
+
+      {/* Modal de comentarios */}
+      <Modal isOpen={isModalOpen} onRequestClose={closeModal} className="modal-overlay modal-content" >
         {selectedPost && (
           <>
             <h3>Comentarios en la publicación de {selectedPost.AdminId.nombre} {selectedPost.AdminId.apellido}</h3>
             <p>{selectedPost.content}</p>
             {selectedPost.media && <img src={selectedPost.media} alt="Post media" />}
-            
+
             <div>
               <h4>Comentarios:</h4>
               {selectedPost.comments.map((comment, index) => (
@@ -246,7 +249,7 @@ const Feed = () => {
         )}
       </Modal>
     </div>
-    
+
   );
 };
 

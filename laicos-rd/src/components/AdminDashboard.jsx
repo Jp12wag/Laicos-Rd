@@ -14,11 +14,12 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser, faClipboardList, faChartPie, faChartArea, faCog, faBars } from '@fortawesome/free-solid-svg-icons';
 import SecuritySettings from './SecuritySettings';
 import Chat from './Chat';
+import { TiArrowSortedUp } from "react-icons/ti";
 
 Modal.setAppElement('#root');
 
 const AdminDashboard = () => {
-  
+
   const userRole = Cookies.get('userRole');
   const [isHovered, setIsHovered] = useState(false);
   const [administradores, setAdministradores] = useState([]);
@@ -142,33 +143,45 @@ const AdminDashboard = () => {
     <>
       <Header />
       <div className="admin-dashboard">
-      <div className={`sidebar ${isHovered ? 'expanded' : 'collapsed'}`}
+        <div className={`sidebar ${isHovered ? 'expanded' : 'collapsed'}`}
           onMouseEnter={() => setIsHovered(true)}
           onMouseLeave={() => setIsHovered(false)} >
-            {/* Icono del menú visible solo en modo colapsado */}
+          {/* Icono del menú visible solo en modo colapsado */}
           <FontAwesomeIcon
             icon={faBars}
             className="menu-icon"
             onClick={() => setIsHovered(!isHovered)}
           />
-         {isHovered && <h2 className='tituloSider'>{userRole}</h2>} 
-         {isHovered &&<a href="#" onClick={() => handleComponentChange('feed')}>
-            <FontAwesomeIcon icon={faClipboardList} /> Feed
-          </a>}
-          {isHovered &&<a href="#" onClick={() => handleComponentChange('Actividades')}>
-            <FontAwesomeIcon icon={faChartPie} />{isHovered && ' Actividades'}
-          </a>}
-          {isHovered && <a href="#" onClick={() => handleComponentChange('Chat')}>
-            <FontAwesomeIcon icon={faChartPie} /> {isHovered && 'Chat'}
-          </a>}
-          
+          {isHovered && <h2 className='tituloSider'>{userRole}</h2>}
+
+          <div className='options' >
+            {isHovered && <a className='options' href="#" onClick={() => handleComponentChange('feed')}>
+              <FontAwesomeIcon icon={faClipboardList} /> Feed
+            </a>
+            }
+          </div>
+
+          <div className='options'>
+            {isHovered && <a className='options' href="#" onClick={() => handleComponentChange('Actividades')}>
+              <FontAwesomeIcon icon={faChartPie} />{isHovered && ' Actividades'}
+            </a>}
+          </div>
+
+          <div className='options'>
+            {isHovered && <a className='options' href="#" onClick={() => handleComponentChange('Chat')}>
+              <FontAwesomeIcon icon={faChartPie} /> {isHovered && 'Chat'}
+
+            </a>}
+          </div>
+
+
           {/* Renderizar opciones de administración solo si el rol es Administrador */}
-          {(userRole === 'Administrador'  || userRole === 'clero') && (
+          {(userRole === 'Administrador' || userRole === 'clero') && (
             <>
-            {isHovered &&   <a href="#" onClick={() => handleComponentChange('Administradores')}>
+              {isHovered && <a href="#" onClick={() => handleComponentChange('Administradores')}>
                 <FontAwesomeIcon icon={faUser} /> {isHovered && ' Administrador'}
               </a>}
-              {isHovered &&  <a href="#" onClick={() => handleComponentChange('Parroquias')}>
+              {isHovered && <a href="#" onClick={() => handleComponentChange('Parroquias')}>
                 <FontAwesomeIcon icon={faChartArea} />  {isHovered && ' Parroquias'}
               </a>}
               {isHovered && <a href="#" onClick={() => handleComponentChange('Diocesis')}>
@@ -176,9 +189,9 @@ const AdminDashboard = () => {
               </a>}
             </>
           )}
-          
+
           {/* Siempre mostrar la configuración de seguridad */}
-          {isHovered &&<a href="#" onClick={() => handleComponentChange('security')}>
+          {isHovered && <a href="#" onClick={() => handleComponentChange('security')}>
             <FontAwesomeIcon icon={faCog} />{isHovered && ' Seguridad'}
           </a>}
         </div>
@@ -186,7 +199,7 @@ const AdminDashboard = () => {
         <div className="content">
           {activeComponent === 'feed' && <Feed />}
           {activeComponent === 'Actividades' && <ActividadesList />}
-          {activeComponent === 'Administradores' && (userRole === 'Administrador'  || userRole === 'clero') && (
+          {activeComponent === 'Administradores' && (userRole === 'Administrador' || userRole === 'clero') && (
             <AdministradoresList
               administradores={administradores}
               handleOpenModal={handleOpenModal}
@@ -271,7 +284,7 @@ const AdminDashboard = () => {
                 name="rolUsuario"
                 value={currentAdmin.rolUsuario}
                 onChange={handleInputChange}
-                
+
               >
                 <option value="miembro">Miembro</option>
                 {userRole !== 'clero' && <option value="Administrador">Administrador</option>} {/* Solo mostrar si no es clero */}

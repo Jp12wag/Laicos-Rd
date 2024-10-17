@@ -22,7 +22,7 @@ const Header = () => {
     Cookies.remove('IdUser');
     Cookies.remove('isTwoFaEnabled');
   };
-// clearCookies()
+  // clearCookies()
   const handleClickOutside = (event) => {
     if (!event.target.closest('.profile-container')) {
       setShowMenu(false);
@@ -129,7 +129,7 @@ const Header = () => {
 
   return (
     <header>
-      <nav  className="navegador">
+      <nav className="navegador">
         <ul className="nav-icon-lista">
           <li className="notification-container">
             <FaBell className="nav-icon" title="Notificaciones" onClick={toggleNotificaciones} />
@@ -153,14 +153,16 @@ const Header = () => {
                       )}
                     </div>
                     <div className="greeting">
-                      <p>Hola, {user.nombre} {user.apellido}</p>
-                      <p>{user.email}</p>
+                      <p className='user-names'>Hola, {user.nombre} {user.apellido}</p>
+                      <p className='user-email'>{user.email}</p>
                     </div>
                   </li>
                 ) : (
                   <li>No se encontraron datos de usuario.</li>
                 )}
-                <li>
+                <hr />
+               <ul className='dropdown-buttons'>
+               <li>
                   <button onClick={() => navigate("/Perfil")} className="dropdown-button">
                     <FaCog /> Mi Perfil
                   </button>
@@ -170,6 +172,7 @@ const Header = () => {
                     <FaSignOutAlt /> Cerrar sesión
                   </button>
                 </li>
+               </ul>
               </ul>
             )}
           </li>
