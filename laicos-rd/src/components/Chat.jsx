@@ -6,9 +6,8 @@ import axios from 'axios';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Modal from './Modal/modalUsuarios';
 import useUser from './useUser'
-
 import { IoScanCircleOutline, IoChatbox, IoSearch } from 'react-icons/io5';
-import { faUser } from '@fortawesome/free-solid-svg-icons';
+import { faUser, faPaperPlane } from '@fortawesome/free-solid-svg-icons';
 
 
 const socket = io('http://localhost:3001', {
@@ -23,7 +22,7 @@ const Chat = () => {
   const [mensajes, setMensajes] = useState([]); // Historial de mensajes
   const [usuariosConectados, setUsuariosConectados] = useState([]);
   const [receptorId, setReceptorId] = useState('');
-  const [userId, setUserId] = useState(Cookies.get('idUser')); // ID del usuario actual
+  const userId = Cookies.get('IdUser');
   const mensajesRef = useRef(null);
   const [amigos, setAmigos] = useState([]); // Lista de amigos aceptados
   const [solicitudesPendientes, setSolicitudesPendientes] = useState([]); // Solicitudes de amistad pendientes
@@ -32,6 +31,9 @@ const Chat = () => {
   const [user, setUser] = useState({});
   const authToken = Cookies.get('authToken');
   const [notificaciones, setNotificaciones] = useState([]);
+
+
+  console.log(mensajes);
   useEffect(() => {
     socket.on('connect', () => {
       console.log('Conectado al servidor con socket ID:', socket.id);
@@ -60,7 +62,6 @@ const Chat = () => {
     return () => {
       socket.off('connect');
       socket.off('nuevoMensaje');
-      socket.off('historialMensajes');
       socket.off('actualizarUsuariosConectados');
     };
   }, [userId]);
@@ -252,11 +253,11 @@ const Chat = () => {
   const solicitudEnviada = (id) => {
     return solicitudesEnviadas.some(solicitud => solicitud.receptor === id);
   };
-
+ 
   return (
     <div className="chat-container">
       <div className="lista-amigos">
-        <h3>Chats</h3>
+        <h3 className="titulo-chat">Chats</h3>
         <div className='header'>
           <div className='user-info'>
             {user.foto ? (
@@ -267,22 +268,24 @@ const Chat = () => {
 
           </div>
           <ul className="nav_icons">
-            <li> <IoScanCircleOutline size={20} /></li>
-            <li> <IoChatbox size={20} /></li>
-            <li onClick={abrirModal}>  <FontAwesomeIcon icon={faUser} /></li>
+            <li className="nav_icons-lista"> <IoScanCircleOutline size={20} /></li>
+            <li className="nav_icons-lista"> <IoChatbox size={20} /></li>
+            <li className="nav_icons-lista" onClick={abrirModal}>  <FontAwesomeIcon icon={faUser} /></li>
           </ul>
 
         </div>
         <div className="search_chat">
           <div className='search_chat_contenedor'>
-            <input type="text" placeholder='Search or start new chat' />
+            <input type="text" placeholder='Search or start new chat' className='inputSearch' />
             <IoSearch className='IoSearch' />
           </div>
 
         </div>
         <div className="chatlist">
           {Array.isArray(amigos) && amigos.length > 0 ? (
+            
             amigos.map((amigo) => (
+              
               <div key={amigo._id} className="block" onClick={() => seleccionarReceptor(amigo._id)}>
                 <div className="imgbx">
                   {amigo.foto ? (
@@ -297,11 +300,12 @@ const Chat = () => {
                     <h4 className='nombreDetalles'>{amigo?.nombre ? `${amigo.nombre} ${amigo.apellido}` : 'Nombre no disponible'}</h4>
                     <p className="tiempo">04:00</p>
                   </div>
-                  {mensajes.map((mensaje, index) => (
-                    
+                   {mensajes.map((mensaje, index) => (
                     <div className="messageP" key={index}>
-                      <p className="parrafoMensaje">{mensaje.mensaje}</p>
-                      <b className='contador'>{index+1}</b>
+                      {mensaje.leido === false && (
+                        <b className='contador' key={index}>{index + 1}</b>
+                      )}
+
                     </div>
                   ))}
                 </div>
@@ -318,7 +322,7 @@ const Chat = () => {
         {receptorId && (
           <div className="historial-mensajes" ref={mensajesRef}>
             {mensajes.map((mensaje, index) => (
-              <div key={index} className={mensaje.emisor === userId ? 'mensaje-propio' : 'mensaje-receptor'}>
+              <div key={index} className={String(mensaje.emisor) === String(userId) ? 'mensaje-propio' : 'mensaje-receptor'}>
                 <p>{mensaje.mensaje}</p>
                 <span>{new Date(mensaje.fechaEnvio).toLocaleString()}</span>
               </div>
@@ -328,16 +332,16 @@ const Chat = () => {
         {/* Componente para enviar mensajes, solo visible si hay un receptor seleccionado */}
         {receptorId && (
           <div className="input-mensaje">
-            <textarea
+            <input className="mensaje"
               value={mensaje}
               onChange={(e) => setMensaje(e.target.value)}
               placeholder="Escribe tu mensaje aquí..."
             />
-            <button onClick={enviarMensaje}>Enviar</button>
+            <FontAwesomeIcon icon={faPaperPlane} className="btn-enviar" onClick={enviarMensaje} />
           </div>
         )}
       </div>
-
+      {/*
       <div className='contenedor-chat-usuario'>
         <div className="solicitudes-pendientes">
           <h3>Solicitudes de Amistad Pendientes:</h3>
@@ -352,12 +356,12 @@ const Chat = () => {
           </ul>
         </div>
 
-      </div>
+      </div>*/}
 
       {/* Modal */}
       {mostrarModal && (
 
-        <div className="modal-background" onClick={cerrarModal}> {/* Fondo del modal */}
+        <div className="modal-overlay" onClick={cerrarModal}> {/* Fondo del modal */}
           <div className="modal-content" onClick={(e) => e.stopPropagation()}> {/* Contenido del modal */}
             <button className="close-modal" onClick={cerrarModal}>Cerrar</button>
             <div className="contenedor-chat-usuario">
@@ -366,9 +370,9 @@ const Chat = () => {
                 <ul className='contenedorSolicitud'>
                   {usuarios.filter(usuario => usuario._id !== userId).map((usuario) => (
                     <li key={usuario._id}>
-                      {usuario.nombre} {usuario.apellido}
+                      <p>{usuario.nombre} {usuario.apellido}</p>
                       {esAmigo(usuario._id) ? (
-                        <span className="amigo">Ya es tu amigo</span>
+                        <span className="amigo"></span>
                       ) : solicitudEnviada(usuario._id) ? (
                         <button className="solicitud-enviada" disabled>Solicitud enviada</button>
                       ) : (

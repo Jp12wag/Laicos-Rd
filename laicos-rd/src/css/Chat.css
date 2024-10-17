@@ -1,31 +1,36 @@
 .chat-container {
+    padding-top: 30px;
     display: flex;
-    background-color: #f0f0f0;
-    width: 100vw;
-    max-width: 100vw;
-    max-height: 80vh;
+    margin-top: 50px;
+    width: 100%;
+    max-width: 900px;
+    max-height: 90vh;
     box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.06), 0 2px 5px 0 rgba(0, 0, 0, 0.06);
-    display: flex;
-    height: 100vh;
+    background: rgb(5, 79, 58);
     overflow: hidden;
     z-index: 1;
+    border-radius: 10px;
 }
 
 .chat-container .lista-amigos {
     position: relative;
     flex: 30%;
-    background: rgb(255, 255, 255);
+    background: rgb(5, 79, 58);
     border-right: 1px solid rgba(0, 0, 0, 0.2);
     height: 98%;
+    margin-left: 10px;
 
+}
+
+.titulo-chat {
+    margin-left: 30px;
 }
 
 .chat-container .chat {
     position: relative;
     flex: 70%;
-    background: #e5ddd5;
-    height: 98%;
-
+    height: 96%;
+    margin-bottom: 30px;
 }
 
 .chat-container .chat::before {
@@ -35,7 +40,6 @@
     left: 0;
     width: 100%;
     height: 100%;
-    background: url('../img/fondochat.jpeg');
     opacity: 0.06;
     z-index: -999;
 
@@ -45,7 +49,7 @@
     position: relative;
     width: 100%;
     height: 70px;
-    background: #ededed;
+    background: rgb(5, 79, 58);
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -54,9 +58,11 @@
 
 .user-info {
     position: relative;
-    width: 40px;
-    height: 40px;
+    display: flex;
+    width: 50px;
+    height: 50px;
     overflow: hidden;
+    background: #569c20;
     border-radius: 50%;
     align-items: center;
     justify-content: center;
@@ -70,21 +76,22 @@
     width: 100%;
     height: 100%;
     object-fit: cover;
-   
+    color: #e5ddd5;
+
 }
 
 .nav_icons {
     display: flex;
     flex-direction: row;
-    width: 200px;
+
 
 }
 
-.nav_icons li {
+.nav_icons .nav_icons-lista {
     display: flex;
     list-style: none;
     cursor: pointer;
-    color: #51585c;
+    color: #ffffff;
     font-size: 1.5em;
     margin-left: 22px;
 }
@@ -93,18 +100,18 @@
     position: relative;
     width: 100%;
     height: 50px;
-    background-color: #f6f6f6;
+    background: rgb(5, 79, 58);
     display: flex;
     justify-content: center;
     align-items: center;
     padding: 0 15px;
 }
 
-.search_chat div {
+.search_chat .search_chat_contenedor {
     width: 100%;
 }
 
-.search_chat div input {
+.search_chat .search_chat_contenedor .inputSearch {
     width: 100%;
     outline: none;
     border: none;
@@ -130,9 +137,16 @@
 
 .chatlist {
     position: relative;
-    height: 90%;
+    height: 200px;
     overflow-y: auto;
+    width: 100%;
+    border-radius: 20px;
 }
+
+.chatlist::-webkit-scrollbar {
+    width: 8px;
+}
+
 
 .chatlist .block {
     position: relative;
@@ -142,13 +156,14 @@
     padding: 15px;
     border-bottom: 1px solid rgba(0, 0, 0, 0.06);
     cursor: pointer;
-
-
+    height: 50px;
+    margin-top: 13px;
+    margin-bottom: 13px;
 }
 
 .chatlist .block .imgbx {
-    width: 60px;
-    min-height: 60px;
+    width: 50px;
+    height: 50px;
     display: flex;
     border-radius: 50%;
     align-items: center;
@@ -156,6 +171,9 @@
     border: 1px solid #00b52d;
     overflow: hidden;
     margin-right: 10px;
+    background: #569c20;
+    margin-bottom: 3px;
+    margin-top: 3px;
 }
 
 .chatlist .block .detalles {
@@ -174,8 +192,9 @@
 }
 
 .chatlist .block .detalles .listHead .nombreDetalles {
-    font-size: 1.0em;
+    font-size: 0.56em;
     font-weight: 600;
+    width: 100%;
 
 
 }
@@ -201,7 +220,8 @@
     -webkit-box-orient: vertical;
     text-overflow: ellipsis;
 }
-.chatlist .block .detalles .messageP .contador{
+
+.chatlist .block .detalles .messageP .contador {
     font-size: 0.75em;
     background: #00b52d;
     color: #fff;
@@ -216,6 +236,92 @@
 }
 
 
+.chat {
+    width: 100%;
+    height: 100%;
+    margin-right: 10px;
+    margin-left: 10px;
+    border-radius: 5px;
+    margin-bottom: 30px;
+}
+
+.historial-mensajes {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 250px;
+    background: url('../img/fondochat.jpeg');
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    align-items: center;
+    overflow-y: auto;
+}
+.historial-mensajes::-webkit-scrollbar {
+    width: 8px;
+}
+
+
+.mensaje-propio {
+    background: #00b52d;
+    align-self: flex-end;
+    width: 50%;
+    height: auto;
+    margin-top: 20px;
+    margin-left: 20px;
+    margin-right: 40px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+    font-size: 18px;
+    color: #fff;
+    text-align: center;
+
+}
+
+.mensaje-receptor {
+    background-color: rgb(112, 110, 110);
+    color: #fff;
+    align-self: flex-start;
+    width: 50%;
+    margin-top: 20px;
+    margin-left: 20px;
+    margin-right: 40px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+    font-size: 18px;
+    text-align: center;
+
+}
+
+.input-mensaje {
+
+    width: 100%;
+    background: url('../img/fondochat.jpeg');
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+
+
+}
+
+.mensaje {
+    margin: 5px 0;
+    padding: 10px;
+    border-radius: 10px;
+    max-width: 100%;
+    width: 90%;
+    margin-right: 10px;
+    border: 2px solid rgb(248, 248, 248);
+}
+
+.btn-enviar {
+    width: 60px;
+    height: 60px;
+    margin: 10px 0;
+    border-radius: 20%;
+    border: 2px solid rgb(248, 248, 248);
+    background-color: #00b52d;
+}
 
 
 
@@ -283,66 +389,9 @@
     background-color: #005bb5;
 }
 
-.mensajes {
-    overflow-y: auto;
-    max-height: 100%;
-}
 
-.mensaje {
-    margin: 5px 0;
-    padding: 10px;
-    border-radius: 10px;
-    max-width: 70%;
-    position: relative;
-}
 
-.mensaje-propio {
-    background-color: #dcf8c6;
-    align-self: flex-end;
-}
 
-.mensaje-receptor {
-    background-color: white;
-    align-self: flex-start;
-    align-items: flex-start;
-}
-
-.entrada-mensaje {
-    margin-top: 10px;
-    flex-direction: column;
-}
-
-.entrada-mensaje input {
-    flex: 1;
-
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    margin-right: 10px;
-    width: 100%;
-}
-
-.entrada-mensaje button {
-    background-color: #0078ff;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    padding: 10px 15px;
-    cursor: pointer;
-}
-
-.entrada-mensaje button:hover {
-    background-color: #005bb5;
-}
-
-.entrada-contenedor {
-    display: flex;
-    flex-direction: column;
-    /* Organiza los elementos verticalmente */
-    width: 100%;
-    max-width: 300px;
-    /* Ajusta el ancho máximo según sea necesario */
-}
 
 .input-mensaje {
     padding: 10px;
@@ -353,21 +402,6 @@
     font-size: 16px;
 }
 
-.boton-enviar {
-    padding: 10px;
-    background-color: #0078ff;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    font-size: 16px;
-    cursor: pointer;
-}
-
-.boton-enviar:hover {
-    background-color: #005bb5;
-}
-
-
 
 
 .modal-overlay {
@@ -376,19 +410,31 @@
     left: 0;
     width: 100vw;
     height: 100vh;
-    background: rgba(0, 0, 0, 0.5);
+    background: rgb(5, 79, 58);
     display: flex;
     justify-content: center;
     align-items: center;
     z-index: 1000;
 }
 
-.modal-contenido {
-    background: white;
+.modal-content {
+    background: rgb(5, 79, 58);
     padding: 20px;
     border-radius: 5px;
     width: 400px;
+    width: 100%;
+    height: 100%;
     position: relative;
+}
+
+.contenedor-chat-usuario {
+    width: 100%;
+
+
+}
+
+.lista-usuarios {
+    background: rgb(5, 79, 58);
 }
 
 .cerrar-modal {
