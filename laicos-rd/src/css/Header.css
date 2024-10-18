@@ -29,12 +29,12 @@
   height: 70px;
   color: #ebebeb;
   background: rgb(5, 79, 58);
-
+ 
 }
 
 .nav-icon {
   width: 30px;
-  margin: 0 15px;
+  margin: 0;
   cursor: pointer;
 
 }
@@ -45,22 +45,19 @@
 
 /* Evitar que la lista de navegación ocupe un ancho innecesario */
 .nav-icon-lista {
-  list-style-type: none;
-  margin: 0;
-  padding: 0;
   display: flex;
+  justify-content: right;
+  list-style: none;
   align-items: center;
-  justify-content: flex-end;
-  width: auto;
-  /* Ajustar el ancho al contenido */
-  overflow: hidden;
+  padding: 0;
 }
 
 li {
-  margin-left: 30px;
+  margin: 20px;
   white-space: nowrap;
   /* Evita que los elementos se desborden en varias líneas */
 }
+
 
 
 
@@ -94,6 +91,14 @@ li {
 }
 
 /* Estilos de la imagen de perfil */
+.prifile-li {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  justify-content: center;
+  padding: 20px;
+}
+
 .profile-pic {
   width: 30px;
   height: 30px;
