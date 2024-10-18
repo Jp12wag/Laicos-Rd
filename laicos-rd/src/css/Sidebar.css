@@ -9,6 +9,7 @@
       rgba(253, 187, 45, 1) 100%);
   justify-content: center;
   align-items: center;
+  position: relative;
 }
 
 .sidebar {
@@ -17,7 +18,8 @@
   top: 19px;
   left: 20px;
   bottom: 0;
-  z-index: 1000;
+  z-index: 1;
+  transition: opacity 0.5s ease-out;
 }
 
 .menu-icon {

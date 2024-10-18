@@ -1,3 +1,8 @@
+h1{
+    display: flex;
+    justify-content: center;
+    font-weight: bold;
+}
 .sessions-container {
     display: flex;
     flex-direction: column;

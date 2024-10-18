@@ -1,7 +1,4 @@
 /* Estilos generales del contenedor de perfil */
-* {
-  /* overflow: hidden; */
-}
 
 .profile-container {
   display: flex;
