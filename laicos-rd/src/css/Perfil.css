@@ -1,77 +1,45 @@
 /* Estilos generales del contenedor de perfil */
+* {
+  /* overflow: hidden; */
+}
+
 .profile-container {
+  display: flex;
   flex-direction: column;
+  flex-wrap: wrap;
+  justify-content: center;
+  padding: 20px;
+}
+
+/* Contenedor de la foto y role del usuario */
+.profile-photo {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
   align-items: center;
-  padding: 20px;
-  border-radius: 8px;
+  text-transform: capitalize;
+  font-weight: bold;
 }
 
-.completion-percentage {
-  border-radius: 100%;
-  background-color: #0056b3;
-  width: 150px;
-  height: 150px;
-  display: flex; /* Usar flexbox */
-  justify-content: center; /* Centrar horizontalmente */
-  align-items: center; /* Centrar verticalmente */
-  color: white; /* Cambiar el color del texto si es necesario */
-  font-size: 16px; /* Ajustar el tamaño de la fuente */
-
-}
-/* Contenedor del formulario */
-.contendor {
-  width: 100%;
-  max-width: 1000px;
-  background: white; /* Fondo blanco para el formulario */
-  padding: 20px;
-  border-radius: 8px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+ h2 {
+  font-weight: bold;
+  margin-bottom: 15px;
 }
 
-/* Estilo de las entradas de formulario */
-.entrada {
-  width: 50%;
-  
-  padding: 15px;
-  margin: 10px 0;
-  border: 1px solid #ccc; /* Borde gris claro */
-  border-radius: 4px;
-  font-size: 18px;
-}
-
-/* Estilo para los botones */
-.bton {
-  background-color: #007bff; /* Color azul */
+/* Iniciales de perfil */
+.profile-initials {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  background-color: #007bff;
+  /* Color azul */
   color: white;
-  padding: 10px 20px;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  font-size: 16px;
-  transition: background-color 0.3s ease;
-}
-
-/* Estilo para el botón rojo */
-.bton-rojo {
-  background-color: red; /* Color rojo */
-}
-
-/* Cambios de estilo al pasar el ratón por encima */
-.bton:hover {
-  background-color: #0056b3; /* Azul oscuro */
-}
-
-.bton-rojo:hover {
-  background-color: darkred; /* Rojo oscuro */
-}
-
-/* Estilos para las secciones de administrador y miembro */
-.section {
-  margin: 20px 0;
-  padding: 10px;
-  border: 1px solid #ccc; /* Borde gris claro */
-  border-radius: 8px;
-  background-color: #f9f9f9; /* Color de fondo claro */
+  font-size: 30px;
+  margin-bottom: 10px;
 }
 
 /* Estilo para la imagen de perfil */
@@ -82,16 +50,90 @@
   margin-bottom: 10px;
 }
 
-/* Iniciales de perfil */
-.profile-initials {
-  width: 100px;
-  height: 100px;
-  border-radius: 50%;
-  background-color: #007bff; /* Color azul */
-  color: white;
+/* Contenedor del formulario */
+.contendor {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  align-items: center;
+}
+/* Estilos para las secciones de administrador y miembro */
+.section {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  width: 85%;
+  margin: 20px 0;
+  padding: 10px;
+  border: 1px solid #ccc;
+  /* Borde gris claro */
+  border-radius: 8px;
+  background-color: #f9f9f9;
+  /* Color de fondo claro */
+}
+
+/* Estilo del formulario */
+.form {
+  display: grid;
+  flex-wrap: wrap;
+  grid-template-columns: 1fr 1fr;
+  gap: 15px;
+  width: 100%;
+  border-radius: 15px;
+  position: relative;
+  align-items: center;
+}
+
+/* Estilo de las entradas de formulario */
+.entrada {
+   padding: 3px;
+   margin: 0 10px;
+   width: 95%;
+   border: none;
+   background-color: transparent;
+   border-bottom: 1px solid rgb(164, 164, 164);
+   color: black;
+}
+.entrada:focus{
+  outline: none;
+}
+
+.parroquia-section{
+ margin: 30px auto 0;
+}
+
+/* Estilo para los botones */
+.buttons{
   display: flex;
   justify-content: center;
-  align-items: center;
-  font-size: 24px;
-  margin-bottom: 10px;
+  gap: 30px ;
+  margin: 20px 0;
+ 
+}
+
+.button{
+  font-weight: bolder;
+}
+
+.buttons .btn-submit{
+  background-color: white;
+  border: 1px solid rgb(12, 225, 12);
+  color: rgb(12, 225, 12);
+}
+
+.buttons .btn-view-sections{
+  background-color: white;
+  border: 1px solid orange;
+  color: orange;
+}
+.btn-submit:hover{
+  background-color:  rgb(12, 225, 12);
+  border: 1px solid white;
+  color: white;
+}
+
+.btn-view-sections:hover{
+  background-color: orange;
+  border: 1px solid white;
+  color: white;
 }
