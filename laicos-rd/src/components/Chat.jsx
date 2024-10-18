@@ -30,7 +30,6 @@ const Chat = () => {
   const [solicitudesEnviadas, setSolicitudesEnviadas] = useState([]); // Solicitudes de amistad enviadas
   const [user, setUser] = useState({});
   const authToken = Cookies.get('authToken');
-  const [notificaciones, setNotificaciones] = useState([]);
 
 
   console.log(mensajes);
@@ -159,6 +158,7 @@ const Chat = () => {
           },
         });
         const dataSolicitudes = await respuestaSolicitudes.json();
+
         setSolicitudesPendientes(dataSolicitudes);
 
       } catch (error) {
@@ -193,49 +193,7 @@ const Chat = () => {
     }
   };
 
-  const aceptarSolicitudAmistad = async (solicitudId) => {
-    try {
-      const respuesta = await fetch('http://localhost:3001/api/solicitud/aceptar', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${Cookies.get('authToken')}`,
-        },
-        body: JSON.stringify({ solicitudId }),
-      });
-      const data = await respuesta.json();
-
-      if (respuesta.ok) {
-        alert(data.message);
-        // Actualizar la lista de amigos y solicitudes pendientes
-        console.log(data)
-        setAmigos(prevAmigos => [...prevAmigos, data.amigo]);
-        setSolicitudesPendientes(prevSolicitudes => prevSolicitudes.filter(s => s._id !== solicitudId));
-      } else {
-        alert(data.error);
-      }
-    } catch (error) {
-      console.error('Error al aceptar la solicitud de amistad:', error);
-    }
-  };
-
-  const rechazarSolicitudAmistad = async (solicitudId) => {
-    try {
-      const respuesta = await fetch('http://localhost:3001/api/amistades/rechazar', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${Cookies.get('authToken')}`,
-        },
-        body: JSON.stringify({ solicitudId }),
-      });
-      const data = await respuesta.json();
-      alert(data.message);
-      setSolicitudesPendientes(prevSolicitudes => prevSolicitudes.filter(s => s._id !== solicitudId));
-    } catch (error) {
-      console.error('Error al rechazar la solicitud de amistad:', error);
-    }
-  };
+  
 
   const seleccionarReceptor = (id) => {
     if (!amigos.find(amigo => amigo._id === id)) {
@@ -253,7 +211,8 @@ const Chat = () => {
   const solicitudEnviada = (id) => {
     return solicitudesEnviadas.some(solicitud => solicitud.receptor === id);
   };
- 
+
+
   return (
     <div className="chat-container">
       <div className="lista-amigos">
@@ -341,24 +300,6 @@ const Chat = () => {
           </div>
         )}
       </div>
-      {/*
-      <div className='contenedor-chat-usuario'>
-        <div className="solicitudes-pendientes">
-          <h3>Solicitudes de Amistad Pendientes:</h3>
-          <ul>
-            {Array.isArray(solicitudesPendientes) && solicitudesPendientes.map((solicitud) => (
-              <li key={solicitud._id}>
-                {solicitud.emisor.nombre} {solicitud.emisor.apellido}
-                <button onClick={() => aceptarSolicitudAmistad(solicitud._id)}>Aceptar</button>
-                <button onClick={() => rechazarSolicitudAmistad(solicitud._id)}>Rechazar</button>
-              </li>
-            ))}
-          </ul>
-        </div>
-
-      </div>*/}
-
-      {/* Modal */}
       {mostrarModal && (
 
         <div className="modal-overlay" onClick={cerrarModal}> {/* Fondo del modal */}

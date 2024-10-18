@@ -43,7 +43,7 @@ const Register = () => {
     }
 
     try {
-      const response = await axios.post('http://localhost:3001/api/administradores/', {
+     await axios.post('http://localhost:3001/api/administradores/', {
         nombre: name,
         apellido,
         email,

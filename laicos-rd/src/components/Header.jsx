@@ -14,6 +14,7 @@ const Header = () => {
   const authToken = Cookies.get('authToken');
   const userRole = Cookies.get('userRole');
   const [notificaciones, setShowNotificaciones] = useState([]);
+  const [solicitudesPendientes, setSolicitudesPendientes] = useState([]);
   const [showModal, setShowModal] = useState(false);
   const clearCookies = () => {
     Cookies.remove('authToken');
@@ -47,9 +48,21 @@ const Header = () => {
       console.error("Error al obtener notificaciones:", error);
     }
   };
+  const obtenerSolicitudesPendientes = async()=>{
+     // Obtener solicitudes pendientes
+     const respuestaSolicitudes = await fetch('http://localhost:3001/api/solicitud/pendientes', {
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${Cookies.get('authToken')}`
+      },
+    });
+    const dataSolicitudes = await respuestaSolicitudes.json() ;
+    setSolicitudesPendientes(dataSolicitudes);
+  }
 
   useEffect(() => {
     obtenerNotificaciones();
+    obtenerSolicitudesPendientes();
   }, [authToken]);
 
 
@@ -84,7 +97,7 @@ const Header = () => {
       return;
     }
 
-    if (!userId) return; // Asegúrate de que userId esté definido
+    if (!userId) return;
 
     try {
       const response = await axios.get(`http://localhost:3001/api/administradores/${userId}`, {
@@ -132,7 +145,7 @@ const Header = () => {
       <nav  className="navegador">
         <ul className="nav-icon-lista">
           <li className="notification-container">
-            <FaBell className="nav-icon" title="Notificaciones" onClick={toggleNotificaciones} />
+            <FaBell className="nav-icon" title="Notificaciones" onClick={toggleNotificaciones} />{solicitudesPendientes.length || notificaciones.length}
             {notificaciones.length > 0 && (
               <span className="notification-badge">{notificaciones.length}</span>
             )}
@@ -175,6 +188,12 @@ const Header = () => {
           </li>
         </ul>
       </nav>
+      <Modal
+        isOpen={showModal}
+        onClose={() => setShowModal(false)}
+        notifications={notificaciones}
+        solicitudesPendientes={solicitudesPendientes}
+      />
     </header>
   );
 };

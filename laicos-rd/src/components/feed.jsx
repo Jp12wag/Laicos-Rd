@@ -5,7 +5,7 @@ import '../css/feed.css';
 import io from 'socket.io-client';
 import Modal from 'react-modal'; 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEdit, faComments, faTrash, faThumbsUp, faPen } from '@fortawesome/free-solid-svg-icons';
+import { faEdit, faComments, faTrash, faThumbsUp} from '@fortawesome/free-solid-svg-icons';
 
 
 const socket = io('http://localhost:3001', {
