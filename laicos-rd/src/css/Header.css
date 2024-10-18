@@ -1,25 +1,24 @@
 .header {
-  position: fixed; /* Hace que el header se mantenga fijo en la parte superior */
+  position: sticky;
+  /* Hace que el header se mantenga fijo en la parte superior */
   top: 0;
   width: 100%;
   height: 80px;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0 20px;  
+  padding: 0 20px;
   background: rgb(5, 79, 58);
-  background: linear-gradient(
-    90deg,
-    rgba(5, 79, 58, 1) 0%,
-    rgba(253, 187, 45, 1) 100%
-  );
+  background: linear-gradient(90deg,
+      rgba(5, 79, 58, 1) 0%,
+      rgba(253, 187, 45, 1) 100%);
 }
 
 
 .header .navegador a {
   margin-left: 20px;
   text-decoration: none;
-  
+
 }
 
 
@@ -27,18 +26,20 @@
 .navegador {
   justify-content: flex-end;
   align-items: center;
-  height: 80px;
+  height: 70px;
   color: #ebebeb;
   background: rgb(5, 79, 58);
-  
+
 }
 
 .nav-icon {
+  width: 30px;
   margin: 0 15px;
   cursor: pointer;
 
 }
-.tituloSider{
+
+.tituloSider {
   color: #fff;
 }
 
@@ -50,13 +51,15 @@
   display: flex;
   align-items: center;
   justify-content: flex-end;
-  width: auto; /* Ajustar el ancho al contenido */
+  width: auto;
+  /* Ajustar el ancho al contenido */
   overflow: hidden;
 }
 
 li {
   margin-left: 30px;
-  white-space: nowrap; /* Evita que los elementos se desborden en varias líneas */
+  white-space: nowrap;
+  /* Evita que los elementos se desborden en varias líneas */
 }
 
 
@@ -65,11 +68,13 @@ li {
   background-color: #fff;
   border: 1px solid #ccc;
   position: absolute;
-  right: 0;
-  top: 50px; /* Ajusta según sea necesario */
+  right: 35px;
+  top: 65px;
+  /* Ajusta según sea necesario */
   display: block;
   z-index: 10;
   height: auto;
+  width: 300px;
 }
 
 /* Ajustar los elementos dentro del menú desplegable */
@@ -97,6 +102,14 @@ li {
   cursor: pointer;
 }
 
+.dropdown-buttons {
+  display: flex;
+  list-style: none;
+  justify-content: center;
+  padding: 0;
+
+}
+
 .dropdown-button {
   background: none;
   border: none;
@@ -105,7 +118,6 @@ li {
   width: 100%;
   text-align: left;
   transition: 0.2s;
- 
   color: black;
 }
 
@@ -122,8 +134,12 @@ li {
 /* Saludo y contenedor de la imagen */
 .greeting-container {
   display: flex;
+  flex-direction: column;
   align-items: center;
-  padding: 10px;
+  text-align: center;
+  justify-content: center;
+  padding-left: 10px;
+
 }
 
 .profile-image {
@@ -140,7 +156,7 @@ li {
 }
 
 .profile-image img {
-  width: 100%;
+  width: 90%;
   height: auto;
 }
 
@@ -148,6 +164,13 @@ li {
   display: flex;
   flex-direction: column;
 }
-@media screen {
-  
+
+.greeting p {
+  margin: 0;
 }
+
+.greeting .user-email {
+  font-size: small;
+}
+
+@media screen {}

@@ -187,15 +187,18 @@ const EditProfile = () => {
 
     return (
         <div className="profile-container">
-            <h1>Perfil</h1>
-            <div className="completion-percentage">
+            {/* <h1>Perfil</h1> */}
+            {/* <div className="completion-percentage">
                 {calculateCompletionPercentage().toFixed(0)}%
+            </div> */}
+            <div className='profile-photo'>
+                {renderProfileImage()}
+                <h2 className='user-role'>{userRole}</h2>
             </div>
-            {renderProfileImage()}
             <div className="contendor">
-                <h2>{userRole}</h2>
                 <div className="section">
-                    <form onSubmit={handleSubmit}>
+                    <h2>Datos Generales</h2>
+                    <form className='Datos-generales-form form' onSubmit={handleSubmit}>
                         <input
                             className="entrada"
                             type="text"
@@ -221,12 +224,13 @@ const EditProfile = () => {
                             placeholder="Email"
                         />
                         <input
+                            
                             className="entrada"
                             type="tel"
                             name="celular"
                             value={admin.celular}
                             onChange={handleAdminChange}
-                            placeholder="Celular"
+                            placeholder="Télefono"
                         />
                         <input
                             className="entrada"
@@ -245,7 +249,8 @@ const EditProfile = () => {
                 </div>
                 <div className="section">
                     <h2>Miembro</h2>
-                    <form onSubmit={handleSubmit}>
+                    <form   onSubmit={handleSubmit}>
+                        <div className='miembros-form form'>
                         <input
                             className="entrada"
                             type="text"
@@ -286,7 +291,9 @@ const EditProfile = () => {
                             readOnly
                             placeholder="Parroquia seleccionada"
                         />
-                        <div className="section">
+                        </div>
+                        <div className="section parroquia-section">
+                            <div className='parroquia-info'>
                             <h2>Cambio Parroquia</h2>
                             <select className="entrada" value={selectedDiocesis} onChange={handleDiocesisChange}>
                                 <option value="">Seleccione una diócesis</option>
@@ -300,16 +307,20 @@ const EditProfile = () => {
                                     <option key={p._id} value={p._id}>{p.nombre}</option>
                                 ))}
                             </select>
+                            </div>
 
 
-                            <button className="button" type="submit">Guardar Cambios</button>
+                           <div className='buttons'>
+                           <button className="button btn-submit"  type="submit">Guardar Cambios</button>
+                           <button className="button btn-view-sections" onClick={handleViewSessions}>Ver todas las sesiones iniciadas</button>
+                           </div>
                         </div>
                     </form>
                 </div>
             </div>
-            <div className="button-container">
-                <button className="button" onClick={handleViewSessions}>Ver todas las sesiones iniciadas</button>
-            </div>
+            {/* <div className="button-container">
+            
+            </div> */}
         </div>
     );
 };

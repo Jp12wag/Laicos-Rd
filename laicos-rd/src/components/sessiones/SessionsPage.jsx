@@ -1,5 +1,6 @@
 import SessionsList from './SessionsList';
 
+
 const SessionsPage = () => {
    
     return (
