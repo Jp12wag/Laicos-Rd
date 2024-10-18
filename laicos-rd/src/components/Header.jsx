@@ -144,14 +144,14 @@ const Header = () => {
     <header>
       <nav className="navegador">
         <ul className="nav-icon-lista">
-          <li className="notification-container">
+          <li className="notification-container ">
             <FaBell className="nav-icon" title="Notificaciones" onClick={toggleNotificaciones} />{solicitudesPendientes.length || notificaciones.length}
             {notificaciones.length > 0 && (
               <span className="notification-badge">{notificaciones.length}</span>
             )}
           </li>
-          <li><FaSearch className="nav-icon" title="Buscar" /></li>
-          <li className="profile-container">
+          <li><FaSearch className="nav-icon " title="Buscar" /></li>
+          <li className="profile-li icon">
             <FaUser className="profile-pic" onClick={toggleMenu} />
             <FaCaretDown className="arrow-icon" onClick={toggleMenu} />
             {showMenu && (
