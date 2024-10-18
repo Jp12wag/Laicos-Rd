@@ -1,12 +1,3 @@
-body{
-    margin: 0;
-    padding: 50px;
-}
-h1{
-    display: flex;
-    justify-content: center;
-    font-weight: bold;
-}
 .sessions-container {
     display: flex;
     flex-direction: column;
