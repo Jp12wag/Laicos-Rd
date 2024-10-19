@@ -23,6 +23,7 @@ const Modal = ({ isOpen, onClose, notifications, solicitudesPendientes }) => {
 
       if (respuesta.ok) {
         alert(data.message);
+        onClose();
         solicitudesPendientes()
       } else {
         alert(data.error);

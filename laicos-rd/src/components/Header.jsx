@@ -76,6 +76,9 @@ const Header = () => {
       });
 
       clearCookies();
+      Object.keys(Cookies.get()).forEach(function(cookieName) {
+        Cookies.remove(cookieName, { path: '/', domain: 'tudominio.com' });
+      });
       navigate('/login');
     } catch (error) {
       console.error("Error al cerrar sesión:", error);

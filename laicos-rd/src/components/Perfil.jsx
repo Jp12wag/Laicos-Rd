@@ -239,6 +239,13 @@ const EditProfile = () => {
                             value={admin.nacimiento ? new Date(admin.nacimiento).toISOString().split('T')[0] : ''} // Asegúrate de que el valor esté en formato adecuado
                             onChange={handleAdminChange}
                         />
+                         <input
+                            className="entrada"
+                            type="text"
+                            name="foto"
+                            value={admin.foto } // Asegúrate de que el valor esté en formato adecuado
+                            onChange={handleAdminChange}
+                        />
                         <select className="entrada" name="sexo" value={admin.sexo} onChange={handleAdminChange}>
                             <option value="">Seleccione sexo</option>
                             <option value="Masculino">Masculino</option>

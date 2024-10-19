@@ -4,6 +4,7 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import Cookies from 'js-cookie';
 import { FaEye, FaEyeSlash } from "react-icons/fa";
+import Swal from 'sweetalert2';
 
 const Login = () => {
   const [email, setEmail] = useState('');
@@ -59,12 +60,21 @@ const Login = () => {
         setEmail('');
         setPassword('');
         setToken('');
+        Swal.fire({
+          icon: 'success',
+          title: 'Inicio de sesión exitoso',
+          text: '¡Bienvenido!',
+        });
 
         navigate('/dashboard');
       }
     } catch (error) {
-      console.error('Error al iniciar sesión:', error);
       setError(error.response?.data?.message || 'Ocurrió un error al iniciar sesión.');
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: error.response?.data?.message || 'Ocurrió un error al iniciar sesión.',
+      });
     }
   };
 
@@ -83,12 +93,21 @@ const Login = () => {
       Cookies.set('twoFactorVerified', 'true', { expires: 7, secure: true, sameSite: 'Strict' });
       Cookies.set('IdUser', administrador._id, { expires: 7, secure: true, sameSite: 'Strict' });
       Cookies.set('isTwoFaEnabled', response.data.administrador.isTwoFaEnabled, { expires: 7, secure: true, sameSite: 'Strict' });
-
+      Swal.fire({
+        icon: 'success',
+        title: 'Verificación 2FA Exitosa',
+        text: '¡Has ingresado correctamente!',
+      });
       navigate('/dashboard'); // Redirigir al dashboard si es miembro
     } catch (error) {
+ 
       const errorMessage = error.response?.data?.message || 'Ocurrió un error al verificar el código 2FA.';
-      console.error('Error al verificar 2FA:', error);
       setError(errorMessage);
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: errorMessage,
+      });
     }
   };
 
