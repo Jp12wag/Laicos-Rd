@@ -149,7 +149,7 @@ const Feed = () => {
 
 
   useEffect(() => {
-    obtenerPosts();
+   
     socket.on('connect', () => {
       console.log('Conectado al servidor con socket ID:', socket.id);
     });
@@ -158,7 +158,7 @@ const Feed = () => {
       console.log('Nueva publicación recibida:', nuevaPublicacion);
       setPosts((prevPosts) => [nuevaPublicacion, ...prevPosts]); // Agrega la nueva publicación al principio del feed
     });
-
+    obtenerPosts();
     return () => {
       socket.off('nuevaPublicacion');
     };
@@ -184,12 +184,12 @@ const Feed = () => {
 
       <div className="posts">
         {posts.map((post) => (
-          <div key={post._id} className="post">
+          <div key={post._id ? `${post._id}`: 'sin id'} className="post">
 
 
             <div className='cabecera'>
               <h3 className="cabeceraPost">
-                {post.AdminId.nombre} {post.AdminId.apellido}
+              {post.AdminId ? `${post.AdminId.nombre} ${post.AdminId.apellido}` : 'Usuario desconocido'}
               </h3>
               <span className='cabeceraFecha'>{new Date(post.createdAt).toLocaleString()}</span>
             </div>

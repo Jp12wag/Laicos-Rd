@@ -1,3 +1,4 @@
+
 .chat-container {
     padding-top: 30px;
     display: flex;
@@ -24,6 +25,7 @@
 
 .titulo-chat {
     margin-left: 30px;
+    width: 40px;
 }
 
 .chat-container .chat {
@@ -243,6 +245,18 @@
     margin-left: 10px;
     border-radius: 5px;
     margin-bottom: 30px;
+}
+.box_mensajes{
+
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 250px;
+    background: url('../img/fondochat.jpeg');
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    align-items: center;
+    overflow-y: auto;
 }
 
 .historial-mensajes {

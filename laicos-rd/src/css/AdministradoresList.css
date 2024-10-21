@@ -1,14 +1,22 @@
 /* Estilos generales */
 .conteneedor-administradores{
+  margin-left: 30px;
+  display: flex;
   flex-direction: column;
   max-width: 800px;
+  background-color: #047857;
+  height: 100vh;
+  overflow-y: auto;
+}
+.conteneedor-administradores::-webkit-scrollbar{
+  width: 8px;
 }
 
 /* Encabezado */
 .administradores-titulo {
   text-align: center;
   margin: 20px 0;
-  color: #333;
+  color: #ffffff;
 }
 
 /* Botón para añadir administradores */
@@ -16,8 +24,8 @@
   display: block;
   margin: 20px auto;
   padding: 10px 20px;
-  background-color: #007bff; /* Color azul */
-  color: white;
+  background-color: #f59e0b;
+  color: #fff;
   border: none;
   border-radius: 5px;
   cursor: pointer;
@@ -26,7 +34,8 @@
 }
 
 .add-button:hover {
-  background-color: #0056b3; /* Azul más oscuro */
+  background-color: #d97706;
+  color: #fff;
 }
 
 /* Tabla de administradores */
@@ -35,7 +44,6 @@
   margin: 0 auto;
   border-collapse: collapse;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-  background-color: white;
 }
 
 .administradores-table th,
@@ -46,13 +54,13 @@
 }
 
 .administradores-table th {
-  background-color: #007bff; /* Color de fondo del encabezado */
-  color: white;
+  background-color: #f59e0b;
+  color: rgb(255, 255, 255);
 }
 
 /* Estilos para filas de la tabla */
 .administradores-table tr:hover {
-  background-color: #f1f1f1; /* Color de fondo en hover */
+  background-color: #d97706;
 }
 
 /* Mensaje de no hay datos */
@@ -68,7 +76,7 @@
   border: none;
   cursor: pointer;
   outline: none;
-  color: #007bff; /* Color del icono */
+  color: #d39715; /* Color del icono */
   font-size: 20px; /* Tamaño del icono */
   transition: color 0.3s;
 }
@@ -82,5 +90,5 @@
 }
 
 .delete-button:hover {
-  color: #c82333; /* Color rojo más oscuro en hover */
+  color: #fa0922; /* Color rojo más oscuro en hover */
 }

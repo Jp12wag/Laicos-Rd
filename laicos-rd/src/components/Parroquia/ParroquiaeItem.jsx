@@ -1,4 +1,5 @@
 import React from 'react';
+import '../../css/ParroquiaList.css';
 
 const ParroquiaItem = ({ parroquia, onDelete, onEdit }) => {
     return (

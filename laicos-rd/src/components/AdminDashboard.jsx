@@ -15,6 +15,7 @@ import { faUser, faClipboardList, faChartPie, faChartArea, faCog, faBars } from 
 import SecuritySettings from './SecuritySettings';
 import Chat from './Chat';
 import { TiArrowSortedUp } from "react-icons/ti";
+import ChatGrupo from './ChatGrupal';
 
 Modal.setAppElement('#root');
 
@@ -173,8 +174,6 @@ const AdminDashboard = () => {
 
             </a>}
           </div>
-
-
           {/* Renderizar opciones de administración solo si el rol es Administrador */}
           {(userRole === 'Administrador' || userRole === 'clero') && (
             <>
@@ -210,6 +209,7 @@ const AdminDashboard = () => {
           {activeComponent === 'Diocesis' && (userRole === 'Administrador' || userRole === 'clero') && <Diocesis />}
           {activeComponent === 'security' && <SecuritySettings />}
           {activeComponent === 'Chat' && <Chat />}
+         
         </div>
 
         {/* Modal para añadir o editar administradores */}

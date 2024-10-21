@@ -86,8 +86,7 @@ const Header = () => {
   };
 
   const toggleNotificaciones = () => {
-    setShowModal((prevState) => !prevState); // Abre o cierra el modal
-    console.log(notificaciones); // Para verificar las notificaciones
+    setShowModal((prevState) => !prevState);
   };
   const toggleMenu = () => {
     setShowMenu((prevState) => !prevState);

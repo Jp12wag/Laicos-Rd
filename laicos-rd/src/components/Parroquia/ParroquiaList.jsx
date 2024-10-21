@@ -3,11 +3,12 @@ import { getParroquias, createParroquia, deleteParroquia, updateParroquia } from
 import ParroquiaForm from './ParroquiaForm';
 import ParroquiaItem from './ParroquiaeItem';
 import '../../css/ParroquiaList.css';
-import Swal from 'sweetalert2'; // Importar SweetAlert2
+import Swal from 'sweetalert2';
 
 const ParroquiaList = () => {
     const [parroquias, setParroquias] = useState([]);
     const [selectedParroquia, setSelectedParroquia] = useState(null);
+    const [searchTerm, setSearchTerm] = useState(''); // Estado para el filtro de búsqueda
 
     useEffect(() => {
         const fetchParroquias = async () => {
@@ -19,7 +20,6 @@ const ParroquiaList = () => {
     }, []);
 
     const handleDelete = async (id) => {
-        // Mostrar alerta de confirmación antes de eliminar
         const result = await Swal.fire({
             title: '¿Estás seguro?',
             text: "Esta acción no se puede deshacer",
@@ -30,11 +30,8 @@ const ParroquiaList = () => {
         });
 
         if (result.isConfirmed) {
-            // Si se confirma, eliminar la parroquia
             await deleteParroquia(id);
             setParroquias(parroquias.filter((p) => p._id !== id));
-
-            // Mostrar alerta de éxito
             Swal.fire({
                 title: '¡Eliminado!',
                 text: 'La parroquia ha sido eliminada correctamente.',
@@ -43,37 +40,57 @@ const ParroquiaList = () => {
             });
         }
     };
+
     const handleEdit = (parroquia) => {
         setSelectedParroquia(parroquia);
     };
 
     const handleFormSubmit = async (data) => {
         if (selectedParroquia) {
-            // Actualizar
             const updatedParroquia = await updateParroquia(selectedParroquia._id, data);
             setParroquias(parroquias.map((p) => (p._id === selectedParroquia._id ? updatedParroquia : p)));
         } else {
-            // Crear nueva
             const nuevaParroquia = await createParroquia(data);
             setParroquias([...parroquias, nuevaParroquia]);
         }
-        setSelectedParroquia(null); // Reiniciar formulario
+        setSelectedParroquia(null);
     };
+
+    // Filtrar parroquias basado en el término de búsqueda
+    const filteredParroquias = parroquias.filter((parroquia) =>
+        parroquia.nombre.toLowerCase().includes(searchTerm.toLowerCase())
+    );
 
     return (
         <div className="parroquia-list">
-            <h2>Lista de Parroquias</h2>
+            <h2 className='tituloParroquia'>Lista de Parroquias</h2>
+            
+            {/* Campo de búsqueda */}
+           
+            
             <ParroquiaForm onSubmit={handleFormSubmit} parroquia={selectedParroquia} />
+            <input 
+                type="text"
+                placeholder="Buscar parroquias"
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="busqueda-parroquia"
+            />
             <ul className='lista-parroquia'>
-                {parroquias.map((p) => (
-                    <ParroquiaItem
-                        key={p._id}
-                        parroquia={p}
-                        onDelete={handleDelete}
-                        onEdit={handleEdit}
-                    />
-                ))}
+                {filteredParroquias.length > 0 ? (
+                    filteredParroquias.map((p) => (
+                        <ParroquiaItem
+                            key={p._id}
+                            parroquia={p}
+                            onDelete={handleDelete}
+                            onEdit={handleEdit}
+                        />
+                    ))
+                ) : (
+                    <li>No se encontraron parroquias</li>
+                )}
             </ul>
+            
         </div>
     );
 };
