@@ -7,7 +7,6 @@ import { useParams } from 'react-router-dom';
 
 
 const ActividadDetalle = () => {
-
   const { id } = useParams(); // Obtén el ID de la actividad de los parámetros de la URL
   const [actividad, setActividad] = useState(null);
   const [error, setError] = useState(null);
@@ -16,20 +15,20 @@ const ActividadDetalle = () => {
   const isInscrito = (actividad) => {
     return actividad.inscritos.some(inscrito => inscrito === userId);
   };
+
+
   useEffect(() => {
-
-    const obtenerActividad = async () => {
-      try {
-        const response = await axios.get(`http://localhost:3001/api/actividades/actividades/${id}`);
-        setActividad(response.data);
-      } catch (error) {
-        setError('Error al obtener la actividad');
-      }
-    };
-
-
     obtenerActividad();
   }, [id]);
+
+  const obtenerActividad = async () => {
+    try {
+      const response = await axios.get(`http://localhost:3001/api/actividades/actividades/${id}`);
+      setActividad(response.data);
+    } catch (error) {
+      setError('Error al obtener la actividad');
+    }
+  };
 
   if (error) {
     return <p>{error}</p>;
@@ -49,17 +48,12 @@ const ActividadDetalle = () => {
         },
       });
       Swal.fire('Éxito', 'Te has inscrito en la actividad.', 'success');
-      // Refrescar la lista de actividades si es necesario
-      const response = await axios.get('http://localhost:3001/api/actividades', {
-        headers: {
-          Authorization: `Bearer ${authToken}`,
-        },
-      });
+
 
     } catch (error) {
       Swal.fire('Error', 'No se pudo inscribir en la actividad.', 'error');
     }
-
+    obtenerActividad();
   };
 
 
@@ -76,16 +70,10 @@ const ActividadDetalle = () => {
       });
 
       Swal.fire('Éxito', 'Te has desinscrito de la actividad.', 'success');
-
-      // Actualizar la lista de actividades
-      const response = await axios.get('http://localhost:3001/api/actividades', {
-        headers: {
-          Authorization: `Bearer ${authToken}`,
-        },
-      });
     } catch (error) {
       Swal.fire('Error', 'No se pudo desinscribir de la actividad.', 'error');
     }
+    obtenerActividad();
   };
 
   return (
