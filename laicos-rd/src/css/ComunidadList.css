@@ -1,0 +1,58 @@
+
+.comunidad-list {
+    max-width: 800px;
+    width: 100vw;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+}
+
+ .titulo-comunidad{
+    text-align: center;
+    margin-bottom: 20px;
+    color: #218838;
+}
+
+.lista-comunidad{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    flex-direction: row;
+    width: 100%;
+    color: #ffffff;
+    font-size: 30px;
+    text-align: center;
+    list-style: none;
+    padding: 0;
+    height: 300px;
+    overflow-y: auto;
+   }
+
+
+.lista-comunidad-li {
+    cursor: pointer;
+    border-radius: 40px;
+    margin-bottom: 20px;
+    border: 1px solid #355fe9;
+    background-color: #218838;
+    flex: 0 0 50%; /* Cada elemento ocupa el 50% del ancho, permitiendo dos en una fila */
+    box-sizing: border-box; 
+    padding: 10px; 
+    text-align: center;
+}
+
+.toggle-form-button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    margin-bottom: 15px;
+    border-radius: 5px;
+}
+
+.toggle-form-button:hover {
+    background-color: #0056b3;
+}

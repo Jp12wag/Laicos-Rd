@@ -1,0 +1,54 @@
+/* ComunidadDetalle.css */
+
+.comunidad-detalle {
+    
+    border: 1px solid #ddd; /* Borde sutil alrededor del detalle */
+    border-radius: 8px; /* Bordes redondeados */
+    padding: 20px; /* Espaciado interno */
+    background-color: #f9f9f9; /* Color de fondo */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra */
+    height: 70%;
+}
+
+.comunidad-nombre {
+    font-size: 24px; /* Tamaño de la fuente */
+    color: #333; /* Color del texto */
+    margin-bottom: 10px; /* Espacio inferior */
+}
+
+.comunidad-descripcion {
+    font-size: 16px; /* Tamaño de la fuente */
+    color: #666; /* Color del texto */
+    margin-bottom: 15px; /* Espacio inferior */
+}
+
+.canales-titulo {
+    font-size: 20px; /* Tamaño de la fuente */
+    color: #333; /* Color del texto */
+    margin-bottom: 5px; /* Espacio inferior */
+}
+
+.canales-lista {
+    list-style-type: none; /* Quita las viñetas */
+    padding: 0; /* Quita el padding */
+}
+
+.canal-item {
+    font-size: 16px; /* Tamaño de la fuente */
+    color: #444; /* Color del texto */
+    padding: 5px 0; /* Espacio superior e inferior */
+}
+
+.btn-agregar-miembro {
+    background-color: #28a745; /* Color de fondo del botón */
+    color: #fff; /* Color del texto del botón */
+    border: none; /* Sin borde */
+    border-radius: 4px; /* Bordes redondeados */
+    padding: 10px 15px; /* Espaciado interno */
+    cursor: pointer; /* Cursor tipo puntero */
+    font-size: 16px; /* Tamaño de la fuente */
+}
+
+.btn-agregar-miembro:hover {
+    background-color: #218838; /* Color de fondo al pasar el mouse */
+}

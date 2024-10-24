@@ -14,8 +14,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser, faClipboardList, faChartPie, faChartArea, faCog, faBars } from '@fortawesome/free-solid-svg-icons';
 import SecuritySettings from './SecuritySettings';
 import Chat from './Chat';
-import { TiArrowSortedUp } from "react-icons/ti";
-import ChatGrupo from './ChatGrupal';
+import Comunidad from './Comunidades/ComunidadList';
 
 Modal.setAppElement('#root');
 
@@ -167,6 +166,11 @@ const AdminDashboard = () => {
               <FontAwesomeIcon icon={faChartPie} />{isHovered && ' Actividades'}
             </a>}
           </div>
+          <div className='options'>
+            {isHovered && <a className='options' href="#" onClick={() => handleComponentChange('Comunidades')}>
+              <FontAwesomeIcon icon={faChartPie} />{isHovered && 'Comunidades'}
+            </a>}
+          </div>
 
           <div className='options'>
             {isHovered && <a className='options' href="#" onClick={() => handleComponentChange('Chat')}>
@@ -209,6 +213,7 @@ const AdminDashboard = () => {
           {activeComponent === 'Diocesis' && (userRole === 'Administrador' || userRole === 'clero') && <Diocesis />}
           {activeComponent === 'security' && <SecuritySettings />}
           {activeComponent === 'Chat' && <Chat />}
+          {activeComponent === 'Comunidades' && <Comunidad token={authToken} userId={Cookies.get('IdUser')}/>}
          
         </div>
 
